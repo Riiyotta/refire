@@ -1,6 +1,6 @@
 # Refire /int design-repo
 
-**Status:** `design-review-pending`. `productionApproved: false`. Nothing here is approved for production until a human design review signs it off.
+**Status:** `design-review-pending`. `productionApproved: false`. Nothing here is approved for production until a human design review signs it off. Repository version `1.1.0` (see `CHANGELOG.md`).
 
 This repo is an AI-ready, machine-validated description of the rebuilt **refire.com/int/** site: tokens, primitives, components, section contracts, page templates, a compatibility graph, a Draft-07 PageSpec schema and a semantic validator. A generator can use it to compose pages that keep Refire's structure, typography, rhythm and motion without inventing colours, copy budgets or sections. Every value cites the real source, and the citations are machine-verified.
 
@@ -65,13 +65,19 @@ tokens/llm/             component-allowlist.json, token-catalog.json, token-poli
 assets/asset-roles.json closed assetRole vocabulary + generation/licensing policy
 primitives/  components/  sections/      contracts (purpose, props or content, tokens, motion, responsive, citations)
 templates/templates.json                 2 templates (structured nodes), 2 routes, page meta budgets, out-of-scope record
-compatibility/graph.json                 25 rules with severity and the layer that enforces each
+compatibility/graph.json                 29 rules with severity and the layer that enforces each (schema, semantic, contract, gate)
 schema/pagespec.schema.json              Draft-07 PageSpec contract
 schema/example*.pagespec.json            home (reference), 404 (reference), generated home (placeholders only)
-schema/semantic_validate.py              schema layer + semantic layer
+schema/section-contract.schema.json     closed Draft-07 shape of every sections/*.json (source vs semantic, retrievalEligible)
+schema/semantic_validate.py              schema layer + semantic layer + section-contract lint
 schema/tests/adversarial_test.py         mutations that must be rejected + controls that must pass
 extraction/measured-values.json          citation ledger, groundwork corrections, exclusions, structural facts
-extraction/verify_all.py                 repo integrity and drift checks
+extraction/verify_all.py                 repo integrity and drift checks (includes the wrapper gate)
+extraction/wrapper_gate.py               whole-page-wrapper gate over measured section heights
+extraction/wrapper-whitelist.json        reviewed exceptions to the gate (agent attestations, not human sign-offs)
+extraction/measure_sections.mjs          OPTIONAL: re-measures section heights into measured-values.json (needs Playwright)
+extraction/prove_drift.py                drift proof for the gate, the retrieval pin and the source/semantic checks
+extraction/evidence/                     verbatim excerpts of two untracked pixel-audit capture lines
 extraction/selfcontain_test.py           isolated-copy proof
 extraction/package.py                    builds ../design-repo.zip with the CLI zip tool
 extraction/requirements.txt              jsonschema>=4
@@ -128,6 +134,8 @@ Requires Python 3.8+ and `pip install -r extraction/requirements.txt`. The desig
 python3 schema/semantic_validate.py          # examples: schema + semantic, 0 errors
 python3 schema/tests/adversarial_test.py     # every mutation rejected, every control passes
 python3 extraction/verify_all.py             # integrity + drift checks (add --source-root PATH to point at the clone)
+python3 extraction/wrapper_gate.py           # the whole-page-wrapper gate alone
+python3 extraction/prove_drift.py            # scratch-copy proof that the gate / pins / provenance checks fail on injected defects (--scratch DIR needs an empty dir)
 python3 extraction/selfcontain_test.py       # copies this folder alone into the OS temp dir and reruns everything
 python3 extraction/package.py                # LAST: rebuilds ../design-repo.zip, junk-free
 ```
@@ -147,6 +155,9 @@ python3 extraction/package.py                # LAST: rebuilds ../design-repo.zip
   - every token, section, copy budget, asset role, template and route carries a citation.
 - **Copy budgets:** follow the evidence rule.
 - **Tokens:** references, catalog and policy keys, and theme resolution are consistent.
+- **Section contracts:** every contract satisfies the closed `schema/section-contract.schema.json`; the retrieval-ineligible set equals two independent code pins and the allowlist; at most one HERO-class section per template.
+- **Section provenance:** every `source` object resolves (ledger range, then the real file's function declaration and first rendered element) and each `semantic.category` agrees with the clone's `ia.json`.
+- **Wrapper gate:** measured section heights against the thresholds below.
 - **Hygiene:** no absolute machine paths, no OS junk files, `entryPoints` stay inside the package, identifiers are stack-neutral.
 - **Structural facts:** re-verified against the current source.
 
@@ -154,7 +165,51 @@ The adversarial suite's Part C proves that each drift check fails on injected ba
 
 **Without the clone project alongside** (for example, after unzipping this folder elsewhere), quote checks and source re-greps are skipped with a WARN. Citation ranges are still checked against the line counts recorded in the ledger.
 
+**Evidence files:** every cited file is tracked in the clone's git repository. The original's saved bundles and the pixel-audit scratch captures are gitignored, so a clean clone does not have them; the values they supported are cited through `CLONE_SPEC.md` (which records them) and `extraction/evidence/` (verbatim excerpts of the two capture lines this repo cites).
+
 **Citation format:** `{at: "path:line[-line]", quote: "..."}`, with paths relative to the clone project. `@home` is shorthand for the clone's home-section component directory, as declared in `extraction/measured-values.json#pathAliases`.
+
+## Section contracts: provenance vs taxonomy
+
+Each `sections/*.json` carries two distinct, closed objects (`schema/section-contract.schema.json`):
+
+| Object | Fields | Says | Checked by |
+|---|---|---|---|
+| `source` | `id`, `tag`, `file`, `lines` | where the section is implemented: the real component, the first element it renders, its file (`@home` = `src/components/home`) and line range | `verify_all.py` `section-provenance`: ledger range, then the real file declares `function <id>` at the first line and its first host element is `<tag>` |
+| `semantic` | `id`, `category` | what the section is for; `id` equals the contract id; `category` is the closed set `CHROME, HERO, CONTENT, MEDIA, CTA, OVERLAY, FOOTER, ERROR` (no `FEATURES`) | `lint_contracts` (schema + id equality), and `verify_all.py` compares it with `ia.json` through the shared file path |
+
+The id prefix is a name, not a class: `media.text-image-shader` is `semantic.category: CTA`. HERO rules (`ONE_HERO`, `HERO_FIRST_IN_MAIN`, the gate) key on `semantic.category`, never on an id prefix.
+
+**`retrievalEligible`** is a closed boolean on every contract (true by default). Utility/runtime UI is `false` and must carry `retrievalEligibleReason` of 30+ characters: `chrome.cookie-pane` (consent banner), `overlay.contact` (modal dialog), `chrome.preloader` (loading overlay), `chrome.cursor` (pointer overlay layer). The set is pinned in code twice, in `schema/semantic_validate.py` and independently in `extraction/verify_all.py`, and mirrored in the allowlist's `retrievalIneligibleSections`. Editing a contract and the allowlist together cannot move it.
+
+## Whole-page-wrapper gate
+
+A section that is really a whole page hides the page's structure. `extraction/wrapper_gate.py` (run by `verify_all.py`) checks the heights in `extraction/measured-values.json` `sectionHeights` (1440x900 viewport, headless Chromium against a production build of the clone; regenerate with the optional `extraction/measure_sections.mjs --write`, which needs `PLAYWRIGHT_MODULE` and a running preview):
+
+| Rule | WARN | FAIL |
+|---|---|---|
+| HERO-class section height | above 1800px | above 3000px |
+| One in-flow section's share of its page's in-flow height | above 50% | above 60% |
+| Missing, malformed, duplicate or orphan measurement | | always |
+
+A FAIL is waived only by an entry in `extraction/wrapper-whitelist.json` with `reviewedBy`, a `justification` of 30+ characters and a `maxHeightPx` above the measured height; the finding is then still reported as a WARN. The single entry (the 404 body is 100% of a one-section page) is an **automated agent attestation, not a human sign-off**.
+
+Measured at 1440px (in-flow sections only; fixed chrome is recorded but not counted):
+
+| Route | Section | Class | Height px | Share of page |
+|---|---|---|---|---|
+| `/` (page 6598.9px) | `hero.video-title` | HERO | 900 | 13.6% |
+| | `content.numbered-statement` | CONTENT | 702.3 | 10.6% |
+| | `content.title-description` | CONTENT | 271.5 | 4.1% |
+| | `stats.card-grid` | CONTENT | 759.8 | 11.5% |
+| | `media.scroll-picture` | MEDIA | 1122 | 17.0% |
+| | `ticker.marquee` | MEDIA | 421.9 | 6.4% |
+| | `content.event-accordion` | CONTENT | 1176.8 | 17.8% (largest) |
+| | `media.text-image-shader` | CTA | 1097.3 | 16.6% |
+| | `chrome.footer` | FOOTER | 155.5 | 2.4% |
+| `*` (page 900px) | `error.not-found` | ERROR | 900 | 100% (whitelisted, reviewed) |
+
+Fixed chrome (header 77, scroll progress 2, cookie pane 57, cursor 74, preloader 900, contact overlay 900) is recorded in the ledger with `inFlow: false`. The home page has one HERO and no section above 18% of the page, so nothing on it is a page wrapper; both templates are different page types (a one-page marketing site and the stock error page) that merely share the chrome, and each has its own node list.
 
 ## Counts (recomputed by verify_all.py; a mismatch fails)
 
@@ -172,8 +227,10 @@ The adversarial suite's Part C proves that each drift check fails on injected ba
 | `templates` | 2 |
 | `routes` | 2 |
 | `assetRoles` | 10 |
-| `graphRules` | 25 |
+| `graphRules` | 29 |
 | `exampleInstances` | 3 |
+| `retrievalIneligibleSections` | 4 |
+| `measuredSections` | 21 |
 
 ## Copy budgets
 
@@ -209,6 +266,7 @@ The measured overlay geometry fix (content block at y 204.1, 1440×695.9 at 1440
 
 ## Versioning
 
+- `repositoryVersion` is `1.1.0`: a minor bump for the new section-contract schema, retrieval pin, provenance checks and wrapper gate, all additive (the PageSpec shape is unchanged, so `pageSpecVersion` stays `1.0.0`).
 - `allowlistVersion` is machine-checked against `tokens/llm/component-allowlist.json`.
 - `pageSpecVersion` is machine-checked against the schema const.
 - `repositoryVersion` is documentation-only and hand-maintained; nothing checks it.

@@ -1,6 +1,17 @@
 {
   "id": "chrome.preloader",
-  "category": "chrome",
+  "semantic": {
+    "id": "chrome.preloader",
+    "category": "CHROME"
+  },
+  "source": {
+    "id": "Preloader",
+    "tag": "div",
+    "file": "src/components/layout/Preloader.jsx",
+    "lines": "17-124"
+  },
+  "retrievalEligible": false,
+  "retrievalEligibleReason": "Full-screen loading overlay that unmounts once images have decoded: runtime UI shown before the page exists, never part of the composed page body.",
   "purpose": "Hold the first paint on a dark screen while images decode, with an instrument-like progress line and counter, then dissolve into the page.",
   "cite": [
     {

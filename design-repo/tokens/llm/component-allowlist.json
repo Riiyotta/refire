@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "$description": "Closed set a generator may instantiate. verify_all.py enforces parity with sections/, primitives/, components/, the schema's settable properties, and assets/asset-roles.json.",
+  "version": "1.1.0",
+  "$description": "Closed set a generator may instantiate. verify_all.py enforces parity with sections/, primitives/, components/, the schema's settable properties, schema/section-contract.schema.json, the retrieval-ineligible pin and assets/asset-roles.json.",
   "templates": [
     "template.home",
     "template.not-found"
@@ -83,5 +83,45 @@
     "variant": "only the variants a section contract enumerates",
     "motion": "none: pattern/threshold are const-locked per section; reducedMotionFallback is the const 'none-in-source'",
     "style": "none: a PageSpec has no style or token override field (see tokens/llm/token-policy.json)"
-  }
+  },
+  "sectionContractProperties": [
+    "behavior",
+    "behaviorCite",
+    "cite",
+    "composes",
+    "constraints",
+    "content",
+    "contextBehavior",
+    "contextCite",
+    "correction",
+    "correctionCite",
+    "id",
+    "motion",
+    "purpose",
+    "responsive",
+    "retrievalEligible",
+    "retrievalEligibleReason",
+    "semantic",
+    "source",
+    "tokens",
+    "usedInTemplates",
+    "variantCite",
+    "variants"
+  ],
+  "semanticCategories": [
+    "CHROME",
+    "HERO",
+    "CONTENT",
+    "MEDIA",
+    "CTA",
+    "OVERLAY",
+    "FOOTER",
+    "ERROR"
+  ],
+  "retrievalIneligibleSections": [
+    "chrome.cookie-pane",
+    "chrome.cursor",
+    "chrome.preloader",
+    "overlay.contact"
+  ]
 }

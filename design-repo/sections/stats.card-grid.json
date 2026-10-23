@@ -1,6 +1,16 @@
 {
   "id": "stats.card-grid",
-  "category": "stats",
+  "semantic": {
+    "id": "stats.card-grid",
+    "category": "CONTENT"
+  },
+  "source": {
+    "id": "KeyStats",
+    "tag": "section",
+    "file": "@home/KeyStats.jsx",
+    "lines": "51-65"
+  },
+  "retrievalEligible": true,
   "purpose": "Three tall dark cards, each a single headline metric with a ruled caption.",
   "cite": [
     {

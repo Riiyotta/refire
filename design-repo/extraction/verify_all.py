@@ -17,6 +17,11 @@ range, citation quote, unledgered citation path, pinned asset policies, graph <-
 validator agreement, absolute paths, entryPoints, citation coverage, contract <->
 schema parity, theme resolution, stack-neutral ids.
 
+Also: section contracts (closed schema, source vs semantic objects, retrieval-ineligible pin),
+section provenance (every `source` resolved against the real file and the IA), one HERO per
+template, and the whole-page-wrapper gate (extraction/wrapper_gate.py over the measured heights).
+Those are proven by schema/tests/adversarial_test.py and extraction/prove_drift.py.
+
 Exit code 0 = no FAIL (warnings allowed), 1 = at least one FAIL.
 """
 import argparse
@@ -44,6 +49,10 @@ PINNED_POLICIES = {
     "document.brochure": "placeholder-only",
     "font.brand-typeface": "must-reuse-exact",
 }
+# Utility/runtime UI that must stay retrievalEligible:false. Held here independently of
+# schema/semantic_validate.py, which keeps its own copy; the contracts and the allowlist must
+# equal both (editing contract + allowlist together cannot move the pin).
+PINNED_RETRIEVAL_INELIGIBLE = frozenset({"chrome.cookie-pane", "chrome.cursor", "chrome.preloader", "overlay.contact"})
 # Built from pieces so this file never contains the literal machine-path prefixes.
 ABS_PATH = re.compile("|".join(["/" + "Users/", "/" + "home/", "[A-Za-z]:" + r"\\" + "Users"]))
 STACK_WORDS = re.compile(r"(?i)(react|jsx|tailwind|gsap|lenis|three|vite|classname|nextjs|next\.js|webpack|usestate|useeffect)")
@@ -306,6 +315,100 @@ def main():
                 probs.append("%s route %s missing from routes[]" % (tid, p))
     record("FAIL" if probs else "PASS", "templates-routes", "; ".join(probs) or "%d templates with structured nodes; %d routes mapped 1:1" % (len(tf["templates"]), len(tf["routes"])))
 
+    # ---------------------------------------------------------------- 9b section contracts: closed schema, source vs semantic, retrieval pin
+    probs = []
+    csch = repo_model.contract_schema
+    try:
+        jsonschema.Draft7Validator.check_schema(csch)
+    except Exception as e:  # noqa: BLE001
+        probs.append("section-contract.schema.json is not valid Draft-07: %s" % str(e)[:120])
+    for rule, cid, msg in sv.lint_contracts(repo_model):
+        probs.append("%s %s: %s" % (rule, cid, msg))
+    if csch.get("additionalProperties") is not False:
+        probs.append("section-contract schema top level is not closed")
+    for k in ("semantic", "source"):
+        if csch["properties"][k].get("additionalProperties") is not False:
+            probs.append("section-contract schema %s object is not closed" % k)
+    if csch["properties"]["retrievalEligible"].get("type") != "boolean":
+        probs.append("retrievalEligible must be a closed boolean in the contract schema")
+    if sorted(allow.get("sectionContractProperties", [])) != sorted(csch["properties"]):
+        probs.append("allowlist sectionContractProperties != section-contract schema properties")
+    if sorted(allow.get("semanticCategories", [])) != sorted(csch["properties"]["semantic"]["properties"]["category"]["enum"]):
+        probs.append("allowlist semanticCategories != section-contract schema category enum")
+    inelig = {sid for sid, (_r, c) in sections.items() if c.get("retrievalEligible") is False}
+    if inelig != set(PINNED_RETRIEVAL_INELIGIBLE):
+        probs.append("retrieval-ineligible contracts %s != verify_all pin %s" % (sorted(inelig), sorted(PINNED_RETRIEVAL_INELIGIBLE)))
+    if set(allow.get("retrievalIneligibleSections", [])) != set(PINNED_RETRIEVAL_INELIGIBLE):
+        probs.append("allowlist retrievalIneligibleSections != verify_all pin")
+    if set(sv.PINNED_RETRIEVAL_INELIGIBLE) != set(PINNED_RETRIEVAL_INELIGIBLE):
+        probs.append("semantic_validate pin %s != verify_all pin %s" % (sorted(sv.PINNED_RETRIEVAL_INELIGIBLE), sorted(PINNED_RETRIEVAL_INELIGIBLE)))
+    for sid, (_r, c) in sections.items():
+        reason = c.get("retrievalEligibleReason")
+        if c.get("retrievalEligible") is False and not (isinstance(reason, str) and len(reason.strip()) >= 30):
+            probs.append("%s: retrievalEligibleReason must be 30+ characters" % sid)
+    for tid, t in tf["templates"].items():
+        heroes = [n["section"] for n in t["nodes"] if sections.get(n["section"], ("", {}))[1].get("semantic", {}).get("category") == "HERO"]
+        if len(heroes) > 1:
+            probs.append("%s has %d HERO-class sections %s; a marketing page gets one hero" % (tid, len(heroes), heroes))
+    record("FAIL" if probs else "PASS", "section-contracts", "; ".join(probs[:6]) + (" (+%d more)" % (len(probs) - 6) if len(probs) > 6 else "") if probs else "%d contracts satisfy the closed contract schema; %d retrieval-ineligible sections match the code pins (semantic_validate.py and verify_all.py) and the allowlist; at most one HERO per template" % (len(sections), len(inelig)))
+
+    # ---------------------------------------------------------------- 9c section provenance: every source object resolved
+    probs = []
+    ledger_sources = ledger.get("sources", {})
+    ia = None
+    ia_path = os.path.join(src_root, "ia.json")
+    if source_present and os.path.isfile(ia_path):
+        with open(ia_path, encoding="utf-8") as f:
+            ia = json.load(f)
+    ia_by_file = {s.get("implementedBy"): (iid, s) for iid, s in (ia or {}).get("sections", {}).items()}
+    src_cache = {}
+    for sid, (_r, c) in sections.items():
+        s = c.get("source", {})
+        m = re.fullmatch(r"(\d+)-(\d+)", str(s.get("lines", "")))
+        f = s.get("file", "")
+        key = f
+        if not m or key not in ledger_sources:
+            probs.append("%s: source %s:%s is not in the ledger or has malformed lines" % (sid, f, s.get("lines")))
+            continue
+        a, b = int(m.group(1)), int(m.group(2))
+        if a < 1 or b < a or b > ledger_sources[key]["lines"]:
+            probs.append("%s: source lines %d-%d out of range of %s (%d lines)" % (sid, a, b, f, ledger_sources[key]["lines"]))
+            continue
+        if source_present:
+            real = next((rp + f[len(al):] for al, rp in ledger.get("pathAliases", {}).items() if f.startswith(al + "/")), f)
+            full = os.path.join(src_root, real)
+            if not os.path.isfile(full):
+                probs.append("%s: source file %s missing from source root" % (sid, f))
+                continue
+            if f not in src_cache:
+                with open(full, encoding="utf-8", errors="replace") as fh:
+                    src_cache[f] = fh.read().split("\n")
+            lines = src_cache[f]
+            if b > len(lines):
+                probs.append("%s: source lines %d-%d exceed the real file (%d lines)" % (sid, a, b, len(lines)))
+                continue
+            if not re.search(r"\bfunction\s+%s\b" % re.escape(s["id"]), lines[a - 1]):
+                probs.append("%s: line %d of %s does not declare function %s" % (sid, a, f, s["id"]))
+            tag = re.search(r"<([a-z][a-z0-9]*)\b", "\n".join(lines[a - 1:b]))
+            if not tag or tag.group(1) != s["tag"]:
+                probs.append("%s: first host element in %s:%d-%d is <%s>, contract says <%s>" % (sid, f, a, b, tag.group(1) if tag else "none", s["tag"]))
+            if ia is not None:
+                hit = ia_by_file.get(real)
+                if not hit:
+                    probs.append("%s: no IA section is implementedBy %s" % (sid, real))
+                elif hit[1].get("category") != c["semantic"]["category"]:
+                    probs.append("%s: semantic.category %s != IA %s category %s" % (sid, c["semantic"]["category"], hit[0], hit[1].get("category")))
+    record("FAIL" if probs else "PASS", "section-provenance", "; ".join(probs[:6]) + (" (+%d more)" % (len(probs) - 6) if len(probs) > 6 else "") if probs else "%d source objects resolve (ledger ranges%s); semantic categories%s" % (len(sections), ", real function declaration and first host element" if source_present else "", " agree with ia.json" if ia is not None else " not compared (no ia.json beside the source)"))
+
+    # ---------------------------------------------------------------- 9d whole-page-wrapper gate
+    import wrapper_gate
+    gate_findings = wrapper_gate.evaluate({sid: c for sid, (_r, c) in sections.items()}, tf["templates"], ledger, docs.get("extraction/wrapper-whitelist.json", {}))
+    gfails = [m for s, m in gate_findings if s == "FAIL"]
+    record("FAIL" if gfails else "PASS", "wrapper-gate", "; ".join(gfails[:6]) + (" (+%d more)" % (len(gfails) - 6) if len(gfails) > 6 else "") if gfails else wrapper_gate.summary({sid: c for sid, (_r, c) in sections.items()}, tf["templates"], ledger))
+    for s, m in gate_findings:
+        if s == "WARN":
+            record("WARN", "wrapper-gate", m)
+
     # ---------------------------------------------------------------- 10 graph <-> enforcement agreement
     probs = []
     with open(os.path.join(REPO, "schema", "semantic_validate.py"), encoding="utf-8") as f:
@@ -318,18 +421,27 @@ def main():
     for rid in gsem:
         if vsrc.count('"%s"' % rid) < 2:
             probs.append("rule %s is registered but never emitted by the validator" % rid)
+    gcon = {r["id"] for r in graph["rules"] if r["enforcedBy"] == "contract"}
+    if gcon != set(sv.CONTRACT_RULES):
+        probs.append("graph contract rules %s vs validator CONTRACT_RULES %s" % (sorted(gcon), sorted(sv.CONTRACT_RULES)))
+    for rid in gcon:
+        if vsrc.count('"%s"' % rid) < 2:
+            probs.append("contract rule %s is registered but never emitted by lint_contracts" % rid)
+    ggate = {r["id"] for r in graph["rules"] if r["enforcedBy"] == "gate"}
+    if ggate != {wrapper_gate.RULE_ID}:
+        probs.append("graph gate rules %s != wrapper_gate.RULE_ID %s" % (sorted(ggate), wrapper_gate.RULE_ID))
     for r in graph["rules"]:
         if r["severity"] not in ("error", "warn"):
             probs.append("rule %s bad severity" % r["id"])
         if r["enforcedBy"] == "schema" and ("rule:" + r["id"]) not in ssrc:
             probs.append("schema rule %s has no rule:%s marker in the schema" % (r["id"], r["id"]))
-        if r["enforcedBy"] not in ("schema", "semantic"):
+        if r["enforcedBy"] not in ("schema", "semantic", "contract", "gate"):
             probs.append("rule %s has unknown enforcedBy" % r["id"])
     for rule, tids in graph.get("exceptions", {}).items():
         for t in tids:
             if t not in tf["templates"]:
                 probs.append("exception %s names unknown template %s" % (rule, t))
-    record("FAIL" if probs else "PASS", "graph-enforcement", "; ".join(probs) or "%d graph rules each enforced by the layer they name (%d semantic, %d schema)" % (len(graph["rules"]), len(gsem), len(graph["rules"]) - len(gsem)))
+    record("FAIL" if probs else "PASS", "graph-enforcement", "; ".join(probs) or "%d graph rules each enforced by the layer they name (%d semantic, %d contract, %d gate, %d schema)" % (len(graph["rules"]), len(gsem), len(gcon), len(ggate), len(graph["rules"]) - len(gsem) - len(gcon) - len(ggate)))
 
     # ---------------------------------------------------------------- 11 manifest counts recomputed
     def ntok(folder):
@@ -339,6 +451,8 @@ def main():
         "typeRoles": len([k for k in tokens if k.startswith("type.")]), "themes": len([r for r in docs if r.startswith("tokens/themes/")]),
         "primitives": len(prims), "components": len(comps), "sections": len(sections), "templates": len(tf["templates"]), "routes": len(tf["routes"]),
         "assetRoles": len(roles), "graphRules": len(graph["rules"]), "exampleInstances": len(examples),
+        "retrievalIneligibleSections": len([1 for _r, c in sections.values() if c.get("retrievalEligible") is False]),
+        "measuredSections": len(ledger.get("sectionHeights", {}).get("sections", [])),
     }
     diff = {k: (manifest.get("counts", {}).get(k), v) for k, v in actual.items() if manifest.get("counts", {}).get(k) != v}
     extra = set(manifest.get("counts", {})) - set(actual)

@@ -1,0 +1,5 @@
+# Verbatim excerpts of two pixel-audit capture lines from the original build session.
+# The capture files themselves were scratch output and are not tracked; only the lines this repo cites are kept here.
+# Each line below is prefixed with its capture file and line number, then the verbatim text.
+ov1440.txt:1 | P div 0,204.1 1440x695.9 rgb(6, 5, 8)     cls=Contact_root__JlQMi
+c1440b.v.txt:7 | P div 0,204.1 1440x695.9 rgb(6, 5, 8)

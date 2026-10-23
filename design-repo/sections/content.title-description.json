@@ -1,6 +1,16 @@
 {
   "id": "content.title-description",
-  "category": "content",
+  "semantic": {
+    "id": "content.title-description",
+    "category": "CONTENT"
+  },
+  "source": {
+    "id": "AboutRefire",
+    "tag": "section",
+    "file": "@home/AboutRefire.jsx",
+    "lines": "8-28"
+  },
+  "retrievalEligible": true,
   "purpose": "Two-column intro: a dim uppercase parenthetical title on the left, a regular-weight description on the right.",
   "cite": [
     {

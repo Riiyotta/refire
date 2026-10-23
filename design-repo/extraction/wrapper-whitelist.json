@@ -1,0 +1,14 @@
+{
+  "$description": "Reviewed exceptions to extraction/wrapper_gate.py. An entry waives only the FAIL tier of one rule for one section on one route, and the gate still reports it as a WARN. maxHeightPx must stay above the measured height, so growth past the reviewed size fails again.",
+  "attestationNote": "reviewedBy values here are automated agent attestations produced during a build pass. They are NOT human sign-offs; a person must review before anything is production-approved (registry.manifest.json productionApproved is false).",
+  "entries": [
+    {
+      "route": "*",
+      "section": "error.not-found",
+      "rule": "page-share",
+      "reviewedBy": "agent:claude-sonnet-5.5 (automated attestation, not a human sign-off)",
+      "justification": "The 404 page has exactly one main-region section by design: the stock centred error body fills the 900px viewport, so it holds 100% of the page's in-flow height. There is nothing to decompose.",
+      "maxHeightPx": 1000
+    }
+  ]
+}

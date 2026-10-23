@@ -1,6 +1,17 @@
 {
   "id": "chrome.cookie-pane",
-  "category": "chrome",
+  "semantic": {
+    "id": "chrome.cookie-pane",
+    "category": "CHROME"
+  },
+  "source": {
+    "id": "CookiePane",
+    "tag": "div",
+    "file": "src/components/layout/CookiePane.jsx",
+    "lines": "12-58"
+  },
+  "retrievalEligible": false,
+  "retrievalEligibleReason": "First-visit cookie consent banner: a fixed utility notice that carries no page content and disappears once consent is stored, so it must never be retrieved as a composable page section.",
   "purpose": "First-visit cookie notice pinned bottom-right on a paper panel; Close stores consent for one day and fades it out.",
   "cite": [
     {

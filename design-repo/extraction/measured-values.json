@@ -1,20 +1,12 @@
 {
   "$description": "Citation ledger. Every cite.at in this repo must name a path listed in `sources`; ranges are checked against the recorded line counts even when no source tree is present, and against the real files (plus quote matching) when it is. External evidence lives here, never in registry.manifest.json entryPoints.",
-  "sourceRoot": "The clone project that contains this design-repo (its parent directory). It is NOT shipped. verify_all.py resolves citations against ../ by default or --source-root PATH, and WARNS (does not fail) when it is absent.",
+  "sourceRoot": "The clone project that contains this design-repo (its parent directory). It is NOT shipped. verify_all.py resolves citations against ../ by default or --source-root PATH, and WARNS (does not fail) when it is absent. Every cited file is tracked in the clone's git repository; the original's saved bundles and scratch captures are gitignored and are therefore never cited directly (a clean clone would not contain them).",
   "pathAliases": {
     "@home": "src/components/home"
   },
   "pathAliasesNote": "Cited paths starting with @home are resolved to the clone's home-section component directory. The alias keeps a literal machine-path grep for absolute home directories at zero hits.",
   "citationFormat": "{at: 'relative/path:line' | 'relative/path:start-end', quote: 'verbatim text that must appear in those lines (whitespace-collapsed)'}",
   "sources": {
-    ".playwright-mcp/c1440b.v.txt": {
-      "lines": 83,
-      "role": "pixel-audit measurement capture"
-    },
-    ".playwright-mcp/ov1440.txt": {
-      "lines": 1,
-      "role": "pixel-audit measurement capture"
-    },
     "@home/AboutRefire.jsx": {
       "lines": 28,
       "role": "source"
@@ -55,13 +47,9 @@
       "lines": 684,
       "role": "recon spec (home)"
     },
-    "Refire_files/887c3946dd796d39.css": {
-      "lines": 1,
-      "role": "original site's saved bundles (ground truth)"
-    },
-    "Refire_files/index-0bba0de55cdcb42c.js": {
-      "lines": 1,
-      "role": "original site's saved bundles (ground truth)"
+    "design-repo/extraction/evidence/pixel-audit-1440-excerpt.txt": {
+      "lines": 5,
+      "role": "verbatim excerpt of two pixel-audit capture lines (the scratch captures are untracked)"
     },
     "index.html": {
       "lines": 27,
@@ -395,21 +383,21 @@
       "claim": "contact overlay geometry fix landed: clone content block matches the original at 1440 (y 204.1, 1440x695.9)",
       "cite": [
         {
-          "at": ".playwright-mcp/ov1440.txt:1",
+          "at": "design-repo/extraction/evidence/pixel-audit-1440-excerpt.txt:4",
           "quote": "P div 0,204.1 1440x695.9 rgb(6, 5, 8)     cls=Contact_root__JlQMi"
         },
         {
-          "at": ".playwright-mcp/c1440b.v.txt:7",
+          "at": "design-repo/extraction/evidence/pixel-audit-1440-excerpt.txt:5",
           "quote": "P div 0,204.1 1440x695.9 rgb(6, 5, 8)"
         }
       ]
     },
     {
-      "claim": "original :root colour tokens match the clone colour map",
+      "claim": "original :root colour tokens (recorded in CLONE_SPEC.md from the original's saved stylesheet) match the clone colour map",
       "cite": [
         {
-          "at": "Refire_files/887c3946dd796d39.css:1",
-          "quote": "--primary-color:#fefefe;--dark-color:#060508;--alt-dark-color:#0e0e0e;--grey-color:#c8c8c8"
+          "at": "CLONE_SPEC.md:41",
+          "quote": "--primary-color:#fefefe;  --dark-color:#060508;  --alt-dark-color:#0e0e0e;  --grey-color:#c8c8c8"
         },
         {
           "at": "tailwind.config.cjs:11-17",
@@ -418,11 +406,11 @@
       ]
     },
     {
-      "claim": "footer keeps the original's non-breaking space between brand and copyright sign",
+      "claim": "footer keeps the original's non-breaking space between brand and copyright sign (recorded in CLONE_SPEC.md from the original's page bundle)",
       "cite": [
         {
-          "at": "Refire_files/index-0bba0de55cdcb42c.js:1",
-          "quote": "children:[\"Refire \\xa9\",s]"
+          "at": "CLONE_SPEC.md:548",
+          "quote": "`\"Refire\" + NBSP + \"©\" + currentYear`"
         },
         {
           "at": "src/components/layout/Footer.jsx:18",
@@ -665,5 +653,177 @@
         }
       ]
     }
-  ]
+  ],
+  "sectionHeights": {
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "measuredWith": "headless Chromium via Playwright against a production build of the clone (vite build + vite preview), after the preloader finished",
+    "tool": "extraction/measure_sections.mjs",
+    "note": "Heights are getBoundingClientRect().height in CSS px at the viewport above. inFlow=false means position:fixed (does not add to page height). pages[].inFlowHeightPx is the height of <main>. Regenerate with measure_sections.mjs --write; wrapper_gate.py checks it.",
+    "pages": [
+      {
+        "route": "/",
+        "template": "template.home",
+        "inFlowHeightPx": 6598.9,
+        "selector": "main"
+      },
+      {
+        "route": "*",
+        "template": "template.not-found",
+        "inFlowHeightPx": 900,
+        "selector": "main"
+      }
+    ],
+    "sections": [
+      {
+        "route": "/",
+        "section": "chrome.preloader",
+        "heightPx": 900,
+        "inFlow": false,
+        "selector": "div.fixed.z-100.h-screen.w-screen"
+      },
+      {
+        "route": "/",
+        "section": "chrome.header",
+        "heightPx": 77,
+        "inFlow": false,
+        "selector": "header"
+      },
+      {
+        "route": "/",
+        "section": "chrome.scroll-progress",
+        "heightPx": 2,
+        "inFlow": false,
+        "selector": "div.fixed.z-99[class*='h-[2px]']"
+      },
+      {
+        "route": "/",
+        "section": "chrome.cookie-pane",
+        "heightPx": 57,
+        "inFlow": false,
+        "selector": "div.fixed.bottom-0.right-0.z-99"
+      },
+      {
+        "route": "/",
+        "section": "chrome.cursor",
+        "heightPx": 74,
+        "inFlow": false,
+        "selector": "div.fixed.z-103"
+      },
+      {
+        "route": "/",
+        "section": "overlay.contact",
+        "heightPx": 900,
+        "inFlow": false,
+        "selector": ".contact-popup (opened)"
+      },
+      {
+        "route": "/",
+        "section": "hero.video-title",
+        "heightPx": 900,
+        "inFlow": true,
+        "selector": "main > :nth-child(1)"
+      },
+      {
+        "route": "/",
+        "section": "content.numbered-statement",
+        "heightPx": 702.3,
+        "inFlow": true,
+        "selector": "main > :nth-child(2)"
+      },
+      {
+        "route": "/",
+        "section": "content.title-description",
+        "heightPx": 271.5,
+        "inFlow": true,
+        "selector": "main > :nth-child(3)"
+      },
+      {
+        "route": "/",
+        "section": "stats.card-grid",
+        "heightPx": 759.8,
+        "inFlow": true,
+        "selector": "main > :nth-child(4)"
+      },
+      {
+        "route": "/",
+        "section": "media.scroll-picture",
+        "heightPx": 1122,
+        "inFlow": true,
+        "selector": "main > :nth-child(5)"
+      },
+      {
+        "route": "/",
+        "section": "ticker.marquee",
+        "heightPx": 421.9,
+        "inFlow": true,
+        "selector": "main > :nth-child(6)"
+      },
+      {
+        "route": "/",
+        "section": "content.event-accordion",
+        "heightPx": 1176.8,
+        "inFlow": true,
+        "selector": "main > :nth-child(7)"
+      },
+      {
+        "route": "/",
+        "section": "media.text-image-shader",
+        "heightPx": 1097.3,
+        "inFlow": true,
+        "selector": "main > :nth-child(8)"
+      },
+      {
+        "route": "/",
+        "section": "chrome.footer",
+        "heightPx": 155.5,
+        "inFlow": true,
+        "selector": "main > :nth-child(9)"
+      },
+      {
+        "route": "*",
+        "section": "chrome.preloader",
+        "heightPx": 900,
+        "inFlow": false,
+        "selector": "div.fixed.z-100.h-screen.w-screen"
+      },
+      {
+        "route": "*",
+        "section": "chrome.header",
+        "heightPx": 77,
+        "inFlow": false,
+        "selector": "header"
+      },
+      {
+        "route": "*",
+        "section": "chrome.cookie-pane",
+        "heightPx": 57,
+        "inFlow": false,
+        "selector": "div.fixed.bottom-0.right-0.z-99"
+      },
+      {
+        "route": "*",
+        "section": "chrome.cursor",
+        "heightPx": 74,
+        "inFlow": false,
+        "selector": "div.fixed.z-103"
+      },
+      {
+        "route": "*",
+        "section": "overlay.contact",
+        "heightPx": 900,
+        "inFlow": false,
+        "selector": ".contact-popup (opened)"
+      },
+      {
+        "route": "*",
+        "section": "error.not-found",
+        "heightPx": 900,
+        "inFlow": true,
+        "selector": ".error-page"
+      }
+    ]
+  }
 }

@@ -1,6 +1,16 @@
 {
   "id": "hero.video-title",
-  "category": "hero",
+  "semantic": {
+    "id": "hero.video-title",
+    "category": "HERO"
+  },
+  "source": {
+    "id": "Hero",
+    "tag": "section",
+    "file": "@home/Hero.jsx",
+    "lines": "36-149"
+  },
+  "retrievalEligible": true,
   "purpose": "Full-viewport opener: muted looping background film, oversized two-line light title with an arrow, a blended descriptor, and a frosted corner link to the brochure.",
   "cite": [
     {

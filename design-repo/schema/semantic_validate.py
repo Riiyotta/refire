@@ -11,9 +11,17 @@ Two layers, both run on every call:
 Every semantic rule id below is also declared in compatibility/graph.json with the
 same id and severity; extraction/verify_all.py fails if the two ever diverge.
 
+It also lints the section contracts themselves (lint_contracts): every contract
+must satisfy the closed schema/section-contract.schema.json (distinct `source`
+provenance vs `semantic` taxonomy objects, closed boolean `retrievalEligible`
+with a 30+ character reason when false), and the set of retrieval-ineligible
+sections must equal PINNED_RETRIEVAL_INELIGIBLE below. That pin is held in code
+here AND, independently, in extraction/verify_all.py, so editing a contract and
+the allowlist together cannot move it.
+
 Usage:
-  python3 schema/semantic_validate.py                 # validates schema/example*.json
-  python3 schema/semantic_validate.py page.json ...   # validates the given files
+  python3 schema/semantic_validate.py                 # section contracts + schema/example*.json
+  python3 schema/semantic_validate.py page.json ...   # section contracts + the given files
 Exit code: 0 = no errors (warnings allowed), 1 = errors, 2 = validator unavailable.
 """
 import glob
@@ -46,6 +54,24 @@ SEMANTIC_RULES = [
     "META_DESCRIPTION_MIRRORS_ABOUT",
     "STAT_INDEXES_SEQUENTIAL",
 ]
+
+# Rules enforced on the section contracts themselves (graph.json enforcedBy "contract").
+CONTRACT_RULES = [
+    "SECTION_CONTRACT_CLOSED",
+    "SECTION_SOURCE_SEMANTIC_DISTINCT",
+    "RETRIEVAL_ELIGIBILITY_PINNED",
+]
+
+# Utility/runtime UI (consent banner, loading overlay, pointer layer, modal dialog) is never
+# retrievable as a page section. Pinned here in code, independent of the JSON it checks
+# (MASTER-GUIDE 3.23); verify_all.py holds its own copy.
+PINNED_RETRIEVAL_INELIGIBLE = frozenset({
+    "chrome.cookie-pane",
+    "chrome.cursor",
+    "chrome.preloader",
+    "overlay.contact",
+})
+RETRIEVAL_REASON_MIN_CHARS = 30
 
 EXTERNAL_URL = re.compile(r"(?i)(\b[a-z][a-z0-9+.-]*://|(^|[\s\"'(=])//[a-z0-9]|\bwww\.)")
 SHINGLE = 6  # a shared run of this many consecutive words counts as copy reuse
@@ -86,6 +112,8 @@ class Repo:
                 c = json.load(f)
             self.sections[c["id"]] = c
         self.roles = _load("assets/asset-roles.json")["roles"]
+        self.contract_schema = _load("schema/section-contract.schema.json")
+        self.allowlist = _load("tokens/llm/component-allowlist.json")
         graph = _load("compatibility/graph.json")
         self.severity = {r["id"]: r["severity"] for r in graph["rules"]}
         self.exceptions = graph.get("exceptions", {})
@@ -123,6 +151,46 @@ class Repo:
         corpus.discard("")
         self._corpus = corpus
         return corpus
+
+
+def category_of(repo, section_id):
+    """Taxonomy class of a section (semantic.category), or None for an unknown section."""
+    return repo.sections.get(section_id, {}).get("semantic", {}).get("category")
+
+
+def lint_contracts(repo):
+    """Lint the section contracts. Returns [(rule_id, contract_id, message)]; all are errors."""
+    errors = []
+    try:
+        import jsonschema
+    except ImportError:
+        return [("SCHEMA_VALIDATOR_UNAVAILABLE", "$", "pip install -r extraction/requirements.txt (jsonschema>=4)")]
+    validator = jsonschema.Draft7Validator(repo.contract_schema)
+    for cid, c in sorted(repo.sections.items()):
+        for e in sorted(validator.iter_errors(c), key=lambda e: list(e.absolute_path)):
+            head = str(e.absolute_path[0]) if e.absolute_path else ""
+            key = e.message.split("'")[1] if e.validator == "required" and "'" in e.message else ""
+            if head in ("semantic", "source") or key in ("semantic", "source"):
+                rule = "SECTION_SOURCE_SEMANTIC_DISTINCT"
+            elif head.startswith("retrievalEligible") or key.startswith("retrievalEligible") or e.validator == "not":
+                rule = "RETRIEVAL_ELIGIBILITY_PINNED"
+            else:
+                rule = "SECTION_CONTRACT_CLOSED"
+            text = e.message
+            errors.append((rule, cid, "%s: %s" % ("/".join(str(p) for p in e.absolute_path) or "$", text[:200])))
+        sem = c.get("semantic", {}) if isinstance(c.get("semantic"), dict) else {}
+        if sem.get("id") != c.get("id"):
+            errors.append(("SECTION_SOURCE_SEMANTIC_DISTINCT", cid, "semantic.id %r must equal the contract id" % sem.get("id")))
+        src = c.get("source", {}) if isinstance(c.get("source"), dict) else {}
+        if src and sem and (set(src) & set(sem)) - {"id"}:
+            errors.append(("SECTION_SOURCE_SEMANTIC_DISTINCT", cid, "source and semantic must not share fields"))
+    ineligible = {cid for cid, c in repo.sections.items() if c.get("retrievalEligible") is False}
+    if ineligible != set(PINNED_RETRIEVAL_INELIGIBLE):
+        errors.append(("RETRIEVAL_ELIGIBILITY_PINNED", "$", "retrieval-ineligible sections %s != pinned %s" % (sorted(ineligible), sorted(PINNED_RETRIEVAL_INELIGIBLE))))
+    listed = set(repo.allowlist.get("retrievalIneligibleSections", []))
+    if listed != set(PINNED_RETRIEVAL_INELIGIBLE):
+        errors.append(("RETRIEVAL_ELIGIBILITY_PINNED", "$", "allowlist retrievalIneligibleSections %s != pinned %s" % (sorted(listed), sorted(PINNED_RETRIEVAL_INELIGIBLE))))
+    return errors
 
 
 def _walk_desc(fields, fn):
@@ -227,8 +295,8 @@ def validate(spec, repo=None):
             for i, n in enumerate(nodes):
                 if n.get("section") == forbidden:
                     emit("ERROR_PAGE_NO_FOOTER_NO_PROGRESS", "$.nodes[%d]" % i, "%s must not contain %r (no footer and no progress bar on the error page)" % (tid, forbidden))
-        heroes = [i for i, n in enumerate(nodes) if str(n.get("section", "")).startswith("hero.")]
-        template_has_hero = any(tn["section"].startswith("hero.") for tn in tnodes)
+        heroes = [i for i, n in enumerate(nodes) if category_of(r, n.get("section")) == "HERO"]
+        template_has_hero = any(category_of(r, tn["section"]) == "HERO" for tn in tnodes)
         if tid not in r.exceptions.get("ONE_HERO", []):
             if len(heroes) > 1 or (template_has_hero and len(heroes) != 1):
                 emit("ONE_HERO", "$.nodes", "%s needs exactly one hero, found %d" % (tid, len(heroes)))
@@ -236,7 +304,7 @@ def validate(spec, repo=None):
             emit("ONE_HERO", "$.nodes[%d]" % heroes[0], "%s is a hero-less template (named exception) but contains a hero" % tid)
         if tid not in r.exceptions.get("HERO_FIRST_IN_MAIN", []):
             main = [(i, n) for i, n in enumerate(nodes) if r.sections.get(n.get("section"), {}).get("constraints", {}).get("region") == "main"]
-            if main and not str(main[0][1].get("section", "")).startswith("hero."):
+            if main and category_of(r, main[0][1].get("section")) != "HERO":
                 emit("HERO_FIRST_IN_MAIN", "$.nodes[%d]" % main[0][0], "first main-region node must be the hero, got %r" % main[0][1].get("section"))
     for i, n in enumerate(nodes):
         if n.get("section") == "chrome.footer" and i != len(nodes) - 1:
@@ -346,6 +414,14 @@ def main(argv):
     files = argv or sorted(glob.glob(os.path.join(REPO, "schema", "example*.json")))
     repo = Repo(REPO)
     failed = False
+    cerrs = lint_contracts(repo)
+    if any(e[0] == "SCHEMA_VALIDATOR_UNAVAILABLE" for e in cerrs):
+        print("jsonschema not installed: pip install -r extraction/requirements.txt")
+        return 2
+    print("%s section contracts  (%d contracts, %d errors)" % ("PASS" if not cerrs else "FAIL", len(repo.sections), len(cerrs)))
+    for e in cerrs:
+        print("   error %-32s %s  %s" % e)
+    failed = bool(cerrs)
     for path in files:
         with open(path, encoding="utf-8") as f:
             spec = json.load(f)

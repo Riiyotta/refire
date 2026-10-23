@@ -1,6 +1,16 @@
 {
   "id": "error.not-found",
-  "category": "error",
+  "semantic": {
+    "id": "error.not-found",
+    "category": "ERROR"
+  },
+  "source": {
+    "id": "NotFound",
+    "tag": "div",
+    "file": "src/pages/NotFound.jsx",
+    "lines": "6-32"
+  },
+  "retrievalEligible": true,
   "purpose": "Stock 'page not found' body, centered, system font, following the OS colour scheme.",
   "cite": [
     {

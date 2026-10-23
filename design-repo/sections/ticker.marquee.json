@@ -1,6 +1,16 @@
 {
   "id": "ticker.marquee",
-  "category": "ticker",
+  "semantic": {
+    "id": "ticker.marquee",
+    "category": "MEDIA"
+  },
+  "source": {
+    "id": "Ticker",
+    "tag": "section",
+    "file": "@home/Ticker.jsx",
+    "lines": "7-20"
+  },
+  "retrievalEligible": true,
   "purpose": "Huge single-line phrase scrolling left forever; draggable with inertia; pauses off-screen.",
   "cite": [
     {

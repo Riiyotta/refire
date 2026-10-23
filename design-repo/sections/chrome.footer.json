@@ -1,6 +1,16 @@
 {
   "id": "chrome.footer",
-  "category": "chrome",
+  "semantic": {
+    "id": "chrome.footer",
+    "category": "FOOTER"
+  },
+  "source": {
+    "id": "Footer",
+    "tag": "footer",
+    "file": "src/components/layout/Footer.jsx",
+    "lines": "10-33"
+  },
+  "retrievalEligible": true,
   "purpose": "Single copyright row under a grey rule: brand + year, rights text, and a Back to Top button that smooth-scrolls to the top.",
   "cite": [
     {

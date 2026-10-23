@@ -1,6 +1,16 @@
 {
   "id": "chrome.header",
-  "category": "chrome",
+  "semantic": {
+    "id": "chrome.header",
+    "category": "CHROME"
+  },
+  "source": {
+    "id": "Header",
+    "tag": "header",
+    "file": "src/components/layout/Header.jsx",
+    "lines": "33-70"
+  },
+  "retrievalEligible": true,
   "purpose": "Fixed, always-visible brand bar: logo (closes the contact overlay), live GMT clock, and the Contact/Close pill that toggles the contact overlay.",
   "cite": [
     {

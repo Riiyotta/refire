@@ -1,0 +1,341 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "section-contract.schema.json",
+  "title": "Section contract",
+  "description": "Closed shape of every sections/*.json. Two distinct closed objects: `source` (provenance: where the section is implemented in the real source) and `semantic` (taxonomy: what the section is for). retrievalEligible is a closed boolean; false (utility/runtime UI) requires a reason of 30+ characters. Content/motion/responsive internals are validated against pagespec.schema.json by verify_all.py (contract-schema-parity); this schema closes the contract's own top level.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "semantic",
+    "source",
+    "retrievalEligible",
+    "purpose",
+    "cite",
+    "usedInTemplates",
+    "constraints",
+    "content",
+    "motion",
+    "responsive",
+    "tokens",
+    "composes"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z]+\\.[a-z0-9-]+$"
+    },
+    "semantic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "category"
+      ],
+      "description": "Taxonomy. id must equal the contract id; category is the closed class that drives the wrapper gate and retrieval.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z]+\\.[a-z0-9-]+$"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "CHROME",
+            "HERO",
+            "CONTENT",
+            "MEDIA",
+            "CTA",
+            "OVERLAY",
+            "FOOTER",
+            "ERROR"
+          ]
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "tag",
+        "file",
+        "lines"
+      ],
+      "description": "Provenance. id is the real source component name, tag the first host element it renders, file its path in the clone (the @home alias stands for src/components/home, declared in extraction/measured-values.json pathAliases), lines the component's line range; verify_all.py resolves all four against the real file.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Za-z0-9]*$"
+        },
+        "tag": {
+          "type": "string",
+          "enum": [
+            "section",
+            "header",
+            "footer",
+            "div"
+          ]
+        },
+        "file": {
+          "type": "string",
+          "pattern": "^(@home|src)/[A-Za-z0-9_./-]+\\.jsx$"
+        },
+        "lines": {
+          "type": "string",
+          "pattern": "^[0-9]+-[0-9]+$"
+        }
+      }
+    },
+    "retrievalEligible": {
+      "type": "boolean",
+      "description": "false only for utility/runtime UI (cookie/consent banners, modals, dialogs, overlays). Pinned in code in semantic_validate.py AND verify_all.py."
+    },
+    "retrievalEligibleReason": {
+      "type": "string",
+      "minLength": 30
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cite": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "at",
+          "quote"
+        ],
+        "properties": {
+          "at": {
+            "type": "string",
+            "pattern": "^@?[^\\s:@]+(/[^\\s:]+)*:[0-9]+(-[0-9]+)?$"
+          },
+          "quote": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "usedInTemplates": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^template\\.[a-z-]+$"
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "onePerPage",
+        "region"
+      ],
+      "properties": {
+        "onePerPage": {
+          "type": "boolean"
+        },
+        "region": {
+          "type": "string",
+          "enum": [
+            "chrome",
+            "main"
+          ]
+        },
+        "forbiddenIn": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "positionInTemplate": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "mustPrecedeFooter": {
+          "type": "boolean"
+        },
+        "mustBeFirstInMain": {
+          "type": "boolean"
+        },
+        "mustBeLast": {
+          "type": "boolean"
+        },
+        "renderCondition": {
+          "type": "string"
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fields"
+      ],
+      "properties": {
+        "fields": {
+          "type": "object"
+        }
+      }
+    },
+    "motion": {
+      "type": "object"
+    },
+    "responsive": {
+      "type": "object",
+      "required": [
+        "desktop",
+        "tablet",
+        "mobile"
+      ]
+    },
+    "tokens": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "composes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "variants": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "variantCite": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "at",
+          "quote"
+        ],
+        "properties": {
+          "at": {
+            "type": "string",
+            "pattern": "^@?[^\\s:@]+(/[^\\s:]+)*:[0-9]+(-[0-9]+)?$"
+          },
+          "quote": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "correction": {
+      "type": "string"
+    },
+    "correctionCite": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "at",
+          "quote"
+        ],
+        "properties": {
+          "at": {
+            "type": "string",
+            "pattern": "^@?[^\\s:@]+(/[^\\s:]+)*:[0-9]+(-[0-9]+)?$"
+          },
+          "quote": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "behavior": {
+      "type": "object"
+    },
+    "behaviorCite": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "at",
+          "quote"
+        ],
+        "properties": {
+          "at": {
+            "type": "string",
+            "pattern": "^@?[^\\s:@]+(/[^\\s:]+)*:[0-9]+(-[0-9]+)?$"
+          },
+          "quote": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "contextBehavior": {
+      "type": "object"
+    },
+    "contextCite": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "at",
+          "quote"
+        ],
+        "properties": {
+          "at": {
+            "type": "string",
+            "pattern": "^@?[^\\s:@]+(/[^\\s:]+)*:[0-9]+(-[0-9]+)?$"
+          },
+          "quote": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "retrievalEligible": {
+            "const": false
+          }
+        },
+        "required": [
+          "retrievalEligible"
+        ]
+      },
+      "then": {
+        "required": [
+          "retrievalEligibleReason"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "retrievalEligibleReason"
+          ]
+        }
+      }
+    }
+  ]
+}

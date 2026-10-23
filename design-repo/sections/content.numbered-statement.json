@@ -1,6 +1,16 @@
 {
   "id": "content.numbered-statement",
-  "category": "content",
+  "semantic": {
+    "id": "content.numbered-statement",
+    "category": "CONTENT"
+  },
+  "source": {
+    "id": "SaveTheDate",
+    "tag": "section",
+    "file": "@home/SaveTheDate.jsx",
+    "lines": "9-35"
+  },
+  "retrievalEligible": true,
   "purpose": "Numbered chapter opener: section-title rule, a small muted kicker and one very large light statement paragraph.",
   "cite": [
     {

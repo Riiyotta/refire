@@ -1,7 +1,7 @@
 section,category,templates,routes,Home,404 Not Found
 chrome.preloader,CHROME,2,2,x,x
 chrome.header,CHROME,2,2,x,x
-chrome.contact-overlay,CHROME,2,2,x,x
+chrome.contact-overlay,OVERLAY,2,2,x,x
 chrome.cookie-pane,CHROME,2,2,x,x
 chrome.cursor,CHROME,2,2,x,x
 chrome.scroll-progress,CHROME,1,1,x,
@@ -12,7 +12,7 @@ content.key-stats,CONTENT,1,1,x,
 media.scrolled-picture,MEDIA,1,1,x,
 media.ticker,MEDIA,1,1,x,
 content.event-details,CONTENT,1,1,x,
-media.text-image,MEDIA,1,1,x,
+media.text-image,CTA,1,1,x,
 footer.copyright,FOOTER,1,1,x,
 error.not-found,ERROR,1,1,,x
 ROUTE COUNT,,,2,1,1

@@ -1,6 +1,16 @@
 {
   "id": "chrome.scroll-progress",
-  "category": "chrome",
+  "semantic": {
+    "id": "chrome.scroll-progress",
+    "category": "CHROME"
+  },
+  "source": {
+    "id": "ScrollProgress",
+    "tag": "div",
+    "file": "src/components/layout/ScrollProgress.jsx",
+    "lines": "9-23"
+  },
+  "retrievalEligible": true,
   "purpose": "2px reading-progress bar along the top edge, blended difference.",
   "cite": [
     {

@@ -1,6 +1,16 @@
 {
   "id": "media.text-image-shader",
-  "category": "media",
+  "semantic": {
+    "id": "media.text-image-shader",
+    "category": "CTA"
+  },
+  "source": {
+    "id": "TextImage",
+    "tag": "section",
+    "file": "@home/TextImage.jsx",
+    "lines": "10-52"
+  },
+  "retrievalEligible": true,
   "purpose": "Half-and-half closer: WebGL product picture on the left, capitalized title, paragraph and an arrow link to the brochure on the right.",
   "cite": [
     {

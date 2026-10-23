@@ -1,5 +1,5 @@
 {
-  "$description": "Rhythm/position/integrity rules JSON Schema cannot express (enforcedBy 'semantic' => schema/semantic_validate.py) plus the schema-level rules (enforcedBy 'schema' => schema/pagespec.schema.json $comment ids). verify_all.py proves every rule id here exists in the layer that enforces it, and vice versa.",
+  "$description": "Rhythm/position/integrity rules JSON Schema cannot express (enforcedBy 'semantic' => schema/semantic_validate.py validate()), schema-level rules (enforcedBy 'schema' => schema/pagespec.schema.json $comment ids), section-contract rules (enforcedBy 'contract' => schema/semantic_validate.py lint_contracts() and schema/section-contract.schema.json) and the whole-page-wrapper gate (enforcedBy 'gate' => extraction/wrapper_gate.py, run by verify_all.py). verify_all.py proves every rule id here exists in the layer that enforces it, and vice versa.",
   "rules": [
     {
       "id": "TEMPLATE_NODE_SEQUENCE",
@@ -41,13 +41,13 @@
       "id": "ONE_HERO",
       "severity": "error",
       "enforcedBy": "semantic",
-      "description": "At most one hero.* section per page, and exactly one on templates that list one. Named exception: template.not-found has no hero."
+      "description": "At most one HERO-class section (semantic.category HERO, not an id prefix) per page, and exactly one on templates that list one. Named exception: template.not-found has no hero."
     },
     {
       "id": "HERO_FIRST_IN_MAIN",
       "severity": "error",
       "enforcedBy": "semantic",
-      "description": "The hero must be the first main-region node. Named exception: template.not-found (no hero)."
+      "description": "The HERO-class section must be the first main-region node. Named exception: template.not-found (no hero)."
     },
     {
       "id": "FOOTER_LAST",
@@ -150,6 +150,30 @@
       "severity": "error",
       "enforcedBy": "schema",
       "description": "href patterns admit only /int/files/*.pdf, mailto:, tel: and placeholder: values."
+    },
+    {
+      "id": "SECTION_CONTRACT_CLOSED",
+      "severity": "error",
+      "enforcedBy": "contract",
+      "description": "Every sections/*.json satisfies the closed schema/section-contract.schema.json: no unknown top-level field, constraints closed, retrievalEligibleReason only when retrievalEligible is false."
+    },
+    {
+      "id": "SECTION_SOURCE_SEMANTIC_DISTINCT",
+      "severity": "error",
+      "enforcedBy": "contract",
+      "description": "Provenance and taxonomy are separate closed objects: source {id, tag, file, lines} says where the section is implemented (verify_all.py resolves it against the real file), semantic {id, category} says what it is for (category is a closed enum; semantic.id equals the contract id). Neither may stand in for the other."
+    },
+    {
+      "id": "RETRIEVAL_ELIGIBILITY_PINNED",
+      "severity": "error",
+      "enforcedBy": "contract",
+      "description": "Utility/runtime UI (cookie banner, loading overlay, pointer layer, modal dialog) carries a closed boolean retrievalEligible:false with a reason of 30+ characters; every other section is true. The ineligible set equals the code pins in semantic_validate.py and, independently, verify_all.py, and the allowlist's retrievalIneligibleSections."
+    },
+    {
+      "id": "WRAPPER_HEIGHT_GATE",
+      "severity": "error",
+      "enforcedBy": "gate",
+      "description": "Whole-page-wrapper gate over measured section heights (extraction/measured-values.json sectionHeights, 1440px): a HERO section above 1800px warns and above 3000px fails; one in-flow section holding more than 50% of its page warns and more than 60% fails; a fail is waived only by an entry in extraction/wrapper-whitelist.json (reviewedBy, justification of 30+ characters, maxHeightPx above the measured height). A missing measurement is an error."
     }
   ],
   "exceptions": {

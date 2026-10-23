@@ -1,6 +1,16 @@
 {
   "id": "media.scroll-picture",
-  "category": "media",
+  "semantic": {
+    "id": "media.scroll-picture",
+    "category": "MEDIA"
+  },
+  "source": {
+    "id": "ScrolledPicture",
+    "tag": "section",
+    "file": "@home/ScrolledPicture.jsx",
+    "lines": "10-34"
+  },
+  "retrievalEligible": true,
   "purpose": "Full-bleed photograph that starts inset 2% on both sides and opens to edge-to-edge while zooming 10% as it scrolls into view. No pinning.",
   "cite": [
     {

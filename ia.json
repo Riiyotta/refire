@@ -7,10 +7,12 @@
     "totalTemplates": 2
   },
   "categories": {
-    "CHROME": "Fixed, site-wide UI rendered by the shared Layout around every page's content (header, overlays, cursor, preloader).",
+    "CHROME": "Fixed, site-wide UI rendered by the shared Layout around every page's content (header, progress bar, cookie pane, cursor, preloader).",
+    "OVERLAY": "Modal or dialog UI opened on demand above the page (the contact overlay). Utility UI, not page content.",
     "HERO": "The first full-viewport block of a page.",
     "CONTENT": "Text-led editorial blocks: headings, paragraphs, stats, accordions.",
-    "MEDIA": "Image- or motion-led blocks whose main job is visual (scroll-linked picture, marquee, WebGL image).",
+    "MEDIA": "Image- or motion-led blocks whose main job is visual (scroll-linked picture, marquee).",
+    "CTA": "Conversion blocks: a closing pitch whose job is to send the visitor to an action (here, the brochure download).",
     "FOOTER": "The closing row at the bottom of a page.",
     "ERROR": "Body content for error states."
   },
@@ -34,7 +36,7 @@
       "implementedBy": "src/components/layout/ScrollProgress.jsx"
     },
     "chrome.contact-overlay": {
-      "category": "CHROME",
+      "category": "OVERLAY",
       "description": "Full-screen contact form: department select, name/email/message inputs, phone numbers (tel links) and opening hours. Page scroll is locked while it is open, and on mobile it scrolls internally. Submission is blocked because the real endpoint is unknown.",
       "scope": "Every template; opened from the header's Contact pill.",
       "implementedBy": "src/components/layout/ContactOverlay.jsx"
@@ -94,7 +96,7 @@
       "implementedBy": "src/components/home/Hannover.jsx"
     },
     "media.text-image": {
-      "category": "MEDIA",
+      "category": "CTA",
       "description": "Two-column block pairing a WebGL image (mouse-driven distortion plus a slide/zoom entrance at about 70% in view) with a title, text and a brochure link.",
       "scope": "Only the home template.",
       "implementedBy": "src/components/home/TextImage.jsx"

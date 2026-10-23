@@ -1,6 +1,16 @@
 {
   "id": "content.event-accordion",
-  "category": "content",
+  "semantic": {
+    "id": "content.event-accordion",
+    "category": "CONTENT"
+  },
+  "source": {
+    "id": "Hannover",
+    "tag": "section",
+    "file": "@home/Hannover.jsx",
+    "lines": "9-50"
+  },
+  "retrievalEligible": true,
   "purpose": "Event detail block: dim title left; on the right a booth/date heading, address, paragraph, a single-open schedule accordion and contact email links.",
   "cite": [
     {
