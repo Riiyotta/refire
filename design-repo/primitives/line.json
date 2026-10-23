@@ -1,0 +1,30 @@
+{
+  "id": "primitive.line",
+  "purpose": "1px decorative rule: a 20%-opacity currentColor track plus a full-opacity fill that draws left-to-right.",
+  "props": {
+    "delayMs": "number"
+  },
+  "tokens": [
+    "component.line.thickness",
+    "effect.opacity.line-track",
+    "motion.duration.1000",
+    "motion.ease.decor-line"
+  ],
+  "cite": [
+    {
+      "at": "src/components/ui/Line.jsx:11-20",
+      "quote": "export default function Line("
+    }
+  ],
+  "motion": {
+    "patterns": {
+      "line": "scaleX 0 -> 1, origin left"
+    },
+    "cite": [
+      {
+        "at": "src/motion/anims.js:17",
+        "quote": "line: { start: { scaleX: 0 }, end: { scaleX: 1 } },"
+      }
+    ]
+  }
+}

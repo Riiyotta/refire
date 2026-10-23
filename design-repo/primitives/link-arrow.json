@@ -1,0 +1,34 @@
+{
+  "id": "primitive.link-arrow",
+  "purpose": "Uppercase underlined text link followed by a chevron; on hover the underline collapses to the right and the chevron draws itself in.",
+  "props": {
+    "label": "string",
+    "href": "link (document | mailto | tel)",
+    "opensNewContext": "boolean"
+  },
+  "tokens": [
+    "type.link-arrow",
+    "icon.chevron-right-bold",
+    "icon.size.link-chevron",
+    "motion.duration.800",
+    "motion.ease.quint-in-out",
+    "motion.ease.sine-out"
+  ],
+  "cite": [
+    {
+      "at": "src/components/ui/LinkArrow.jsx:17-60",
+      "quote": "export default function LinkArrow("
+    }
+  ],
+  "motion": {
+    "patterns": {
+      "hover": "underline scaleX 1 -> 0 (0.8s quint-in-out, origin right); chevron stroke draws 0 -> 100% (0.4s sine-out) starting 0.3s before the underline ends; mouse leave reverses"
+    },
+    "cite": [
+      {
+        "at": "src/components/ui/LinkArrow.jsx:24-32",
+        "quote": "'-=0.3',"
+      }
+    ]
+  }
+}

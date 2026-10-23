@@ -1,0 +1,167 @@
+{
+  "id": "chrome.preloader",
+  "category": "chrome",
+  "purpose": "Hold the first paint on a dark screen while images decode, with an instrument-like progress line and counter, then dissolve into the page.",
+  "cite": [
+    {
+      "at": "src/components/layout/Preloader.jsx:17-124",
+      "quote": "export default function Preloader({ onComplete })"
+    },
+    {
+      "at": "src/components/layout/Layout.jsx:70",
+      "quote": "{!isVisible && <Preloader onComplete={() => setVisible(true)} />}"
+    }
+  ],
+  "usedInTemplates": [
+    "template.home",
+    "template.not-found"
+  ],
+  "constraints": {
+    "onePerPage": true,
+    "region": "chrome",
+    "positionInTemplate": 1
+  },
+  "content": {
+    "fields": {
+      "decorMark": {
+        "type": "string",
+        "observedWords": 0,
+        "maxWords": 1,
+        "copyClass": "ui-microcopy",
+        "observed": "++",
+        "cite": [
+          {
+            "at": "src/data/site.js:4",
+            "quote": "decorLeft: '++'"
+          }
+        ],
+        "maxChars": 4
+      },
+      "decorReadings": {
+        "type": "list",
+        "item": {
+          "type": "string",
+          "observedWords": 1,
+          "maxWords": 2,
+          "copyClass": "ui-microcopy",
+          "observed": "1.00784",
+          "cite": [
+            {
+              "at": "src/data/site.js:5",
+              "quote": "decorRight: ['1.00784', '1.00811']"
+            }
+          ],
+          "maxChars": 8
+        },
+        "minItems": 2,
+        "maxItems": 2,
+        "cite": [
+          {
+            "at": "src/data/site.js:5",
+            "quote": "decorRight: ['1.00784', '1.00811']"
+          }
+        ],
+        "note": "two readings side by side (hydrogen standard atomic weight bounds); layout is fixed at two"
+      },
+      "statusLabel": {
+        "type": "string",
+        "observedWords": 1,
+        "maxWords": 2,
+        "copyClass": "ui-microcopy",
+        "observed": "initializing",
+        "cite": [
+          {
+            "at": "src/data/site.js:6",
+            "quote": "initializing: 'initializing'"
+          }
+        ]
+      },
+      "tagline": {
+        "type": "string",
+        "observedWords": 4,
+        "maxWords": 5,
+        "copyClass": "proprietary",
+        "observed": "Creating a Sustainable Future",
+        "cite": [
+          {
+            "at": "src/data/site.js:7",
+            "quote": "tagline: 'Creating a Sustainable Future'"
+          }
+        ]
+      }
+    }
+  },
+  "motion": {
+    "pattern": "preloader-progress",
+    "trigger": "on-load",
+    "reducedMotionFallback": "none-in-source",
+    "cite": [
+      {
+        "at": "src/components/layout/Preloader.jsx:47-77",
+        "quote": "gsap.to(rootRef.current, { duration: 4, '--p': progress, ease: 'sine.inOut', overwrite: 'auto' })"
+      }
+    ],
+    "details": {
+      "progressSource": "fraction of document images decoded (no images -> complete after 300ms)",
+      "progressTween": "4000ms sine-in-out (line + integer counter, no zero padding)",
+      "exit": "root opacity -> 0 over 1000ms after 200ms delay (sine-in-out); line+counter blur(20px)+fade over 2000ms",
+      "dots": "three dots blink on a 2500ms cycle, delays 200/400/600ms"
+    }
+  },
+  "responsive": {
+    "desktop": {
+      "padding": {
+        "designPx": 24
+      },
+      "counterOffset": {
+        "designPx": 220
+      }
+    },
+    "tablet": {
+      "counterOffset": {
+        "designPx": 160
+      }
+    },
+    "mobile": {
+      "padding": {
+        "designPx": 10
+      },
+      "counterOffset": {
+        "designPx": 100
+      },
+      "hidden": [
+        "tagline"
+      ],
+      "statusLabel": "centered"
+    },
+    "cite": [
+      {
+        "at": "src/components/layout/Preloader.jsx:87",
+        "quote": "[--offset:calc(220*var(--vw-unit))]"
+      },
+      {
+        "at": "src/components/layout/Preloader.jsx:119",
+        "quote": "mobile:hidden"
+      }
+    ]
+  },
+  "tokens": [
+    "type.preloader-percent",
+    "type.preloader-decor",
+    "type.preloader-decor-mark",
+    "surface.section",
+    "text.primary",
+    "layer.preloader",
+    "motion.duration.4000",
+    "motion.ease.sine-in-out",
+    "motion.duration.2500"
+  ],
+  "composes": [],
+  "correction": "The counter renders the raw integer with no zero padding ('7%', not '07%'); the hidden '00%' is only a width spacer.",
+  "correctionCite": [
+    {
+      "at": "src/components/layout/Preloader.jsx:93-95",
+      "quote": "{count}%"
+    }
+  ]
+}

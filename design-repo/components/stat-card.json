@@ -1,0 +1,41 @@
+{
+  "id": "component.stat-card",
+  "purpose": "Tall rounded card: top row (label + 3-digit zero-padded index), double-circle icon, then a ruled label with arrow and a very large thin value at the bottom.",
+  "props": {
+    "label": "string",
+    "number": "integer (rendered zero-padded to 3)",
+    "title": "string",
+    "value": "string"
+  },
+  "tokens": [
+    "surface.card",
+    "radius.card",
+    "component.card.box",
+    "type.card-top-info",
+    "type.card-label",
+    "type.card-value",
+    "effect.opacity.card-rule",
+    "icon.double-circle",
+    "icon.arrow-right-long"
+  ],
+  "cite": [
+    {
+      "at": "@home/KeyStats.jsx:9-45",
+      "quote": "export function KeyCard({ label, number, title, value })"
+    }
+  ],
+  "motion": {
+    "sequence": "own trigger at 0.3: top row fades, header fades (delay 300ms), value splits (delay 500ms, stagger 0.05)",
+    "cite": [
+      {
+        "at": "@home/KeyStats.jsx:26-39",
+        "quote": "delay={300}"
+      }
+    ]
+  },
+  "composes": [
+    "primitive.reveal",
+    "primitive.split-text",
+    "primitive.icon"
+  ]
+}

@@ -1,0 +1,242 @@
+{
+  "$description": "UI glyphs (closed set of 8) and the sizes at which they render. The brand logo is NOT a UI icon: it is asset role brand.logo.",
+  "tokens": {
+    "icon.pill-outline": {
+      "$type": "icon",
+      "$value": {
+        "viewBox": "0 0 116 39"
+      },
+      "assetRole": "ui.icon",
+      "usage": "header contact pill outline (stroke draw)",
+      "cite": [
+        {
+          "at": "src/components/ui/icons.jsx:23-29",
+          "quote": "viewBox=\"0 0 116 39\""
+        }
+      ]
+    },
+    "icon.arrow-right-long": {
+      "$type": "icon",
+      "$value": {
+        "viewBox": "0 0 62 52"
+      },
+      "assetRole": "ui.icon",
+      "usage": "hero title, stat-card label, contact overlay title",
+      "cite": [
+        {
+          "at": "src/components/ui/icons.jsx:31-40",
+          "quote": "viewBox=\"0 0 62 52\""
+        }
+      ]
+    },
+    "icon.chevron-right-thin": {
+      "$type": "icon",
+      "$value": {
+        "viewBox": "0 0 10 16"
+      },
+      "assetRole": "ui.icon",
+      "usage": "hero brochure glass link",
+      "cite": [
+        {
+          "at": "src/components/ui/icons.jsx:42-48",
+          "quote": "strokeWidth=\"1.66667\""
+        }
+      ]
+    },
+    "icon.chevron-right-bold": {
+      "$type": "icon",
+      "$value": {
+        "viewBox": "0 0 10 16"
+      },
+      "assetRole": "ui.icon",
+      "usage": "link-arrow (drawn on hover)",
+      "cite": [
+        {
+          "at": "src/components/ui/icons.jsx:50-56",
+          "quote": "strokeWidth=\"2\""
+        }
+      ]
+    },
+    "icon.double-circle": {
+      "$type": "icon",
+      "$value": {
+        "viewBox": "0 0 80 46"
+      },
+      "assetRole": "ui.icon",
+      "usage": "stat card icon",
+      "cite": [
+        {
+          "at": "src/components/ui/icons.jsx:58-65",
+          "quote": "viewBox=\"0 0 80 46\""
+        }
+      ]
+    },
+    "icon.accordion-plus": {
+      "$type": "icon",
+      "$value": {
+        "viewBox": "0 0 39 39"
+      },
+      "assetRole": "ui.icon",
+      "usage": "accordion toggle (rotates 45deg when open)",
+      "cite": [
+        {
+          "at": "src/components/ui/icons.jsx:67-76",
+          "quote": "viewBox=\"0 0 39 39\""
+        }
+      ]
+    },
+    "icon.arrow-up": {
+      "$type": "icon",
+      "$value": {
+        "viewBox": "0 0 12 14"
+      },
+      "assetRole": "ui.icon",
+      "usage": "footer back-to-top",
+      "cite": [
+        {
+          "at": "src/components/ui/icons.jsx:78-87",
+          "quote": "viewBox=\"0 0 12 14\""
+        }
+      ]
+    },
+    "icon.chevron-down": {
+      "$type": "icon",
+      "$value": {
+        "viewBox": "0 0 16 10"
+      },
+      "assetRole": "ui.icon",
+      "usage": "contact department select",
+      "cite": [
+        {
+          "at": "src/components/ui/icons.jsx:89-95",
+          "quote": "viewBox=\"0 0 16 10\""
+        }
+      ]
+    },
+    "icon.size.hero-title-arrow": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "w": {
+            "designPx": 62
+          },
+          "h": {
+            "designPx": 52
+          }
+        },
+        "tablet": {
+          "w": {
+            "designPx": 38
+          },
+          "h": {
+            "designPx": 32
+          }
+        },
+        "mobile": {
+          "w": {
+            "designPx": 25
+          },
+          "h": {
+            "designPx": 21
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "@home/Hero.jsx:109",
+          "quote": "h-f52 w-f62"
+        }
+      ]
+    },
+    "icon.size.overlay-title-arrow": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "w": {
+            "designPx": 89
+          },
+          "h": {
+            "designPx": 76
+          }
+        },
+        "tablet": {
+          "w": {
+            "designPx": 36
+          },
+          "h": {
+            "designPx": 30
+          }
+        },
+        "mobile": {
+          "w": {
+            "designPx": 19
+          },
+          "h": {
+            "designPx": 16
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:134",
+          "quote": "h-f76 w-f89"
+        }
+      ]
+    },
+    "icon.size.accordion-toggle": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "designPx": 39
+        },
+        "tablet": {
+          "designPx": 29
+        },
+        "mobile": {
+          "designPx": 29
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/ui/Accordion.jsx:68",
+          "quote": "h-f39 w-f39"
+        }
+      ]
+    },
+    "icon.size.link-chevron": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "w": {
+            "designPx": 10
+          },
+          "h": {
+            "designPx": 16
+          }
+        },
+        "tablet": {
+          "w": {
+            "designPx": 8
+          },
+          "h": {
+            "designPx": 14
+          }
+        },
+        "mobile": {
+          "w": {
+            "designPx": 6
+          },
+          "h": {
+            "designPx": 9
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/ui/LinkArrow.jsx:56",
+          "quote": "h-f16 w-f10"
+        }
+      ]
+    }
+  }
+}

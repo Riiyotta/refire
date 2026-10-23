@@ -1,0 +1,471 @@
+/* ---------------------------------------------------------------------------
+   Fonts — CLONE_SPEC.md §0.4 (weights 200/300/400/500; Mono declared upstream
+   but unused on the home page, so it is not declared here).
+--------------------------------------------------------------------------- */
+@font-face {
+  font-family: SuisseIntl;
+  src: url(/int/fonts/Suisse/SuisseIntl-Thin.woff2) format('woff2');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: SuisseIntl;
+  src: url(/int/fonts/Suisse/SuisseIntl-Light.woff2) format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: SuisseIntl;
+  src: url(/int/fonts/Suisse/SuisseIntl-Regular.woff2) format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: SuisseIntl;
+  src: url(/int/fonts/Suisse/SuisseIntl-Medium.woff2) format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   Fluid unit — spec §0.2. F(N) = calc(N / var(--gfs) * 100vw)
+   --vw-unit is 1 design px expressed in vw for the active breakpoint; the
+   Tailwind `f{N}` scale is calc(N * var(--vw-unit)).
+--------------------------------------------------------------------------- */
+:root {
+  --gfs: 1920;
+  --vw-unit: calc(100vw / var(--gfs));
+  --gap-content: calc(30 * var(--vw-unit));
+  --ttf: ease;
+  --td: 0.3s;
+  /* read by ShaderPicture (three.js clearColor, spec §3.8) */
+  --webgl-clear: theme('colors.webgl-clear');
+}
+@media (max-width: 834px) {
+  :root {
+    --gfs: 744;
+    --gap-content: calc(20 * var(--vw-unit));
+  }
+}
+@media (max-width: 520px) {
+  :root {
+    --gfs: 375;
+    --gap-content: calc(10 * var(--vw-unit));
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Reset essentials — spec §0.5 (Tailwind preflight covers the rest)
+--------------------------------------------------------------------------- */
+@layer base {
+  html {
+    scrollbar-width: none;
+  }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
+  }
+  body {
+    margin: 0;
+    font-family: theme('fontFamily.suisse');
+    font-size: calc(16 * var(--vw-unit));
+    line-height: calc(20 * var(--vw-unit));
+    color: theme('colors.dark');
+    background: theme('colors.primary');
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    font-size: inherit;
+    font-weight: inherit;
+  }
+  p, figure {
+    margin: 0;
+  }
+  ul, ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  /* border: preflight already sets width 0 / style solid, so border
+     utilities (e.g. the contact Select's bottom rule) keep working */
+  button {
+    background: transparent;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+    cursor: pointer;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+  img, video {
+    display: block;
+  }
+  ::selection {
+    background: theme('colors.selection');
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Component rules that need pseudo-elements, SVG internals or child
+   selectors. Values are spec values; the comments name the section.
+--------------------------------------------------------------------------- */
+@layer components {
+  /* §2.1 Preloader — --p drives the line + counter (static: --p = 1) */
+  .preloader-line-fill {
+    transform: translateX(calc((1 - var(--p)) * -100%));
+  }
+  .preloader-progress {
+    transform: translateX(calc((1 - var(--p)) * -100%));
+  }
+  .preloader-numbers {
+    transform: translateX(calc((1 - min(max(var(--p) / 0.07, 0), 1)) * 56%));
+  }
+  @media (max-width: 834px) {
+    .preloader-numbers {
+      transform: translateX(calc((1 - min(max(var(--p) / 0.18, 0), 1)) * 56%));
+    }
+  }
+  @media (max-width: 520px) {
+    .preloader-numbers {
+      transform: translateX(calc((1 - min(max(var(--p) / 0.23, 0), 1)) * 56%));
+    }
+  }
+
+  /* §2.1 Preloader dots (source: .dot{opacity:0; animation:showHideDot 2.5s
+     ease-in-out infinite} with nth-child delays .2/.4/.6s) */
+  [data-anim='preloader-dot'] {
+    opacity: 0;
+    animation: showHideDot 2.5s ease-in-out infinite;
+  }
+  [data-anim='preloader-dot']:nth-child(1) { animation-delay: 0.2s; }
+  [data-anim='preloader-dot']:nth-child(2) { animation-delay: 0.4s; }
+  [data-anim='preloader-dot']:nth-child(3) { animation-delay: 0.6s; }
+  @keyframes showHideDot {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    60% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  /* §2.2 Contact pill outline */
+  .pill-outline {
+    fill: transparent;
+    stroke: theme('colors.primary');
+    stroke-dasharray: 360 360;
+    stroke-dashoffset: -640;
+    transform: rotate(180deg);
+    transition: stroke-dashoffset 1.2s cubic-bezier(0.86, 0, 0.12, 1);
+  }
+  @media (hover: hover) {
+    .pill:hover .pill-outline { stroke-dashoffset: -438; }
+  }
+  @media (hover: none) {
+    .pill:active .pill-outline { stroke-dashoffset: -438; }
+  }
+
+  /* §2.3 Page progress */
+  .page-progress-inner {
+    transform-origin: left;
+    transform: scaleX(calc(var(--p) / 100));
+  }
+
+  /* §2.4 Custom cursor */
+  .cursor-inner {
+    --scale: 0.4325;
+    --mD: 0;
+    transform: translate(-50%, -50%) scale(calc(1 - var(--mD)));
+  }
+  .cursor-circle {
+    transform: scale(var(--scale));
+    transition: background-color 0.4s ease-in-out, transform 0.4s ease-in-out;
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+
+  /* §2.5 Cookie pane link dot */
+  .dot-link::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: calc(4 * var(--vw-unit));
+    height: calc(4 * var(--vw-unit));
+    border-radius: 50%;
+    background-color: currentColor;
+    opacity: 0;
+    transition: opacity var(--td) var(--ttf);
+  }
+  @media (hover: hover) {
+    .dot-link:hover::after { opacity: 1; }
+  }
+  @media (hover: none) {
+    .dot-link:active::after { opacity: 1; }
+  }
+
+  /* §2.6 Contact overlay fade (.5s ease) */
+  .contact-popup {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.5s var(--ttf), visibility 0.5s var(--ttf);
+  }
+  .contact-popup.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+  }
+
+  /* §2.6 Autofill inside the dark overlay (source global rules; the overlay
+     sets --bg-color dark / --main-color primary) */
+  :-webkit-autofill {
+    box-shadow: inset 0 0 100px #fff;
+    -webkit-text-fill-color: currentColor;
+  }
+  .contact-popup input:-webkit-autofill,
+  .contact-popup input:-webkit-autofill:active,
+  .contact-popup input:-webkit-autofill:focus,
+  .contact-popup input:-webkit-autofill:hover {
+    box-shadow: 0 0 0 30px theme('colors.dark') inset !important;
+    background-color: theme('colors.dark') !important;
+    background-clip: content-box !important;
+  }
+  .contact-popup input:-webkit-autofill {
+    -webkit-text-fill-color: theme('colors.primary') !important;
+    caret-color: theme('colors.primary');
+  }
+
+  /* §2.6 Select option underline + separators */
+  .select-option span::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+  @media (hover: hover) {
+    .select-option:hover span::after { transform: scaleX(1); transform-origin: left; }
+  }
+  @media (hover: none) {
+    .select-option:active span::after { transform: scaleX(1); transform-origin: left; }
+  }
+  .select-option.is-selected span::after { transform: scaleX(1); }
+  .select-option:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background-color: theme('colors.gb');
+  }
+
+  /* §2.6 BlackButton (submit) */
+  .black-btn {
+    /* overflow hidden is a visual no-op next to the clip-path, but keeps the
+       translated hover circle out of the overlay's native scroll height */
+    overflow: hidden;
+    clip-path: inset(0 0 round 50rem);
+    transform: translateZ(0);
+  }
+  .black-btn-bg {
+    position: absolute;
+    top: -40%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    border-radius: 100%;
+    display: block;
+  }
+  /* §2.6 rest-state transitions, verbatim from BlackButton_originalBg /
+     BlackButton_innerText (the source has no "from" class, so these never
+     produce a visible entrance; kept for parity) */
+  .black-btn-bg[data-anim='black-btn-bg'] {
+    transform: translateY(0);
+    transition: transform 1.5s cubic-bezier(0.19, 0.39, 0, 0.99) 2s;
+  }
+  [data-anim='black-btn-label'] {
+    transform: translateY(0);
+    transition: transform 1s cubic-bezier(0.19, 0.39, 0, 0.99) 2.1s;
+  }
+  .black-btn-hidden-bg {
+    transform: translate3d(0, 100%, 0);
+    transition: transform 0.6s;
+  }
+  .black-btn-text {
+    transition: transform 0.6s cubic-bezier(0.36, 0.28, 0, 0.99);
+  }
+  .black-btn-hidden-text {
+    transform: translate3d(0, 400%, 1px) rotate(30deg);
+    transition: transform 0.6s cubic-bezier(0.36, 0.28, 0, 0.99);
+  }
+  @media (hover: hover) {
+    .black-btn:hover .black-btn-hidden-bg { transform: translateZ(0); }
+    .black-btn:hover .black-btn-text { transform: translate3d(0, -400%, 1px) rotate(30deg); }
+    .black-btn:hover .black-btn-hidden-text { transform: none; }
+  }
+  @media (hover: none) {
+    .black-btn:active .black-btn-hidden-bg { transform: translateZ(0); }
+    .black-btn:active .black-btn-text { transform: translate3d(0, -400%, 1px) rotate(30deg); }
+    .black-btn:active .black-btn-hidden-text { transform: none; }
+  }
+
+  /* §3.1 Hero */
+  .dot-before::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 4px;
+    height: 4px;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background-color: currentColor;
+  }
+  @media (max-width: 520px) {
+    .dot-before::after { width: 2px; height: 2px; }
+  }
+  .cursor-info::after {
+    content: '';
+    position: absolute;
+    top: calc(6 * var(--vw-unit));
+    left: 0;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: currentColor;
+  }
+  /* first letter of each split word uppercase (spec §3.1) */
+  .uppercase-first .split-word > .split-el:first-child {
+    text-transform: uppercase;
+  }
+  .glass::after {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    background: theme('colors.glass');
+    backdrop-filter: blur(calc(10 * var(--vw-unit)));
+    -webkit-backdrop-filter: blur(calc(10 * var(--vw-unit)));
+    border-radius: calc(15 * var(--vw-unit)) 0 0 0;
+    transform: translateZ(0);
+  }
+
+  /* §4.2 Split text structure */
+  .split-root { display: inline-block; overflow: hidden; }
+  .split-word { display: inline-flex; }
+  .split-el { position: relative; display: inline-flex; overflow: hidden; }
+  .split-inner { position: relative; display: inline-block; }
+
+  /* §3.2 / §3.7 Line (track at .2 opacity + fill bar) */
+  .line-wrap::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    background-color: currentColor;
+    opacity: 0.2;
+  }
+
+  /* §3.4 key card header rule */
+  .rule-after::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    width: 100%;
+    background-color: theme('colors.primary');
+    opacity: 0.3;
+  }
+
+  /* §3.7 accordion icon */
+  .accordion-icon { transition: transform 0.3s; }
+  .accordion-icon .circle-border {
+    stroke-dasharray: 120;
+    stroke-dashoffset: 120;
+    transition: stroke-dashoffset 0.5s;
+  }
+  @media (hover: hover) {
+    .accordion-btn:hover .accordion-icon .circle-border { stroke-dashoffset: 0; }
+  }
+  @media (hover: none) {
+    .accordion-btn:active .accordion-icon .circle-border { stroke-dashoffset: 0; }
+  }
+  .accordion-item.is-open .accordion-icon { transform: rotate(45deg); }
+  .accordion-body p { margin-bottom: calc(28 * var(--vw-unit)); }
+
+  /* §5 hover-underline (email links): rest = underlined, hover collapses */
+  .hover-underline .underline-bar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(1, 0, 0.29, 1);
+  }
+  @media (hover: hover) {
+    .hover-underline:hover .underline-bar::after { transform-origin: right; transform: scaleX(0); }
+  }
+  @media (hover: none) {
+    .hover-underline:active .underline-bar::after { transform-origin: right; transform: scaleX(0); }
+  }
+
+  /* §3.5 scrolled picture (vars driven by Animation; spec initial values) */
+  .scrolled-picture {
+    --scale: 1;
+    --y: 2;
+    --x: 98;
+  }
+  .scrolled-picture-clip {
+    /* clip-path doesn't clip layout overflow; without this the 1.1x img widens the page */
+    overflow: hidden;
+    clip-path: polygon(
+      calc(var(--y) * 1%) 0,
+      calc(var(--x) * 1%) 0,
+      calc(var(--x) * 1%) 100%,
+      calc(var(--y) * 1%) 100%
+    );
+  }
+  .scrolled-picture-img {
+    transform: scale(var(--scale)) translateZ(0);
+  }
+}
+
+/* ---- 404 page (specs/404.md): stock Next.js error markup ---- */
+body.is-error-page { position: fixed; inset: 0; display: flex; flex-direction: column; min-height: 100vh; margin: 0; color: #000; background: #fff; }
+.error-page { font-family: -apple-system, BlinkMacSystemFont, Roboto, 'Segoe UI', 'Fira Sans', Avenir, 'Helvetica Neue', 'Lucida Grande', sans-serif; height: 100vh; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.error-page__h1 { display: inline-block; margin: 0 20px 0 0; padding: 10px 23px 10px 0; font-size: 24px; font-weight: 500; vertical-align: top; border-right: 1px solid rgba(0, 0, 0, .3); }
+.error-page__msg { display: inline-block; text-align: left; line-height: 49px; height: 49px; vertical-align: middle; }
+.error-page__msg h2 { font-size: 14px; font-weight: normal; line-height: inherit; margin: 0; padding: 0; }
+@media (prefers-color-scheme: dark) {
+  body.is-error-page { color: #fff; background: #000; }
+  .error-page__h1 { border-right-color: rgba(255, 255, 255, .3); }
+}

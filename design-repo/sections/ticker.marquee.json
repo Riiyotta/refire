@@ -1,0 +1,101 @@
+{
+  "id": "ticker.marquee",
+  "category": "ticker",
+  "purpose": "Huge single-line phrase scrolling left forever; draggable with inertia; pauses off-screen.",
+  "cite": [
+    {
+      "at": "@home/Ticker.jsx:7-20",
+      "quote": "export default function Ticker({ data })"
+    }
+  ],
+  "usedInTemplates": [
+    "template.home"
+  ],
+  "constraints": {
+    "onePerPage": true,
+    "region": "main"
+  },
+  "content": {
+    "fields": {
+      "text": {
+        "type": "string",
+        "observedWords": 2,
+        "maxWords": 3,
+        "copyClass": "proprietary",
+        "observed": "Visit Us — ",
+        "cite": [
+          {
+            "at": "src/data/home.js:39",
+            "quote": "ticker = { text: 'Visit Us — ', repeat: 3 }"
+          }
+        ],
+        "maxChars": 24
+      },
+      "minCopies": {
+        "type": "const",
+        "value": 3,
+        "copyClass": "locked",
+        "cite": [
+          {
+            "at": "src/data/home.js:39",
+            "quote": "repeat: 3"
+          }
+        ],
+        "note": "copies are added automatically until the rail is wider than the viewport"
+      }
+    }
+  },
+  "motion": {
+    "pattern": "marquee-drag",
+    "trigger": "in-view",
+    "reducedMotionFallback": "none-in-source",
+    "cite": [
+      {
+        "at": "src/motion/marquee.js:41-54",
+        "quote": "const tick = () => {"
+      },
+      {
+        "at": "src/motion/marquee.js:69-73",
+        "quote": "const gate = () => {"
+      }
+    ],
+    "threshold": 0.1,
+    "details": {
+      "autoplay": "0.6px per tick leftward",
+      "drag": "delta += 2 x pointer delta; delta *= 0.5 per tick; links disabled while dragging"
+    }
+  },
+  "responsive": {
+    "desktop": {
+      "itemPaddingEnd": {
+        "designPx": 40
+      }
+    },
+    "tablet": {
+      "itemPaddingEnd": {
+        "designPx": 28
+      }
+    },
+    "mobile": {
+      "itemPaddingEnd": {
+        "designPx": 15
+      }
+    },
+    "cite": [
+      {
+        "at": "@home/Ticker.jsx:16",
+        "quote": "pr-f40"
+      }
+    ]
+  },
+  "tokens": [
+    "type.ticker",
+    "layout.padding.ticker",
+    "surface.section",
+    "motion.param.marquee-speed",
+    "motion.threshold.default"
+  ],
+  "composes": [
+    "component.marquee"
+  ]
+}

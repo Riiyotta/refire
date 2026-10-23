@@ -1,0 +1,32 @@
+{
+  "id": "component.shader-picture",
+  "purpose": "WebGL image plane: progress-driven reveal (slides up while zooming 1/1.2 -> 1) plus a mouse-velocity distortion grid. Renders only while in view.",
+  "props": {
+    "image": "asset (media.shader-picture)"
+  },
+  "tokens": [
+    "surface.webgl-clear",
+    "motion.threshold.shader",
+    "motion.duration.1000",
+    "motion.ease.circular-out",
+    "motion.param.shader-grid",
+    "motion.param.shader-relaxation",
+    "motion.param.shader-mouse-radius",
+    "motion.param.shader-strength"
+  ],
+  "cite": [
+    {
+      "at": "src/components/ui/ShaderPicture.jsx:60-228",
+      "quote": "export default function ShaderPicture("
+    }
+  ],
+  "motion": {
+    "sequence": "progress 0 -> 1 over 1s circular-out when the picture reaches threshold 0.7",
+    "cite": [
+      {
+        "at": "src/motion/reveal.js:81-82",
+        "quote": "value: 1, duration: 1, ease: 'circ.out', overwrite: 'auto', onUpdate: api.render,"
+      }
+    ]
+  }
+}

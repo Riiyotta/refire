@@ -1,0 +1,38 @@
+{
+  "id": "primitive.fill-swap-button",
+  "purpose": "Pill button whose hover slides a dark circle up behind the label while the label rotates out and a light duplicate rotates in.",
+  "props": {
+    "label": "string",
+    "buttonType": [
+      "button",
+      "submit"
+    ]
+  },
+  "tokens": [
+    "type.button-label",
+    "radius.button",
+    "component.button.box",
+    "surface.inverse",
+    "surface.button-hover",
+    "motion.duration.600",
+    "motion.ease.button-swap",
+    "motion.ease.button-rest"
+  ],
+  "cite": [
+    {
+      "at": "src/components/ui/BlackButton.jsx:13-39",
+      "quote": "export default function BlackButton({"
+    }
+  ],
+  "motion": {
+    "patterns": {
+      "hover": "hover fill translateY 100% -> 0 (0.6s); label translate -400% rotate 30deg out, duplicate in (0.6s button-swap)"
+    },
+    "cite": [
+      {
+        "at": "src/index.css:315-335",
+        "quote": ".black-btn-hidden-bg {"
+      }
+    ]
+  }
+}

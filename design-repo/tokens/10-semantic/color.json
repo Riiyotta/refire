@@ -1,0 +1,259 @@
+{
+  "$description": "Semantic colour roles. Generators reference these, never a hex value.",
+  "tokens": {
+    "text.primary": {
+      "$type": "color",
+      "$value": "{color.paper}",
+      "cite": [
+        {
+          "at": "@home/SaveTheDate.jsx:12",
+          "quote": "text-primary"
+        }
+      ]
+    },
+    "text.on-root": {
+      "$type": "color",
+      "$value": "{color.ink}",
+      "cite": [
+        {
+          "at": "src/index.css:81",
+          "quote": "color: theme('colors.dark');"
+        }
+      ]
+    },
+    "text.muted": {
+      "$type": "color",
+      "$value": "{color.grey-450}",
+      "cite": [
+        {
+          "at": "@home/SaveTheDate.jsx:20",
+          "quote": "text-dark-grey"
+        }
+      ]
+    },
+    "text.label-light": {
+      "$type": "color",
+      "$value": "{color.grey-200}",
+      "cite": [
+        {
+          "at": "@home/Hero.jsx:95",
+          "quote": "text-grey"
+        }
+      ]
+    },
+    "text.dim-heading": {
+      "$type": "color",
+      "$value": "{color.grey-760}",
+      "cite": [
+        {
+          "at": "@home/AboutRefire.jsx:20",
+          "quote": "text-alt-dark-grey"
+        }
+      ]
+    },
+    "text.accordion-body": {
+      "$type": "color",
+      "$value": "{color.grey-480}",
+      "cite": [
+        {
+          "at": "src/components/ui/Accordion.jsx:74",
+          "quote": "text-accordion"
+        }
+      ]
+    },
+    "text.hero-center": {
+      "$type": "color",
+      "$value": "{color.grey-400}",
+      "cite": [
+        {
+          "at": "@home/Hero.jsx:129",
+          "quote": "text-alt-dark-grey2"
+        }
+      ]
+    },
+    "text.inverse": {
+      "$type": "color",
+      "$value": "{color.ink}",
+      "cite": [
+        {
+          "at": "src/components/layout/CookiePane.jsx:43",
+          "quote": "text-dark"
+        }
+      ]
+    },
+    "text.cookie-link-rest": {
+      "$type": "color",
+      "$value": "{color.grey-100}",
+      "cite": [
+        {
+          "at": "src/components/layout/CookiePane.jsx:51",
+          "quote": "text-most-light-grey"
+        }
+      ]
+    },
+    "text.error-page": {
+      "$type": "color",
+      "$value": "{color.pure-black}",
+      "cite": [
+        {
+          "at": "src/index.css:463",
+          "quote": "color: #000;"
+        }
+      ]
+    },
+    "surface.root": {
+      "$type": "color",
+      "$value": "{color.paper}",
+      "cite": [
+        {
+          "at": "src/index.css:82",
+          "quote": "background: theme('colors.primary');"
+        },
+        {
+          "at": "src/components/layout/Layout.jsx:31",
+          "quote": "className = 'relative bg-primary text-dark'"
+        }
+      ]
+    },
+    "surface.section": {
+      "$type": "color",
+      "$value": "{color.ink}",
+      "cite": [
+        {
+          "at": "@home/SaveTheDate.jsx:12",
+          "quote": "bg-dark"
+        }
+      ]
+    },
+    "surface.card": {
+      "$type": "color",
+      "$value": "{color.ink-raised}",
+      "cite": [
+        {
+          "at": "@home/KeyStats.jsx:12",
+          "quote": "bg-alt-dark"
+        }
+      ]
+    },
+    "surface.inverse": {
+      "$type": "color",
+      "$value": "{color.paper}",
+      "cite": [
+        {
+          "at": "src/components/layout/CookiePane.jsx:43",
+          "quote": "bg-primary"
+        }
+      ]
+    },
+    "surface.button-hover": {
+      "$type": "color",
+      "$value": "{color.grey-750}",
+      "cite": [
+        {
+          "at": "src/components/ui/BlackButton.jsx:28",
+          "quote": "bg-most-dark"
+        }
+      ]
+    },
+    "surface.progress-track": {
+      "$type": "color",
+      "$value": "{color.ink-alpha-10}",
+      "cite": [
+        {
+          "at": "src/components/layout/ScrollProgress.jsx:16",
+          "quote": "bg-progress-track"
+        }
+      ]
+    },
+    "surface.glass": {
+      "$type": "color",
+      "$value": "{color.white-alpha-10}",
+      "cite": [
+        {
+          "at": "src/index.css:371",
+          "quote": "background: theme('colors.glass');"
+        }
+      ]
+    },
+    "surface.cursor": {
+      "$type": "color",
+      "$value": "{color.grey-alpha-25}",
+      "cite": [
+        {
+          "at": "src/components/layout/Cursor.jsx:82",
+          "quote": "bg-cursor-circle"
+        }
+      ]
+    },
+    "surface.webgl-clear": {
+      "$type": "color",
+      "$value": "{color.grey-050}",
+      "cite": [
+        {
+          "at": "src/components/ui/ShaderPicture.jsx:69-70",
+          "quote": "renderer.setClearColor(new THREE.Color(clear), 1)"
+        }
+      ]
+    },
+    "surface.error-page": {
+      "$type": "color",
+      "$value": "{color.pure-white}",
+      "cite": [
+        {
+          "at": "src/index.css:463",
+          "quote": "background: #fff;"
+        }
+      ]
+    },
+    "surface.selection": {
+      "$type": "color",
+      "$value": "{color.taupe-selection}",
+      "cite": [
+        {
+          "at": "src/index.css:123",
+          "quote": "background: theme('colors.selection');"
+        }
+      ]
+    },
+    "border.footer-rule": {
+      "$type": "color",
+      "$value": "{color.grey-650}",
+      "cite": [
+        {
+          "at": "src/components/layout/Footer.jsx:17",
+          "quote": "border-darkness-grey"
+        }
+      ]
+    },
+    "border.field": {
+      "$type": "color",
+      "$value": "{color.paper}",
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:9",
+          "quote": "border-b-2 border-primary"
+        }
+      ]
+    },
+    "border.select": {
+      "$type": "color",
+      "$value": "{color.grey-500}",
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:79",
+          "quote": "border-2 border-gb"
+        }
+      ]
+    },
+    "border.error-divider": {
+      "$type": "color",
+      "$value": "{color.black-alpha-30}",
+      "cite": [
+        {
+          "at": "src/index.css:465",
+          "quote": "rgba(0, 0, 0, .3)"
+        }
+      ]
+    }
+  }
+}

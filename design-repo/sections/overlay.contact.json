@@ -1,0 +1,414 @@
+{
+  "id": "overlay.contact",
+  "category": "overlay",
+  "purpose": "Full-screen dark contact sheet opened from the header pill: large mailto title, phone and hours lists, and a department-select contact form. Page scroll is locked while it is open. The form never submits.",
+  "cite": [
+    {
+      "at": "src/components/layout/ContactOverlay.jsx:110-200",
+      "quote": "export default function ContactOverlay()"
+    },
+    {
+      "at": "src/components/layout/Layout.jsx:73",
+      "quote": "<ContactOverlay />"
+    }
+  ],
+  "usedInTemplates": [
+    "template.home",
+    "template.not-found"
+  ],
+  "constraints": {
+    "onePerPage": true,
+    "region": "chrome"
+  },
+  "content": {
+    "fields": {
+      "titleHref": {
+        "type": "link",
+        "hrefKind": "mailto",
+        "cite": [
+          {
+            "at": "src/data/site.js:16",
+            "quote": "titleHref: 'mailto:test@test.en'"
+          }
+        ]
+      },
+      "titleLines": {
+        "type": "list",
+        "item": {
+          "type": "string",
+          "observedWords": 2,
+          "maxWords": 3,
+          "copyClass": "proprietary",
+          "observed": "us today",
+          "cite": [
+            {
+              "at": "src/data/site.js:17",
+              "quote": "titleLines: ['contact', 'us today']"
+            }
+          ]
+        },
+        "minItems": 2,
+        "maxItems": 2,
+        "cite": [
+          {
+            "at": "src/data/site.js:17",
+            "quote": "titleLines: ['contact', 'us today']"
+          }
+        ],
+        "note": "line 1 is followed by the long arrow; fixed at two lines"
+      },
+      "formTitle": {
+        "type": "string",
+        "observedWords": 2,
+        "maxWords": 3,
+        "copyClass": "ui-microcopy",
+        "observed": "Contact form",
+        "cite": [
+          {
+            "at": "src/data/site.js:18",
+            "quote": "formTitle: 'Contact form'"
+          }
+        ]
+      },
+      "formText": {
+        "type": "string",
+        "observedWords": 14,
+        "maxWords": 17,
+        "copyClass": "proprietary",
+        "observed": "Send us a message and we’ll get back to you as soon as possible.",
+        "cite": [
+          {
+            "at": "src/data/site.js:19",
+            "quote": "formText: 'Send us a message and we’ll get back to you as soon as possible.'"
+          }
+        ]
+      },
+      "phoneList": {
+        "type": "object",
+        "fields": {
+          "title": {
+            "type": "string",
+            "observedWords": 2,
+            "maxWords": 3,
+            "copyClass": "ui-microcopy",
+            "observed": "Phone us",
+            "cite": [
+              {
+                "at": "src/data/site.js:21",
+                "quote": "title: 'Phone us'"
+              }
+            ]
+          },
+          "lines": {
+            "type": "list",
+            "item": {
+              "type": "object",
+              "fields": {
+                "prefix": {
+                  "type": "string",
+                  "observedWords": 1,
+                  "maxWords": 2,
+                  "copyClass": "proprietary",
+                  "observed": "Germany",
+                  "cite": [
+                    {
+                      "at": "src/data/site.js:23",
+                      "quote": "prefix: 'Germany'"
+                    }
+                  ]
+                },
+                "text": {
+                  "type": "string",
+                  "observedWords": 4,
+                  "maxWords": 5,
+                  "copyClass": "proprietary",
+                  "observed": "+1 790 790 9238",
+                  "cite": [
+                    {
+                      "at": "src/data/site.js:23",
+                      "quote": "text: '+1 790 790 9238'"
+                    }
+                  ],
+                  "maxChars": 20
+                },
+                "href": {
+                  "type": "link",
+                  "hrefKind": "tel",
+                  "cite": [
+                    {
+                      "at": "src/data/site.js:23",
+                      "quote": "href: 'tel:+17907909238'"
+                    }
+                  ]
+                }
+              }
+            },
+            "minItems": 1,
+            "maxItems": 2,
+            "cite": [
+              {
+                "at": "src/data/site.js:22-25",
+                "quote": "{ prefix: 'Germany', text: '+1 790 790 9238', href: 'tel:+17907909238' },"
+              }
+            ]
+          }
+        }
+      },
+      "hoursList": {
+        "type": "object",
+        "fields": {
+          "title": {
+            "type": "string",
+            "observedWords": 1,
+            "maxWords": 2,
+            "copyClass": "ui-microcopy",
+            "observed": "Hours",
+            "cite": [
+              {
+                "at": "src/data/site.js:26",
+                "quote": "title: 'Hours'"
+              }
+            ]
+          },
+          "lines": {
+            "type": "list",
+            "item": {
+              "type": "string",
+              "observedWords": 4,
+              "maxWords": 5,
+              "copyClass": "proprietary",
+              "observed": "Monday - Friday 8:00AM - 8:00PM",
+              "cite": [
+                {
+                  "at": "src/data/site.js:26",
+                  "quote": "lines: ['Monday - Friday 8:00AM - 8:00PM', 'Saturday & Sunday Closed']"
+                }
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 2,
+            "cite": [
+              {
+                "at": "src/data/site.js:26",
+                "quote": "lines: ['Monday - Friday 8:00AM - 8:00PM', 'Saturday & Sunday Closed']"
+              }
+            ]
+          }
+        }
+      },
+      "departmentSelect": {
+        "type": "object",
+        "fields": {
+          "placeholder": {
+            "type": "string",
+            "observedWords": 7,
+            "maxWords": 9,
+            "copyClass": "ui-microcopy",
+            "observed": "Select a department you’d like to reach*",
+            "cite": [
+              {
+                "at": "src/data/site.js:29",
+                "quote": "placeholder: 'Select a department you’d like to reach*'"
+              }
+            ]
+          },
+          "options": {
+            "type": "list",
+            "item": {
+              "type": "string",
+              "observedWords": 1,
+              "maxWords": 2,
+              "copyClass": "ui-microcopy",
+              "observed": "General",
+              "cite": [
+                {
+                  "at": "src/data/site.js:30",
+                  "quote": "options: ['Media', 'Sales', 'General']"
+                }
+              ],
+              "maxChars": 24
+            },
+            "minItems": 1,
+            "maxItems": 3,
+            "cite": [
+              {
+                "at": "src/data/site.js:30",
+                "quote": "options: ['Media', 'Sales', 'General']"
+              }
+            ]
+          }
+        }
+      },
+      "fieldPlaceholders": {
+        "type": "list",
+        "item": {
+          "type": "string",
+          "observedWords": 2,
+          "maxWords": 3,
+          "copyClass": "ui-microcopy",
+          "observed": "First Name*",
+          "cite": [
+            {
+              "at": "src/data/site.js:34",
+              "quote": "placeholder: 'First Name*'"
+            }
+          ]
+        },
+        "minItems": 4,
+        "maxItems": 4,
+        "cite": [
+          {
+            "at": "src/data/site.js:32-41",
+            "quote": "{ name: 'fname', placeholder: 'First Name*' },"
+          }
+        ],
+        "note": "two rows of two (first name, last name / email, subject); fixed at four"
+      },
+      "messagePlaceholder": {
+        "type": "string",
+        "observedWords": 1,
+        "maxWords": 2,
+        "copyClass": "ui-microcopy",
+        "observed": "Message*",
+        "cite": [
+          {
+            "at": "src/data/site.js:42",
+            "quote": "placeholder: 'Message*'"
+          }
+        ]
+      },
+      "consentNote": {
+        "type": "string",
+        "observedWords": 17,
+        "maxWords": 21,
+        "copyClass": "ui-microcopy",
+        "observed": "*By submitting, the data provided will be used to perform your request according to the Privacy Policy",
+        "cite": [
+          {
+            "at": "src/data/site.js:43",
+            "quote": "note: '*By submitting, the data provided will be used to perform your request according to the Privacy Policy'"
+          }
+        ]
+      },
+      "submitLabel": {
+        "type": "string",
+        "observedWords": 1,
+        "maxWords": 2,
+        "copyClass": "ui-microcopy",
+        "observed": "submit",
+        "cite": [
+          {
+            "at": "src/data/site.js:44",
+            "quote": "submit: 'submit'"
+          }
+        ]
+      },
+      "formSubmission": {
+        "type": "const",
+        "value": "non-submitting",
+        "copyClass": "locked",
+        "cite": [
+          {
+            "at": "src/components/layout/ContactOverlay.jsx:173",
+            "quote": "onSubmit={(e) => e.preventDefault()} noValidate"
+          }
+        ],
+        "note": "The real endpoint is unknown; submission is blocked in the source. A PageSpec must acknowledge this and may not declare any other value."
+      }
+    }
+  },
+  "motion": {
+    "pattern": "overlay-fade",
+    "trigger": "on-toggle",
+    "reducedMotionFallback": "none-in-source",
+    "cite": [
+      {
+        "at": "src/index.css:226-236",
+        "quote": "transition: opacity 0.5s var(--ttf), visibility 0.5s var(--ttf);"
+      }
+    ],
+    "details": {
+      "open": "opacity + visibility over 500ms css-ease",
+      "dropdown": "fade 300ms circular-in-out, chevron rotates 180deg",
+      "scrollLock": "page smooth scroll stops while open; the overlay scrolls natively"
+    }
+  },
+  "responsive": {
+    "desktop": {
+      "direction": "row",
+      "leftWidth": {
+        "designPx": 800
+      },
+      "rightWidth": {
+        "designPx": 783
+      }
+    },
+    "tablet": {
+      "direction": "row",
+      "leftWidth": {
+        "designPx": 340
+      },
+      "rightWidth": {
+        "designPx": 270
+      },
+      "lists": "stacked",
+      "noteBelowSubmit": true
+    },
+    "mobile": {
+      "direction": "column",
+      "paddingTop": {
+        "designPx": 124
+      },
+      "formMarginTop": {
+        "designPx": 70
+      }
+    },
+    "cite": [
+      {
+        "at": "src/components/layout/ContactOverlay.jsx:123",
+        "quote": "mobile:flex-col mobile:pb-f10 mobile:pt-f124"
+      },
+      {
+        "at": "src/components/layout/ContactOverlay.jsx:185",
+        "quote": "tablet:flex-col-reverse tablet:items-center"
+      }
+    ]
+  },
+  "tokens": [
+    "type.overlay-base",
+    "type.overlay-title",
+    "type.overlay-label",
+    "type.form-field",
+    "type.form-note",
+    "surface.section",
+    "text.primary",
+    "text.muted",
+    "layer.contact-overlay",
+    "layout.split.contact-overlay",
+    "icon.size.overlay-title-arrow",
+    "effect.opacity.title-hover",
+    "motion.duration.500",
+    "motion.ease.css-ease"
+  ],
+  "composes": [
+    "primitive.text-field",
+    "primitive.select-field",
+    "primitive.fill-swap-button",
+    "primitive.icon"
+  ],
+  "behavior": {
+    "scrollLock": true,
+    "formSubmits": false,
+    "titleLink": "mailto:test@test.en is a placeholder copied verbatim from the live original; it is not a real address"
+  },
+  "behaviorCite": [
+    {
+      "at": "src/components/layout/Layout.jsx:57-61",
+      "quote": "if (contactOpen) lenis.stop()"
+    },
+    {
+      "at": "CLONE_SPEC.md:683",
+      "quote": "The mailto on the contact-overlay title is literally `mailto:test@test.en` on the live site."
+    }
+  ]
+}

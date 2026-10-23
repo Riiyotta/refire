@@ -1,0 +1,80 @@
+{
+  "id": "chrome.cursor",
+  "category": "chrome",
+  "purpose": "Soft translucent follower circle (32px visible) that lags the pointer; shrinks on press; fades when the pointer leaves the window. Hover-capable devices only; the native cursor stays visible.",
+  "cite": [
+    {
+      "at": "src/components/layout/Cursor.jsx:14-86",
+      "quote": "export default function Cursor()"
+    },
+    {
+      "at": "src/components/layout/Layout.jsx:75",
+      "quote": "<Cursor />"
+    }
+  ],
+  "usedInTemplates": [
+    "template.home",
+    "template.not-found"
+  ],
+  "constraints": {
+    "onePerPage": true,
+    "region": "chrome",
+    "renderCondition": "(hover: hover) only"
+  },
+  "content": {
+    "fields": {}
+  },
+  "motion": {
+    "pattern": "cursor-follow",
+    "trigger": "pointer",
+    "reducedMotionFallback": "none-in-source",
+    "cite": [
+      {
+        "at": "src/components/layout/Cursor.jsx:30",
+        "quote": "const amt = 0.12"
+      },
+      {
+        "at": "src/components/layout/Cursor.jsx:52",
+        "quote": "duration: 0.4, '--mD': down ? 0.2 : 0"
+      }
+    ],
+    "details": {
+      "follow": "position += (target - position) * 0.12 per tick",
+      "press": "shrink 20% over 400ms",
+      "leaveWindow": "opacity 0 over 300ms cubic-out"
+    }
+  },
+  "responsive": {
+    "desktop": {
+      "rendered": true
+    },
+    "tablet": {
+      "rendered": "only if (hover: hover)"
+    },
+    "mobile": {
+      "rendered": "only if (hover: hover)"
+    },
+    "cite": [
+      {
+        "at": "src/components/layout/Cursor.jsx:19",
+        "quote": "window.matchMedia('(hover: hover)')"
+      }
+    ]
+  },
+  "tokens": [
+    "surface.cursor",
+    "effect.backdrop-blur.cursor",
+    "layer.cursor",
+    "component.cursor.box",
+    "motion.param.cursor-lerp",
+    "motion.param.cursor-press-scale"
+  ],
+  "composes": [],
+  "correction": "Follow lerp is 0.12 per tick, not the 0.2 stated in CLONE_SPEC.md sections 2.4, 4.3 and 5.",
+  "correctionCite": [
+    {
+      "at": "CLONE_SPEC.md:197",
+      "quote": "Follow: lerp with amount **0.2** per frame"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "tokens": {
+    "effect.blend.difference": {
+      "$type": "blendMode",
+      "$value": "difference",
+      "usedBy": [
+        "chrome.header",
+        "chrome.scroll-progress",
+        "hero center text",
+        "hero scroll label (mobile)"
+      ],
+      "cite": [
+        {
+          "at": "src/components/layout/Header.jsx:37",
+          "quote": "mix-blend-difference"
+        },
+        {
+          "at": "src/components/layout/ScrollProgress.jsx:16",
+          "quote": "mix-blend-difference"
+        }
+      ]
+    },
+    "effect.backdrop-blur.glass": {
+      "$type": "blur",
+      "$value": {
+        "designPx": 10
+      },
+      "cite": [
+        {
+          "at": "src/index.css:372",
+          "quote": "backdrop-filter: blur(calc(10 * var(--vw-unit)));"
+        }
+      ]
+    },
+    "effect.backdrop-blur.cursor": {
+      "$type": "blur",
+      "$value": "10px",
+      "cite": [
+        {
+          "at": "src/components/layout/Cursor.jsx:82",
+          "quote": "backdrop-blur-[10px]"
+        }
+      ]
+    },
+    "effect.opacity.line-track": {
+      "$type": "number",
+      "$value": 0.2,
+      "cite": [
+        {
+          "at": "src/index.css:391",
+          "quote": "opacity: 0.2;"
+        }
+      ]
+    },
+    "effect.opacity.card-rule": {
+      "$type": "number",
+      "$value": 0.3,
+      "cite": [
+        {
+          "at": "src/index.css:403",
+          "quote": "opacity: 0.3;"
+        }
+      ]
+    },
+    "effect.opacity.title-hover": {
+      "$type": "number",
+      "$value": 0.6,
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:130",
+          "quote": "hov:opacity-60"
+        }
+      ]
+    },
+    "effect.opacity.placeholder-focus": {
+      "$type": "number",
+      "$value": 0.5,
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:31",
+          "quote": "active ? 'opacity-50' : 'opacity-100'"
+        }
+      ]
+    }
+  }
+}

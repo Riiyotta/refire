@@ -1,0 +1,23 @@
+{
+  "id": "primitive.text-field",
+  "purpose": "Underlined text input or textarea whose placeholder is an overlay label (opacity 1, 0.5 while focused, hidden once filled).",
+  "props": {
+    "name": "string",
+    "placeholder": "string",
+    "multiline": "boolean"
+  },
+  "tokens": [
+    "type.form-field",
+    "border.field",
+    "component.form.field-rule",
+    "component.form.message-height",
+    "effect.opacity.placeholder-focus",
+    "motion.duration.100"
+  ],
+  "cite": [
+    {
+      "at": "src/components/layout/ContactOverlay.jsx:12-38",
+      "quote": "function Field({ name, placeholder, textarea = false })"
+    }
+  ]
+}

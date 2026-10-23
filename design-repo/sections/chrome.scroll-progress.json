@@ -1,0 +1,67 @@
+{
+  "id": "chrome.scroll-progress",
+  "category": "chrome",
+  "purpose": "2px reading-progress bar along the top edge, blended difference.",
+  "cite": [
+    {
+      "at": "src/components/layout/ScrollProgress.jsx:9-23",
+      "quote": "export default function ScrollProgress()"
+    },
+    {
+      "at": "src/components/layout/Layout.jsx:72",
+      "quote": "{showProgress && <ScrollProgress />}"
+    }
+  ],
+  "usedInTemplates": [
+    "template.home"
+  ],
+  "constraints": {
+    "onePerPage": true,
+    "region": "chrome",
+    "forbiddenIn": [
+      "template.not-found"
+    ]
+  },
+  "content": {
+    "fields": {}
+  },
+  "motion": {
+    "pattern": "scroll-linked-progress",
+    "trigger": "every-scroll-frame",
+    "reducedMotionFallback": "none-in-source",
+    "cite": [
+      {
+        "at": "src/motion/scroll.js:22-30",
+        "quote": "el.style.setProperty('--p', 100 * (lenis.limit > 0 ? lenis.animatedScroll / lenis.limit : 0))"
+      }
+    ],
+    "details": {
+      "mapping": "fill scaleX = page scroll progress (0-1), set every frame, no tween"
+    }
+  },
+  "responsive": {
+    "desktop": {
+      "height": "2px"
+    },
+    "tablet": {
+      "height": "2px"
+    },
+    "mobile": {
+      "height": "2px"
+    },
+    "cite": [
+      {
+        "at": "src/components/layout/ScrollProgress.jsx:16",
+        "quote": "h-[2px] w-full"
+      }
+    ]
+  },
+  "tokens": [
+    "surface.progress-track",
+    "text.primary",
+    "effect.blend.difference",
+    "layer.scroll-progress",
+    "component.progress.height"
+  ],
+  "composes": []
+}

@@ -1,0 +1,122 @@
+{
+  "id": "chrome.footer",
+  "category": "chrome",
+  "purpose": "Single copyright row under a grey rule: brand + year, rights text, and a Back to Top button that smooth-scrolls to the top.",
+  "cite": [
+    {
+      "at": "src/components/layout/Footer.jsx:10-33",
+      "quote": "export default function Footer({ className = '' })"
+    },
+    {
+      "at": "src/components/layout/Layout.jsx:78",
+      "quote": "{showFooter && <Footer />}"
+    }
+  ],
+  "usedInTemplates": [
+    "template.home"
+  ],
+  "constraints": {
+    "onePerPage": true,
+    "region": "main",
+    "mustBeLast": true,
+    "forbiddenIn": [
+      "template.not-found"
+    ]
+  },
+  "content": {
+    "fields": {
+      "brand": {
+        "type": "string",
+        "observedWords": 1,
+        "maxWords": 2,
+        "copyClass": "proprietary",
+        "observed": "Refire",
+        "cite": [
+          {
+            "at": "src/data/site.js:48",
+            "quote": "brand: 'Refire'"
+          }
+        ]
+      },
+      "rightsText": {
+        "type": "string",
+        "observedWords": 3,
+        "maxWords": 4,
+        "copyClass": "ui-microcopy",
+        "observed": " all rights reserved",
+        "cite": [
+          {
+            "at": "src/data/site.js:49",
+            "quote": "rights: ' all rights reserved'"
+          }
+        ]
+      },
+      "backToTopLabel": {
+        "type": "string",
+        "observedWords": 3,
+        "maxWords": 4,
+        "copyClass": "ui-microcopy",
+        "observed": "Back to Top",
+        "cite": [
+          {
+            "at": "src/data/site.js:50",
+            "quote": "backToTop: 'Back to Top'"
+          }
+        ]
+      }
+    }
+  },
+  "motion": {
+    "pattern": "none",
+    "trigger": "none",
+    "reducedMotionFallback": "none-in-source",
+    "cite": [
+      {
+        "at": "src/components/layout/Footer.jsx:14-31",
+        "quote": "<footer"
+      }
+    ],
+    "details": {
+      "backToTop": "smooth scroll to 0 using the page smooth-scroll lerp"
+    }
+  },
+  "responsive": {
+    "desktop": {
+      "columns": 3
+    },
+    "tablet": {
+      "columns": 3
+    },
+    "mobile": {
+      "columns": 3
+    },
+    "cite": [
+      {
+        "at": "src/components/layout/Footer.jsx:17",
+        "quote": "grid grid-cols-3"
+      }
+    ]
+  },
+  "tokens": [
+    "type.footer-row",
+    "border.footer-rule",
+    "surface.section",
+    "text.primary",
+    "layout.grid.footer",
+    "layout.padding.footer",
+    "icon.arrow-up"
+  ],
+  "composes": [
+    "primitive.icon"
+  ],
+  "behavior": {
+    "year": "computed at render time; not content",
+    "brandYearSeparator": "non-breaking space before the copyright sign"
+  },
+  "behaviorCite": [
+    {
+      "at": "src/components/layout/Footer.jsx:12",
+      "quote": "const year = new Date().getFullYear()"
+    }
+  ]
+}

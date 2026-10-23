@@ -1,0 +1,87 @@
+{
+  "id": "media.scroll-picture",
+  "category": "media",
+  "purpose": "Full-bleed photograph that starts inset 2% on both sides and opens to edge-to-edge while zooming 10% as it scrolls into view. No pinning.",
+  "cite": [
+    {
+      "at": "@home/ScrolledPicture.jsx:10-34",
+      "quote": "export default function ScrolledPicture({ data })"
+    }
+  ],
+  "usedInTemplates": [
+    "template.home"
+  ],
+  "constraints": {
+    "onePerPage": true,
+    "region": "main"
+  },
+  "content": {
+    "fields": {
+      "image": {
+        "type": "asset",
+        "assetRole": "media.scroll-picture",
+        "cite": [
+          {
+            "at": "src/data/home.js:37",
+            "quote": "scrolledPicture = { src: '/int/images/prisma-1.jpg', alt: '' }"
+          }
+        ]
+      },
+      "alt": {
+        "type": "string",
+        "observedWords": 0,
+        "maxWords": 12,
+        "copyClass": "ui-microcopy",
+        "observed": "",
+        "allowEmpty": true,
+        "note": "the source marks the picture decorative (empty alt); maxWords 12 is a ceiling for a descriptive alt if one is added, not an observed budget",
+        "cite": [
+          {
+            "at": "src/data/home.js:37",
+            "quote": "alt: ''"
+          }
+        ]
+      }
+    }
+  },
+  "motion": {
+    "pattern": "scroll-linked-clip-zoom",
+    "trigger": "every-scroll-frame-in-view",
+    "reducedMotionFallback": "none-in-source",
+    "cite": [
+      {
+        "at": "src/motion/scroll.js:40-59",
+        "quote": "export function useScrolledPicture(sectionRef, targetRef, lenis)"
+      }
+    ],
+    "details": {
+      "mapping": "{motion.param.scroll-picture-range}",
+      "tween": "600ms linear, overwrite"
+    }
+  },
+  "responsive": {
+    "desktop": {
+      "height": "100vh"
+    },
+    "tablet": {
+      "height": "78vh"
+    },
+    "mobile": {
+      "height": "68vh"
+    },
+    "cite": [
+      {
+        "at": "@home/ScrolledPicture.jsx:19",
+        "quote": "h-screen [backface-visibility:hidden] tablet:h-[78vh] mobile:h-[68vh]"
+      }
+    ]
+  },
+  "tokens": [
+    "layout.padding.scroll-picture",
+    "surface.section",
+    "motion.param.scroll-picture-range",
+    "motion.duration.600",
+    "motion.ease.linear"
+  ],
+  "composes": []
+}

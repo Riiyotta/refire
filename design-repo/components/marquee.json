@@ -1,0 +1,26 @@
+{
+  "id": "component.marquee",
+  "purpose": "Infinite horizontal text rail: repeats its item until wider than the viewport, auto-scrolls left, accepts drag/swipe with inertia, and only runs while in view.",
+  "props": {
+    "text": "string",
+    "minCopies": "integer"
+  },
+  "tokens": [
+    "type.ticker",
+    "motion.param.marquee-speed",
+    "motion.param.marquee-swipe-gain",
+    "motion.param.marquee-delta-decay",
+    "motion.param.marquee-swipe-threshold",
+    "motion.threshold.default"
+  ],
+  "cite": [
+    {
+      "at": "src/components/ui/Marquee.jsx:17-61",
+      "quote": "export default function Marquee("
+    },
+    {
+      "at": "src/motion/marquee.js:25-156",
+      "quote": "export function createMarquee("
+    }
+  ]
+}

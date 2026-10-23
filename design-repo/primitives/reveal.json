@@ -1,0 +1,37 @@
+{
+  "id": "primitive.reveal",
+  "purpose": "Fade (or blur/slide-fade) a block in once when its reveal trigger fires.",
+  "props": {
+    "pattern": [
+      "fade",
+      "fadeBlur",
+      "fadeLeft"
+    ],
+    "delayMs": "number",
+    "durationMs": "number",
+    "ease": "motion.ease.*"
+  },
+  "tokens": [
+    "motion.duration.700",
+    "motion.ease.circular-in-out"
+  ],
+  "cite": [
+    {
+      "at": "src/components/ui/Reveal.jsx:16-32",
+      "quote": "export default function Reveal({"
+    }
+  ],
+  "motion": {
+    "patterns": {
+      "fade": "opacity 0 -> 1",
+      "fadeBlur": "opacity 0 -> 1, translateY 15% -> 0, blur 20px -> 0",
+      "fadeLeft": "opacity 0 -> 1, translateX -20% -> 0"
+    },
+    "cite": [
+      {
+        "at": "src/motion/anims.js:10-15",
+        "quote": "fadeBlur: {"
+      }
+    ]
+  }
+}

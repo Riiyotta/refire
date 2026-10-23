@@ -1,0 +1,27 @@
+{
+  "id": "theme.system-error",
+  "default": false,
+  "description": "Stock error-page scheme used by template.not-found. It follows the OS colour scheme: light by default, inverted under prefers-color-scheme: dark. Shared chrome on this route still resolves from theme.refire-dark.",
+  "modes": {
+    "light": {
+      "text.error-page": "#000",
+      "surface.error-page": "#fff",
+      "border.error-divider": "rgba(0, 0, 0, .3)"
+    },
+    "prefers-dark": {
+      "text.error-page": "#fff",
+      "surface.error-page": "#000",
+      "border.error-divider": "rgba(255, 255, 255, .3)"
+    }
+  },
+  "cite": [
+    {
+      "at": "src/index.css:463",
+      "quote": "body.is-error-page"
+    },
+    {
+      "at": "src/index.css:468-471",
+      "quote": "@media (prefers-color-scheme: dark)"
+    }
+  ]
+}

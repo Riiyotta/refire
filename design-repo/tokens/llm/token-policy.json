@@ -1,0 +1,34 @@
+{
+  "$description": "What is enforced vs convention for token usage. Category keys match tokens/llm/token-catalog.json and real token-key prefixes (checked by verify_all.py).",
+  "resolutionOrder": [
+    "tokens/00-foundation",
+    "tokens/themes (mode)",
+    "tokens/10-semantic",
+    "tokens/20-component",
+    "tokens/30-layout (responsive per breakpoint)"
+  ],
+  "rawValueRestrictions": {
+    "text": "never a raw colour; use a text.* role",
+    "surface": "never a raw colour; use a surface.* role",
+    "border": "never a raw colour; use a border.* role",
+    "type": "never a raw font size/weight/line-height; use a type.* role",
+    "layout": "never a raw padding/gap; use layout.*",
+    "radius": "only radius.*",
+    "layer": "only layer.*",
+    "effect": "only effect.*",
+    "motion": "only motion.* (and only through the section's const-locked pattern)",
+    "icon": "only the 8 icon.* glyphs",
+    "component": "component.* tokens are fixed by contracts"
+  },
+  "overrides": "Enforced by absence: the PageSpec schema has no per-instance style/token-override field, so there is nothing for a generated page to override (MASTER-GUIDE 3.21). Token usage is owned by section/component contracts, whose `tokens` lists verify_all.py resolves against the real token files.",
+  "machineChecked": [
+    "every catalog id exists in a token file",
+    "every contract `tokens` entry resolves",
+    "every {reference} inside a token value resolves",
+    "themes resolve to the foundation values they claim",
+    "policy keys == catalog keys"
+  ],
+  "convention": [
+    "choosing among type.* roles for a new page is a design judgement, not machine-checked"
+  ]
+}

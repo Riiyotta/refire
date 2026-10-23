@@ -1,0 +1,49 @@
+{
+  "id": "primitive.split-text",
+  "purpose": "Wrap a heading or paragraph per word (or per character) so each unit can slide or fade in from an overflow-clipped box while lines still wrap naturally.",
+  "props": {
+    "text": "string",
+    "unit": [
+      "words",
+      "chars"
+    ],
+    "delayMs": "number",
+    "durationMs": "number",
+    "stagger": "number",
+    "ease": "motion.ease.*"
+  },
+  "tokens": [
+    "motion.duration.800",
+    "motion.ease.circular-out",
+    "motion.stagger.01"
+  ],
+  "cite": [
+    {
+      "at": "src/components/ui/SplitText.jsx:21-63",
+      "quote": "const SplitText = forwardRef(function SplitText({"
+    },
+    {
+      "at": "src/index.css:379-382",
+      "quote": ".split-el { position: relative; display: inline-flex; overflow: hidden; }"
+    }
+  ],
+  "motion": {
+    "patterns": {
+      "split": "translateY 100% -> 0 per unit",
+      "splitFade": "opacity 0 -> 1 per unit"
+    },
+    "cite": [
+      {
+        "at": "src/motion/anims.js:18-19",
+        "quote": "split: { start: { yPercent: 100 }, end: { yPercent: 0 } },"
+      }
+    ]
+  },
+  "accessibility": "root carries the full text as its accessible label; split units are hidden from assistive tech",
+  "a11yCite": [
+    {
+      "at": "src/components/ui/SplitText.jsx:39",
+      "quote": "aria-label={text}"
+    }
+  ]
+}

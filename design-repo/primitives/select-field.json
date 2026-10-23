@@ -1,0 +1,25 @@
+{
+  "id": "primitive.select-field",
+  "purpose": "Underlined custom select: chevron rotates 180deg when open, dropdown (always mounted) fades, options get a hover/selected underline.",
+  "props": {
+    "placeholder": "string",
+    "options": "string[]"
+  },
+  "tokens": [
+    "type.form-field",
+    "border.field",
+    "border.select",
+    "surface.section",
+    "layer.dropdown",
+    "motion.duration.300",
+    "motion.ease.circular-in-out",
+    "motion.ease.option-underline",
+    "icon.chevron-down"
+  ],
+  "cite": [
+    {
+      "at": "src/components/layout/ContactOverlay.jsx:41-104",
+      "quote": "function Select({ placeholder, options })"
+    }
+  ]
+}

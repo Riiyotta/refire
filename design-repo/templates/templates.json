@@ -1,0 +1,299 @@
+{
+  "templates": {
+    "template.home": {
+      "purpose": "The one-page marketing site: shared chrome, eight content sections, footer.",
+      "routes": [
+        "/"
+      ],
+      "theme": "theme.refire-dark",
+      "evidenceLevel": "measured (live original at 1440/1280/390 + source)",
+      "chromeConfig": {
+        "showFooter": true,
+        "showProgress": true,
+        "preloader": true
+      },
+      "nodes": [
+        {
+          "section": "chrome.preloader",
+          "required": true,
+          "repeatable": false,
+          "region": "chrome",
+          "note": "mounted until loading completes"
+        },
+        {
+          "section": "chrome.header",
+          "required": true,
+          "repeatable": false,
+          "region": "chrome"
+        },
+        {
+          "section": "chrome.scroll-progress",
+          "required": true,
+          "repeatable": false,
+          "region": "chrome"
+        },
+        {
+          "section": "overlay.contact",
+          "required": true,
+          "repeatable": false,
+          "region": "chrome"
+        },
+        {
+          "section": "chrome.cookie-pane",
+          "required": true,
+          "repeatable": false,
+          "region": "chrome",
+          "note": "rendered only until consent is stored"
+        },
+        {
+          "section": "chrome.cursor",
+          "required": true,
+          "repeatable": false,
+          "region": "chrome",
+          "note": "rendered only on hover-capable devices"
+        },
+        {
+          "section": "hero.video-title",
+          "required": true,
+          "repeatable": false,
+          "region": "main"
+        },
+        {
+          "section": "content.numbered-statement",
+          "required": true,
+          "repeatable": false,
+          "region": "main"
+        },
+        {
+          "section": "content.title-description",
+          "required": true,
+          "repeatable": false,
+          "region": "main"
+        },
+        {
+          "section": "stats.card-grid",
+          "required": true,
+          "repeatable": false,
+          "region": "main"
+        },
+        {
+          "section": "media.scroll-picture",
+          "required": true,
+          "repeatable": false,
+          "region": "main"
+        },
+        {
+          "section": "ticker.marquee",
+          "required": true,
+          "repeatable": false,
+          "region": "main"
+        },
+        {
+          "section": "content.event-accordion",
+          "required": true,
+          "repeatable": false,
+          "region": "main"
+        },
+        {
+          "section": "media.text-image-shader",
+          "required": true,
+          "repeatable": false,
+          "region": "main"
+        },
+        {
+          "section": "chrome.footer",
+          "required": true,
+          "repeatable": false,
+          "region": "main"
+        }
+      ],
+      "optionalityNote": "Only one real instance of this shape exists, so every node is required: no evidence supports dropping or reordering any section.",
+      "cite": [
+        {
+          "at": "src/pages/Home.jsx:13-26",
+          "quote": "<Hero data={home.hero} />"
+        },
+        {
+          "at": "src/components/layout/Layout.jsx:68-81",
+          "quote": "<SiteContext.Provider value={value}>"
+        }
+      ]
+    },
+    "template.not-found": {
+      "purpose": "Catch-all error page inside the shared chrome.",
+      "routes": [
+        "*"
+      ],
+      "theme": "theme.system-error",
+      "evidenceLevel": "measured (live original /int/404 at 1440 and 390 + source)",
+      "chromeConfig": {
+        "showFooter": false,
+        "showProgress": false,
+        "preloader": true
+      },
+      "nodes": [
+        {
+          "section": "chrome.preloader",
+          "required": true,
+          "repeatable": false,
+          "region": "chrome"
+        },
+        {
+          "section": "chrome.header",
+          "required": true,
+          "repeatable": false,
+          "region": "chrome",
+          "note": "near-invisible by design (white-on-white difference blend)"
+        },
+        {
+          "section": "overlay.contact",
+          "required": true,
+          "repeatable": false,
+          "region": "chrome"
+        },
+        {
+          "section": "chrome.cookie-pane",
+          "required": true,
+          "repeatable": false,
+          "region": "chrome"
+        },
+        {
+          "section": "chrome.cursor",
+          "required": true,
+          "repeatable": false,
+          "region": "chrome"
+        },
+        {
+          "section": "error.not-found",
+          "required": true,
+          "repeatable": false,
+          "region": "main"
+        }
+      ],
+      "forbiddenSections": [
+        "chrome.footer",
+        "chrome.scroll-progress"
+      ],
+      "documentTitle": "404: This page could not be found",
+      "notes": [
+        "No footer and no progress bar (Layout switches showFooter/showProgress off).",
+        "The header is near-invisible by design: the difference blend does not invert against the fixed white body. This matches the original.",
+        "Only the error body uses the system font stack."
+      ],
+      "cite": [
+        {
+          "at": "src/pages/NotFound.jsx:21",
+          "quote": "showFooter={false} showProgress={false}"
+        },
+        {
+          "at": "src/pages/NotFound.jsx:9",
+          "quote": "document.title = '404: This page could not be found'"
+        },
+        {
+          "at": "specs/ROUTES.md:64",
+          "quote": "| Footer, BackToTop | yes | **no** | Home only. |"
+        }
+      ]
+    }
+  },
+  "routes": [
+    {
+      "path": "/",
+      "template": "template.home",
+      "title": "Refire",
+      "cite": [
+        {
+          "at": "src/App.jsx:10",
+          "quote": "<Route path=\"/\" element={<Home />} />"
+        },
+        {
+          "at": "index.html:6",
+          "quote": "<title>Refire</title>"
+        }
+      ]
+    },
+    {
+      "path": "*",
+      "template": "template.not-found",
+      "title": "404: This page could not be found",
+      "cite": [
+        {
+          "at": "src/App.jsx:11",
+          "quote": "<Route path=\"*\" element={<NotFound />} />"
+        }
+      ]
+    }
+  ],
+  "pageMeta": {
+    "title": {
+      "type": "string",
+      "observedWords": 1,
+      "maxWords": 2,
+      "copyClass": "proprietary",
+      "observed": "Refire",
+      "cite": [
+        {
+          "at": "index.html:6",
+          "quote": "<title>Refire</title>"
+        }
+      ]
+    },
+    "description": {
+      "type": "string",
+      "observedWords": 32,
+      "maxWords": 39,
+      "copyClass": "proprietary",
+      "observed": "REFIRE is an international hydrogen energy technology company specializing in R&D, design, prototyping, testing, application engineering, and manufacturing of fuel cell systems for mobility and power products, superchargers, and grid support products.",
+      "cite": [
+        {
+          "at": "index.html:7",
+          "quote": "REFIRE is an international hydrogen energy technology company specializing in R&amp;D"
+        }
+      ]
+    }
+  },
+  "basePath": {
+    "value": "/int",
+    "note": "every route is served under /int (the original's locale prefix)",
+    "cite": [
+      {
+        "at": "src/App.jsx:8",
+        "quote": "<BrowserRouter basename=\"/int\""
+      }
+    ]
+  },
+  "outOfScope": {
+    "en.refire.com": {
+      "decision": "deliberate scope reduction chosen by the user",
+      "mustNotRecreate": true,
+      "reason": "a separate site on a separate host with its own codebase and design system; nothing on /int/ links to it (reachable only through the server's 301 fallback)",
+      "knownRoutesNotModelled": [
+        "/",
+        "/about",
+        "/investor-relations",
+        "/markets",
+        "/partners",
+        "/privacy",
+        "/products",
+        "/stories",
+        "/stories/{id}",
+        "/terms"
+      ],
+      "cite": [
+        {
+          "at": "specs/ROUTES.md:47-53",
+          "quote": "**https://en.refire.com/** is a different site on a separate host"
+        }
+      ]
+    }
+  },
+  "onePageEvidence": {
+    "note": "/int/ is a one-page static export: build manifest lists only '/', '/_app', '/_error'",
+    "cite": [
+      {
+        "at": "specs/ROUTES.md:7-15",
+        "quote": "sortedPages: [\"/\", \"/_app\", \"/_error\"]"
+      }
+    ]
+  }
+}

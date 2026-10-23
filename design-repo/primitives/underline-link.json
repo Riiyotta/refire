@@ -1,0 +1,29 @@
+{
+  "id": "primitive.underline-link",
+  "purpose": "Inline link that rests underlined (1px currentColor) and collapses the underline to the right on hover.",
+  "props": {
+    "label": "string",
+    "href": "link (mailto)"
+  },
+  "tokens": [
+    "motion.duration.500",
+    "motion.ease.underline-collapse"
+  ],
+  "cite": [
+    {
+      "at": "src/components/ui/UnderlineLink.jsx:7-17",
+      "quote": "export default function UnderlineLink("
+    }
+  ],
+  "motion": {
+    "patterns": {
+      "hover": "underline scaleX 1 -> 0, origin right"
+    },
+    "cite": [
+      {
+        "at": "src/index.css:432",
+        "quote": "transition: transform 0.5s cubic-bezier(1, 0, 0.29, 1);"
+      }
+    ]
+  }
+}

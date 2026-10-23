@@ -1,0 +1,30 @@
+{
+  "id": "component.section-title",
+  "purpose": "Numbered section header: a drawing line, then the number on the left and the label on the right.",
+  "props": {
+    "number": "string",
+    "title": "string"
+  },
+  "tokens": [
+    "type.section-title-row"
+  ],
+  "cite": [
+    {
+      "at": "src/components/ui/SectionTitle.jsx:13-30",
+      "quote": "export default function SectionTitle("
+    }
+  ],
+  "motion": {
+    "sequence": "line draws (delay 100ms) then the row fades (delay 200ms)",
+    "cite": [
+      {
+        "at": "src/components/ui/SectionTitle.jsx:20-23",
+        "quote": "<Line delay={100} />"
+      }
+    ]
+  },
+  "composes": [
+    "primitive.line",
+    "primitive.reveal"
+  ]
+}

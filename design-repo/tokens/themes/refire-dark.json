@@ -1,0 +1,35 @@
+{
+  "id": "theme.refire-dark",
+  "default": true,
+  "description": "Dark sections (#060508) over a paper root; used by template.home and by the shared chrome on every route.",
+  "resolves": {
+    "text.primary": "#fefefe",
+    "text.on-root": "#060508",
+    "text.muted": "#8b8b8b",
+    "text.label-light": "#c8c8c8",
+    "text.dim-heading": "#383739",
+    "text.accordion-body": "#888888",
+    "text.hero-center": "#8e8e8e",
+    "text.inverse": "#060508",
+    "text.cookie-link-rest": "#d0d0d0",
+    "surface.root": "#fefefe",
+    "surface.section": "#060508",
+    "surface.card": "#0e0e0e",
+    "surface.inverse": "#fefefe",
+    "surface.button-hover": "#383838",
+    "surface.progress-track": "rgba(6,5,8,.1)",
+    "surface.glass": "hsla(0,0%,100%,.1)",
+    "surface.cursor": "hsla(0,0%,71%,.25)",
+    "surface.webgl-clear": "#eeeeee",
+    "surface.selection": "#a59e99",
+    "border.footer-rule": "#555555",
+    "border.field": "#fefefe",
+    "border.select": "#828183"
+  },
+  "cite": [
+    {
+      "at": "src/components/layout/Layout.jsx:31",
+      "quote": "className = 'relative bg-primary text-dark'"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "id": "component.accordion",
+  "purpose": "Single-open accordion: all rows start closed, clicking the open row closes it; body height animates 0 <-> auto, the plus icon rotates 45deg, hover draws the icon circle.",
+  "props": {
+    "items": "[{title, body}]"
+  },
+  "tokens": [
+    "type.accordion-title",
+    "type.accordion-body",
+    "component.accordion.row-padding",
+    "component.accordion.body-box",
+    "icon.accordion-plus",
+    "icon.size.accordion-toggle",
+    "motion.duration.500",
+    "motion.ease.quad-in-out",
+    "motion.threshold.default"
+  ],
+  "cite": [
+    {
+      "at": "src/components/ui/Accordion.jsx:18-81",
+      "quote": "export default function Accordion("
+    }
+  ],
+  "motion": {
+    "sequence": "each row reveals at threshold 0.1: its top line draws on mount, title splits (stagger 0.03), icon and body fade",
+    "cite": [
+      {
+        "at": "src/motion/reveal.js:52-55",
+        "quote": "if (name === 'accordion-row')"
+      }
+    ]
+  },
+  "composes": [
+    "primitive.line",
+    "primitive.split-text",
+    "primitive.reveal",
+    "primitive.icon"
+  ],
+  "securityNote": "the source injects the body as raw HTML; the PageSpec contract therefore forbids markup in body text (rule NO_MARKUP_IN_TEXT)",
+  "securityCite": [
+    {
+      "at": "src/components/ui/Accordion.jsx:75",
+      "quote": "dangerouslySetInnerHTML={{ __html: item.body }}"
+    }
+  ]
+}

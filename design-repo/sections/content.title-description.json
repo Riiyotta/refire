@@ -1,0 +1,117 @@
+{
+  "id": "content.title-description",
+  "category": "content",
+  "purpose": "Two-column intro: a dim uppercase parenthetical title on the left, a regular-weight description on the right.",
+  "cite": [
+    {
+      "at": "@home/AboutRefire.jsx:8-28",
+      "quote": "export default function AboutRefire({ data })"
+    }
+  ],
+  "usedInTemplates": [
+    "template.home"
+  ],
+  "constraints": {
+    "onePerPage": true,
+    "region": "main"
+  },
+  "content": {
+    "fields": {
+      "title": {
+        "type": "string",
+        "observedWords": 2,
+        "maxWords": 3,
+        "copyClass": "proprietary",
+        "observed": "(About Refire)",
+        "cite": [
+          {
+            "at": "src/data/home.js:26",
+            "quote": "title: '(About Refire)'"
+          }
+        ]
+      },
+      "description": {
+        "type": "string",
+        "observedWords": 32,
+        "maxWords": 39,
+        "copyClass": "proprietary",
+        "observed": "REFIRE is an international hydrogen energy technology company specializing in R&D, design, prototyping, testing, application engineering, and manufacturing of fuel cell systems for mobility and power products, superchargers, and grid support products.",
+        "cite": [
+          {
+            "at": "src/data/home.js:28",
+            "quote": "REFIRE is an international hydrogen energy technology company"
+          }
+        ]
+      }
+    }
+  },
+  "motion": {
+    "pattern": "reveal-on-scroll",
+    "trigger": "scroll-threshold",
+    "reducedMotionFallback": "none-in-source",
+    "cite": [
+      {
+        "at": "@home/AboutRefire.jsx:13",
+        "quote": "data-anim-threshold=\"0.3\""
+      }
+    ],
+    "threshold": 0.3,
+    "details": {
+      "sequence": "title splits by word (stagger 0.03); description fades 700ms"
+    }
+  },
+  "responsive": {
+    "desktop": {
+      "direction": "row",
+      "descriptionWidth": {
+        "designPx": 722
+      }
+    },
+    "tablet": {
+      "direction": "row",
+      "descriptionWidth": {
+        "designPx": 342
+      }
+    },
+    "mobile": {
+      "direction": "column",
+      "descriptionWidth": {
+        "designPx": 294
+      }
+    },
+    "cite": [
+      {
+        "at": "@home/AboutRefire.jsx:15",
+        "quote": "flex justify-between px-gap mobile:flex-col"
+      },
+      {
+        "at": "@home/AboutRefire.jsx:22",
+        "quote": "w-f722"
+      }
+    ]
+  },
+  "tokens": [
+    "type.dim-heading-caps",
+    "type.lead-paragraph",
+    "surface.section",
+    "text.dim-heading",
+    "text.primary",
+    "layout.padding.title-description",
+    "layout.gutter",
+    "motion.threshold.section",
+    "motion.stagger.03"
+  ],
+  "composes": [
+    "primitive.split-text",
+    "primitive.reveal"
+  ],
+  "variants": [
+    "size-md"
+  ],
+  "variantCite": [
+    {
+      "at": "@home/AboutRefire.jsx:5",
+      "quote": "size \"md\""
+    }
+  ]
+}

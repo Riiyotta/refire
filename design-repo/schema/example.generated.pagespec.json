@@ -1,0 +1,304 @@
+{
+  "pageSpecVersion": "1.0.0",
+  "id": "page.generated-home",
+  "template": "template.home",
+  "route": "/",
+  "theme": "theme.refire-dark",
+  "provenance": "generated",
+  "meta": {
+    "title": "Example Energy",
+    "description": "Example Energy Co. designs modular hydrogen power units for depots, ports and remote sites, from first feasibility study to long-term service."
+  },
+  "nodes": [
+    {
+      "section": "chrome.preloader",
+      "content": {
+        "decorMark": "++",
+        "decorReadings": [
+          "1.00784",
+          "1.00811"
+        ],
+        "statusLabel": "initializing",
+        "tagline": "Engineering Cleaner Power"
+      },
+      "motion": {
+        "pattern": "preloader-progress",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "chrome.header",
+      "content": {
+        "logo": {
+          "assetRole": "brand.logo",
+          "src": "placeholder:brand.logo"
+        },
+        "openLabel": "Contact",
+        "closeLabel": "Close"
+      },
+      "motion": {
+        "pattern": "label-swap",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "chrome.scroll-progress",
+      "content": {},
+      "motion": {
+        "pattern": "scroll-linked-progress",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "overlay.contact",
+      "content": {
+        "titleHref": "mailto:hello@example.com",
+        "titleLines": [
+          "get",
+          "in touch"
+        ],
+        "formTitle": "Contact form",
+        "formText": "Tell us about your project and our team will reply within two working days.",
+        "phoneList": {
+          "title": "Phone us",
+          "lines": [
+            {
+              "prefix": "Main line",
+              "text": "+1 202 555 0143",
+              "href": "tel:+12025550143"
+            }
+          ]
+        },
+        "hoursList": {
+          "title": "Hours",
+          "lines": [
+            "Weekdays 9:00AM - 5:00PM"
+          ]
+        },
+        "departmentSelect": {
+          "placeholder": "Select a department you’d like to reach*",
+          "options": [
+            "Media",
+            "Sales",
+            "General"
+          ]
+        },
+        "fieldPlaceholders": [
+          "First Name*",
+          "Last Name*",
+          "Email*",
+          "Subject*"
+        ],
+        "messagePlaceholder": "Message*",
+        "consentNote": "*By submitting, the data provided will be used to perform your request according to the Privacy Policy",
+        "submitLabel": "submit",
+        "formSubmission": "non-submitting"
+      },
+      "motion": {
+        "pattern": "overlay-fade",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "chrome.cookie-pane",
+      "content": {
+        "message": "We use cookies to make things better",
+        "closeLabel": "Close"
+      },
+      "motion": {
+        "pattern": "fade",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "chrome.cursor",
+      "content": {},
+      "motion": {
+        "pattern": "cursor-follow",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "hero.video-title",
+      "content": {
+        "decor": "+ +",
+        "scrollLabel": "Scroll",
+        "eyebrow": "presenting",
+        "titleLines": [
+          "Quiet Power",
+          "anywhere"
+        ],
+        "descriptor": "for depots and ports",
+        "link": {
+          "label": "read the overview",
+          "href": "placeholder:document.brochure"
+        },
+        "video": {
+          "assetRole": "media.hero-video",
+          "src": "placeholder:media.hero-video"
+        },
+        "poster": {
+          "assetRole": "media.hero-poster",
+          "src": "placeholder:media.hero-poster"
+        }
+      },
+      "motion": {
+        "pattern": "hero-entrance",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "content.numbered-statement",
+      "variant": "description-big",
+      "content": {
+        "number": "01",
+        "label": "Open house",
+        "kicker": "Example Energy",
+        "statement": "Join our engineers at the spring open house to see a working unit, ask hard questions and plan a pilot for your own site."
+      },
+      "motion": {
+        "pattern": "reveal-on-scroll",
+        "threshold": 0.3,
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "content.title-description",
+      "variant": "size-md",
+      "content": {
+        "title": "(About Us)",
+        "description": "Example Energy Co. designs modular hydrogen power units for depots, ports and remote sites, from first feasibility study to long-term service."
+      },
+      "motion": {
+        "pattern": "reveal-on-scroll",
+        "threshold": 0.3,
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "stats.card-grid",
+      "content": {
+        "cards": [
+          {
+            "label": "key stat",
+            "index": 1,
+            "caption": "sites powered",
+            "value": "120"
+          },
+          {
+            "label": "key stat",
+            "index": 2,
+            "caption": "Hours In Service",
+            "value": "2M+"
+          },
+          {
+            "label": "key stat",
+            "index": 3,
+            "caption": "Field Engineers",
+            "value": "40"
+          }
+        ]
+      },
+      "motion": {
+        "pattern": "reveal-on-scroll",
+        "threshold": 0.3,
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "media.scroll-picture",
+      "content": {
+        "image": {
+          "assetRole": "media.scroll-picture",
+          "src": "placeholder:media.scroll-picture"
+        },
+        "alt": ""
+      },
+      "motion": {
+        "pattern": "scroll-linked-clip-zoom",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "ticker.marquee",
+      "content": {
+        "text": "Meet Us — ",
+        "minCopies": 3
+      },
+      "motion": {
+        "pattern": "marquee-drag",
+        "threshold": 0.1,
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "content.event-accordion",
+      "content": {
+        "title": "Open House",
+        "heading": "BAY 4 | NORTH YARD 12-14 May",
+        "address": "Example Energy Test Yard, Springfield",
+        "body": "Our test yard runs three units around the clock so visitors can see real duty cycles. Each session covers installation, refuelling and maintenance, with time for your own questions.",
+        "schedule": [
+          {
+            "title": "12 May, AM",
+            "body": "Site walk and unit overview with the field team"
+          },
+          {
+            "title": "13 May, PM",
+            "body": "Refuelling and maintenance demonstration"
+          }
+        ],
+        "contacts": [
+          {
+            "label": "Press: ",
+            "email": "press@example.com"
+          },
+          {
+            "label": "General: ",
+            "email": "hello@example.com"
+          }
+        ]
+      },
+      "motion": {
+        "pattern": "reveal-on-scroll",
+        "threshold": 0.1,
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "media.text-image-shader",
+      "variant": "reverse",
+      "content": {
+        "title": "Built for sites the grid forgot",
+        "body": "From island harbours to mountain depots, our units are sized for places where diesel is expensive and grid upgrades are years away.",
+        "links": [
+          {
+            "label": "read the overview",
+            "href": "placeholder:document.brochure"
+          }
+        ],
+        "image": {
+          "assetRole": "media.shader-picture",
+          "src": "placeholder:media.shader-picture"
+        }
+      },
+      "motion": {
+        "pattern": "text-reveal-with-shader",
+        "threshold": 0.3,
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "chrome.footer",
+      "content": {
+        "brand": "Example Energy",
+        "rightsText": " all rights reserved",
+        "backToTopLabel": "Back to Top"
+      },
+      "motion": {
+        "pattern": "none",
+        "reducedMotionFallback": "none-in-source"
+      }
+    }
+  ]
+}

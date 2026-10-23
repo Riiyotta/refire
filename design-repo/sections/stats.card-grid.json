@@ -1,0 +1,148 @@
+{
+  "id": "stats.card-grid",
+  "category": "stats",
+  "purpose": "Three tall dark cards, each a single headline metric with a ruled caption.",
+  "cite": [
+    {
+      "at": "@home/KeyStats.jsx:51-65",
+      "quote": "export default function KeyStats({ items })"
+    }
+  ],
+  "usedInTemplates": [
+    "template.home"
+  ],
+  "constraints": {
+    "onePerPage": true,
+    "region": "main"
+  },
+  "content": {
+    "fields": {
+      "cards": {
+        "type": "list",
+        "item": {
+          "type": "object",
+          "fields": {
+            "label": {
+              "type": "string",
+              "observedWords": 2,
+              "maxWords": 3,
+              "copyClass": "ui-microcopy",
+              "observed": "key stat",
+              "cite": [
+                {
+                  "at": "src/data/home.js:32",
+                  "quote": "label: 'key stat'"
+                }
+              ]
+            },
+            "index": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 999,
+              "cite": [
+                {
+                  "at": "@home/KeyStats.jsx:19",
+                  "quote": "String(number).padStart(3, '0')"
+                }
+              ]
+            },
+            "caption": {
+              "type": "string",
+              "observedWords": 4,
+              "maxWords": 5,
+              "copyClass": "proprietary",
+              "observed": "Tonnes Of CO2 Saved",
+              "cite": [
+                {
+                  "at": "src/data/home.js:33",
+                  "quote": "title: 'Tonnes Of CO2 Saved'"
+                }
+              ]
+            },
+            "value": {
+              "type": "string",
+              "observedWords": 1,
+              "maxWords": 2,
+              "copyClass": "proprietary",
+              "observed": "83K+",
+              "cite": [
+                {
+                  "at": "src/data/home.js:33",
+                  "quote": "value: '83K+'"
+                }
+              ],
+              "maxChars": 4
+            }
+          }
+        },
+        "minItems": 3,
+        "maxItems": 3,
+        "cite": [
+          {
+            "at": "@home/KeyStats.jsx:55",
+            "quote": "grid-cols-3"
+          }
+        ],
+        "note": "exactly three: the desktop grid is three columns"
+      }
+    }
+  },
+  "motion": {
+    "pattern": "reveal-on-scroll",
+    "trigger": "scroll-threshold",
+    "reducedMotionFallback": "none-in-source",
+    "cite": [
+      {
+        "at": "@home/KeyStats.jsx:13-14",
+        "quote": "data-anim-threshold=\"0.3\""
+      }
+    ],
+    "threshold": 0.3,
+    "details": {
+      "perCard": "each card is its own trigger: top row fades, caption fades (delay 300), value splits (delay 500, stagger 0.05)"
+    }
+  },
+  "responsive": {
+    "desktop": {
+      "columns": 3,
+      "cardHeight": {
+        "designPx": 745
+      }
+    },
+    "tablet": {
+      "columns": 1,
+      "cardHeight": {
+        "designPx": 550
+      },
+      "paddingInline": {
+        "designPx": 71
+      }
+    },
+    "mobile": {
+      "columns": 1,
+      "cardHeight": {
+        "designPx": 339
+      }
+    },
+    "cite": [
+      {
+        "at": "@home/KeyStats.jsx:55",
+        "quote": "tablet:grid-cols-1"
+      },
+      {
+        "at": "@home/KeyStats.jsx:12",
+        "quote": "tablet:h-f550"
+      }
+    ]
+  },
+  "tokens": [
+    "layout.grid.card-grid",
+    "layout.padding.card-grid",
+    "surface.section",
+    "motion.threshold.section",
+    "motion.stagger.05"
+  ],
+  "composes": [
+    "component.stat-card"
+  ]
+}

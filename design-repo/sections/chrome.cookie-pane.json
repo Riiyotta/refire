@@ -1,0 +1,98 @@
+{
+  "id": "chrome.cookie-pane",
+  "category": "chrome",
+  "purpose": "First-visit cookie notice pinned bottom-right on a paper panel; Close stores consent for one day and fades it out.",
+  "cite": [
+    {
+      "at": "src/components/layout/CookiePane.jsx:12-58",
+      "quote": "export default function CookiePane()"
+    },
+    {
+      "at": "src/components/layout/Layout.jsx:74",
+      "quote": "<CookiePane />"
+    }
+  ],
+  "usedInTemplates": [
+    "template.home",
+    "template.not-found"
+  ],
+  "constraints": {
+    "onePerPage": true,
+    "region": "chrome"
+  },
+  "content": {
+    "fields": {
+      "message": {
+        "type": "string",
+        "observedWords": 7,
+        "maxWords": 9,
+        "copyClass": "ui-microcopy",
+        "observed": "We use cookies to make things better",
+        "cite": [
+          {
+            "at": "src/data/site.js:12",
+            "quote": "title: 'We use cookies to make things better'"
+          }
+        ]
+      },
+      "closeLabel": {
+        "type": "string",
+        "observedWords": 1,
+        "maxWords": 2,
+        "copyClass": "ui-microcopy",
+        "observed": "Close",
+        "cite": [
+          {
+            "at": "src/data/site.js:12",
+            "quote": "close: 'Close'"
+          }
+        ]
+      }
+    }
+  },
+  "motion": {
+    "pattern": "fade",
+    "trigger": "on-mount-and-close",
+    "reducedMotionFallback": "none-in-source",
+    "cite": [
+      {
+        "at": "src/components/layout/CookiePane.jsx:25-29",
+        "quote": "duration: 0.7, ease: 'circ.inOut'"
+      }
+    ],
+    "details": {
+      "close": "sets consent cookie for 1 day, fades out over 700ms, stays mounted with pointer-events none"
+    }
+  },
+  "responsive": {
+    "desktop": {
+      "width": {
+        "designPx": 430
+      }
+    },
+    "tablet": {
+      "width": {
+        "designPx": 430
+      }
+    },
+    "mobile": {
+      "width": "100%"
+    },
+    "cite": [
+      {
+        "at": "src/components/layout/CookiePane.jsx:43",
+        "quote": "mobile:w-full"
+      }
+    ]
+  },
+  "tokens": [
+    "type.cookie-pane",
+    "surface.inverse",
+    "text.inverse",
+    "text.cookie-link-rest",
+    "layer.cookie-pane",
+    "component.cookie-pane.box",
+    "motion.duration.700"
+  ],
+  "composes": []
+}

@@ -1,0 +1,1588 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "refire-int/pagespec.schema.json",
+  "title": "Refire /int PageSpec",
+  "description": "Machine contract for a page composed from this design-repo. Structure only: JSON Schema cannot cross-check a PageSpec against its template's real node list, word budgets, route/theme bindings, asset provenance or copy reuse; schema/semantic_validate.py does that.",
+  "type": "object",
+  "properties": {
+    "pageSpecVersion": {
+      "const": "1.0.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^page\\.[a-z0-9-]+$"
+    },
+    "template": {
+      "type": "string",
+      "enum": [
+        "template.home",
+        "template.not-found"
+      ]
+    },
+    "route": {
+      "type": "string",
+      "pattern": "^(/|\\*)$",
+      "$comment": "only the two real routes exist; ROUTE_TEMPLATE_BINDING pairs them with templates"
+    },
+    "theme": {
+      "type": "string",
+      "enum": [
+        "theme.refire-dark",
+        "theme.system-error"
+      ]
+    },
+    "provenance": {
+      "type": "string",
+      "enum": [
+        "reference",
+        "generated"
+      ],
+      "description": "'reference' = documented reproduction of the authorized clone (may use real assets); 'generated' = any new page (placeholders only)."
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "title",
+        "description"
+      ],
+      "additionalProperties": false
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/node"
+      }
+    }
+  },
+  "required": [
+    "pageSpecVersion",
+    "id",
+    "template",
+    "route",
+    "theme",
+    "provenance",
+    "meta",
+    "nodes"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$comment": "rule:NOT_FOUND_COPY_LOCKED",
+      "if": {
+        "properties": {
+          "template": {
+            "const": "template.not-found"
+          }
+        },
+        "required": [
+          "template"
+        ]
+      },
+      "then": {
+        "properties": {
+          "meta": {
+            "properties": {
+              "title": {
+                "const": "404: This page could not be found"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "definitions": {
+    "assetRole": {
+      "$comment": "rule:ASSET_ROLE_CLOSED -- closed vocabulary, mirrors assets/asset-roles.json",
+      "type": "string",
+      "enum": [
+        "brand.logo",
+        "brand.favicon",
+        "media.hero-video",
+        "media.hero-poster",
+        "media.scroll-picture",
+        "media.shader-picture",
+        "media.social-image",
+        "document.brochure",
+        "font.brand-typeface",
+        "ui.icon"
+      ]
+    },
+    "assetRef": {
+      "type": "object",
+      "properties": {
+        "assetRole": {
+          "$ref": "#/definitions/assetRole"
+        },
+        "src": {
+          "type": "string",
+          "pattern": "^(/int/(images|videos)/[a-z0-9-]+\\.(jpg|png|mp4)|inline-svg:[a-z0-9-]+|placeholder:[a-z]+\\.[a-z-]+)$"
+        }
+      },
+      "required": [
+        "assetRole",
+        "src"
+      ],
+      "additionalProperties": false
+    },
+    "reducedMotionFallback": {
+      "$comment": "rule:REDUCED_MOTION_FIELD -- records the fact that the source has no reduced-motion handling; not a recommendation",
+      "const": "none-in-source"
+    },
+    "href.document": {
+      "$comment": "rule:HREF_ALLOWED_KINDS -- no http(s)/external links exist or are allowed",
+      "type": "string",
+      "pattern": "^(/int/files/[a-z0-9-]+\\.pdf|placeholder:document\\.brochure)$"
+    },
+    "href.mailto": {
+      "$comment": "rule:HREF_ALLOWED_KINDS -- no http(s)/external links exist or are allowed",
+      "type": "string",
+      "pattern": "^mailto:[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+    },
+    "href.tel": {
+      "$comment": "rule:HREF_ALLOWED_KINDS -- no http(s)/external links exist or are allowed",
+      "type": "string",
+      "pattern": "^tel:\\+[0-9]{6,15}$"
+    },
+    "content.chrome.preloader": {
+      "type": "object",
+      "properties": {
+        "decorMark": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4
+        },
+        "decorReadings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "statusLabel": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tagline": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "decorMark",
+        "decorReadings",
+        "statusLabel",
+        "tagline"
+      ],
+      "additionalProperties": false
+    },
+    "motion.chrome.preloader": {
+      "$comment": "rule:MOTION_CLOSED -- only evidence-grounded fields; pattern/threshold const-locked",
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "const": "preloader-progress"
+        },
+        "reducedMotionFallback": {
+          "$ref": "#/definitions/reducedMotionFallback"
+        }
+      },
+      "required": [
+        "pattern",
+        "reducedMotionFallback"
+      ],
+      "additionalProperties": false
+    },
+    "content.chrome.header": {
+      "type": "object",
+      "properties": {
+        "logo": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/assetRef"
+            },
+            {
+              "properties": {
+                "assetRole": {
+                  "const": "brand.logo"
+                }
+              }
+            }
+          ]
+        },
+        "openLabel": {
+          "type": "string",
+          "minLength": 1
+        },
+        "closeLabel": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "logo",
+        "openLabel",
+        "closeLabel"
+      ],
+      "additionalProperties": false
+    },
+    "motion.chrome.header": {
+      "$comment": "rule:MOTION_CLOSED -- only evidence-grounded fields; pattern/threshold const-locked",
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "const": "label-swap"
+        },
+        "reducedMotionFallback": {
+          "$ref": "#/definitions/reducedMotionFallback"
+        }
+      },
+      "required": [
+        "pattern",
+        "reducedMotionFallback"
+      ],
+      "additionalProperties": false
+    },
+    "content.chrome.scroll-progress": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "motion.chrome.scroll-progress": {
+      "$comment": "rule:MOTION_CLOSED -- only evidence-grounded fields; pattern/threshold const-locked",
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "const": "scroll-linked-progress"
+        },
+        "reducedMotionFallback": {
+          "$ref": "#/definitions/reducedMotionFallback"
+        }
+      },
+      "required": [
+        "pattern",
+        "reducedMotionFallback"
+      ],
+      "additionalProperties": false
+    },
+    "content.overlay.contact": {
+      "type": "object",
+      "properties": {
+        "titleHref": {
+          "$ref": "#/definitions/href.mailto"
+        },
+        "titleLines": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "formTitle": {
+          "type": "string",
+          "minLength": 1
+        },
+        "formText": {
+          "type": "string",
+          "minLength": 1
+        },
+        "phoneList": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1
+            },
+            "lines": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "prefix": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20
+                  },
+                  "href": {
+                    "$ref": "#/definitions/href.tel"
+                  }
+                },
+                "required": [
+                  "prefix",
+                  "text",
+                  "href"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1,
+              "maxItems": 2
+            }
+          },
+          "required": [
+            "title",
+            "lines"
+          ],
+          "additionalProperties": false
+        },
+        "hoursList": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1
+            },
+            "lines": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1,
+              "maxItems": 2
+            }
+          },
+          "required": [
+            "title",
+            "lines"
+          ],
+          "additionalProperties": false
+        },
+        "departmentSelect": {
+          "type": "object",
+          "properties": {
+            "placeholder": {
+              "type": "string",
+              "minLength": 1
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 24
+              },
+              "minItems": 1,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "placeholder",
+            "options"
+          ],
+          "additionalProperties": false
+        },
+        "fieldPlaceholders": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "messagePlaceholder": {
+          "type": "string",
+          "minLength": 1
+        },
+        "consentNote": {
+          "type": "string",
+          "minLength": 1
+        },
+        "submitLabel": {
+          "type": "string",
+          "minLength": 1
+        },
+        "formSubmission": {
+          "const": "non-submitting",
+          "$comment": "rule:CONTACT_FORM_NON_SUBMITTING"
+        }
+      },
+      "required": [
+        "titleHref",
+        "titleLines",
+        "formTitle",
+        "formText",
+        "phoneList",
+        "hoursList",
+        "departmentSelect",
+        "fieldPlaceholders",
+        "messagePlaceholder",
+        "consentNote",
+        "submitLabel",
+        "formSubmission"
+      ],
+      "additionalProperties": false
+    },
+    "motion.overlay.contact": {
+      "$comment": "rule:MOTION_CLOSED -- only evidence-grounded fields; pattern/threshold const-locked",
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "const": "overlay-fade"
+        },
+        "reducedMotionFallback": {
+          "$ref": "#/definitions/reducedMotionFallback"
+        }
+      },
+      "required": [
+        "pattern",
+        "reducedMotionFallback"
+      ],
+      "additionalProperties": false
+    },
+    "content.chrome.cookie-pane": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "closeLabel": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "message",
+        "closeLabel"
+      ],
+      "additionalProperties": false
+    },
+    "motion.chrome.cookie-pane": {
+      "$comment": "rule:MOTION_CLOSED -- only evidence-grounded fields; pattern/threshold const-locked",
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "const": "fade"
+        },
+        "reducedMotionFallback": {
+          "$ref": "#/definitions/reducedMotionFallback"
+        }
+      },
+      "required": [
+        "pattern",
+        "reducedMotionFallback"
+      ],
+      "additionalProperties": false
+    },
+    "content.chrome.cursor": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "motion.chrome.cursor": {
+      "$comment": "rule:MOTION_CLOSED -- only evidence-grounded fields; pattern/threshold const-locked",
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "const": "cursor-follow"
+        },
+        "reducedMotionFallback": {
+          "$ref": "#/definitions/reducedMotionFallback"
+        }
+      },
+      "required": [
+        "pattern",
+        "reducedMotionFallback"
+      ],
+      "additionalProperties": false
+    },
+    "content.hero.video-title": {
+      "type": "object",
+      "properties": {
+        "decor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4
+        },
+        "scrollLabel": {
+          "type": "string",
+          "minLength": 1
+        },
+        "eyebrow": {
+          "type": "string",
+          "minLength": 1
+        },
+        "titleLines": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "descriptor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "link": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "minLength": 1
+            },
+            "href": {
+              "$ref": "#/definitions/href.document"
+            }
+          },
+          "required": [
+            "label",
+            "href"
+          ],
+          "additionalProperties": false
+        },
+        "video": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/assetRef"
+            },
+            {
+              "properties": {
+                "assetRole": {
+                  "const": "media.hero-video"
+                }
+              }
+            }
+          ]
+        },
+        "poster": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/assetRef"
+            },
+            {
+              "properties": {
+                "assetRole": {
+                  "const": "media.hero-poster"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "decor",
+        "scrollLabel",
+        "eyebrow",
+        "titleLines",
+        "descriptor",
+        "link",
+        "video",
+        "poster"
+      ],
+      "additionalProperties": false
+    },
+    "motion.hero.video-title": {
+      "$comment": "rule:MOTION_CLOSED -- only evidence-grounded fields; pattern/threshold const-locked",
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "const": "hero-entrance"
+        },
+        "reducedMotionFallback": {
+          "$ref": "#/definitions/reducedMotionFallback"
+        }
+      },
+      "required": [
+        "pattern",
+        "reducedMotionFallback"
+      ],
+      "additionalProperties": false
+    },
+    "content.content.numbered-statement": {
+      "type": "object",
+      "properties": {
+        "number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2,
+          "pattern": "^[0-9]{2}$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kicker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "number",
+        "label",
+        "kicker",
+        "statement"
+      ],
+      "additionalProperties": false
+    },
+    "motion.content.numbered-statement": {
+      "$comment": "rule:MOTION_CLOSED -- only evidence-grounded fields; pattern/threshold const-locked",
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "const": "reveal-on-scroll"
+        },
+        "reducedMotionFallback": {
+          "$ref": "#/definitions/reducedMotionFallback"
+        },
+        "threshold": {
+          "const": 0.3
+        }
+      },
+      "required": [
+        "pattern",
+        "reducedMotionFallback",
+        "threshold"
+      ],
+      "additionalProperties": false
+    },
+    "content.content.title-description": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "title",
+        "description"
+      ],
+      "additionalProperties": false
+    },
+    "motion.content.title-description": {
+      "$comment": "rule:MOTION_CLOSED -- only evidence-grounded fields; pattern/threshold const-locked",
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "const": "reveal-on-scroll"
+        },
+        "reducedMotionFallback": {
+          "$ref": "#/definitions/reducedMotionFallback"
+        },
+        "threshold": {
+          "const": 0.3
+        }
+      },
+      "required": [
+        "pattern",
+        "reducedMotionFallback",
+        "threshold"
+      ],
+      "additionalProperties": false
+    },
+    "content.stats.card-grid": {
+      "type": "object",
+      "properties": {
+        "cards": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "index": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 999
+              },
+              "caption": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4
+              }
+            },
+            "required": [
+              "label",
+              "index",
+              "caption",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 3,
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "cards"
+      ],
+      "additionalProperties": false
+    },
+    "motion.stats.card-grid": {
+      "$comment": "rule:MOTION_CLOSED -- only evidence-grounded fields; pattern/threshold const-locked",
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "const": "reveal-on-scroll"
+        },
+        "reducedMotionFallback": {
+          "$ref": "#/definitions/reducedMotionFallback"
+        },
+        "threshold": {
+          "const": 0.3
+        }
+      },
+      "required": [
+        "pattern",
+        "reducedMotionFallback",
+        "threshold"
+      ],
+      "additionalProperties": false
+    },
+    "content.media.scroll-picture": {
+      "type": "object",
+      "properties": {
+        "image": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/assetRef"
+            },
+            {
+              "properties": {
+                "assetRole": {
+                  "const": "media.scroll-picture"
+                }
+              }
+            }
+          ]
+        },
+        "alt": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "image",
+        "alt"
+      ],
+      "additionalProperties": false
+    },
+    "motion.media.scroll-picture": {
+      "$comment": "rule:MOTION_CLOSED -- only evidence-grounded fields; pattern/threshold const-locked",
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "const": "scroll-linked-clip-zoom"
+        },
+        "reducedMotionFallback": {
+          "$ref": "#/definitions/reducedMotionFallback"
+        }
+      },
+      "required": [
+        "pattern",
+        "reducedMotionFallback"
+      ],
+      "additionalProperties": false
+    },
+    "content.ticker.marquee": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 24
+        },
+        "minCopies": {
+          "const": 3
+        }
+      },
+      "required": [
+        "text",
+        "minCopies"
+      ],
+      "additionalProperties": false
+    },
+    "motion.ticker.marquee": {
+      "$comment": "rule:MOTION_CLOSED -- only evidence-grounded fields; pattern/threshold const-locked",
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "const": "marquee-drag"
+        },
+        "reducedMotionFallback": {
+          "$ref": "#/definitions/reducedMotionFallback"
+        },
+        "threshold": {
+          "const": 0.1
+        }
+      },
+      "required": [
+        "pattern",
+        "reducedMotionFallback",
+        "threshold"
+      ],
+      "additionalProperties": false
+    },
+    "content.content.event-accordion": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "heading": {
+          "type": "string",
+          "minLength": 1
+        },
+        "address": {
+          "type": "string",
+          "minLength": 1
+        },
+        "body": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schedule": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 24
+              },
+              "body": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "title",
+              "body"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 5
+        },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "email": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+              }
+            },
+            "required": [
+              "label",
+              "email"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "title",
+        "heading",
+        "address",
+        "body",
+        "schedule",
+        "contacts"
+      ],
+      "additionalProperties": false
+    },
+    "motion.content.event-accordion": {
+      "$comment": "rule:MOTION_CLOSED -- only evidence-grounded fields; pattern/threshold const-locked",
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "const": "reveal-on-scroll"
+        },
+        "reducedMotionFallback": {
+          "$ref": "#/definitions/reducedMotionFallback"
+        },
+        "threshold": {
+          "const": 0.1
+        }
+      },
+      "required": [
+        "pattern",
+        "reducedMotionFallback",
+        "threshold"
+      ],
+      "additionalProperties": false
+    },
+    "content.media.text-image-shader": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "body": {
+          "type": "string",
+          "minLength": 1
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "href": {
+                "$ref": "#/definitions/href.document"
+              }
+            },
+            "required": [
+              "label",
+              "href"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "image": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/assetRef"
+            },
+            {
+              "properties": {
+                "assetRole": {
+                  "const": "media.shader-picture"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "body",
+        "links",
+        "image"
+      ],
+      "additionalProperties": false
+    },
+    "motion.media.text-image-shader": {
+      "$comment": "rule:MOTION_CLOSED -- only evidence-grounded fields; pattern/threshold const-locked",
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "const": "text-reveal-with-shader"
+        },
+        "reducedMotionFallback": {
+          "$ref": "#/definitions/reducedMotionFallback"
+        },
+        "threshold": {
+          "const": 0.3
+        }
+      },
+      "required": [
+        "pattern",
+        "reducedMotionFallback",
+        "threshold"
+      ],
+      "additionalProperties": false
+    },
+    "content.chrome.footer": {
+      "type": "object",
+      "properties": {
+        "brand": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rightsText": {
+          "type": "string",
+          "minLength": 1
+        },
+        "backToTopLabel": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "brand",
+        "rightsText",
+        "backToTopLabel"
+      ],
+      "additionalProperties": false
+    },
+    "motion.chrome.footer": {
+      "$comment": "rule:MOTION_CLOSED -- only evidence-grounded fields; pattern/threshold const-locked",
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "const": "none"
+        },
+        "reducedMotionFallback": {
+          "$ref": "#/definitions/reducedMotionFallback"
+        }
+      },
+      "required": [
+        "pattern",
+        "reducedMotionFallback"
+      ],
+      "additionalProperties": false
+    },
+    "content.error.not-found": {
+      "type": "object",
+      "properties": {
+        "statusCode": {
+          "const": "404"
+        },
+        "message": {
+          "const": "This page could not be found."
+        }
+      },
+      "required": [
+        "statusCode",
+        "message"
+      ],
+      "additionalProperties": false,
+      "$comment": "rule:NOT_FOUND_COPY_LOCKED"
+    },
+    "motion.error.not-found": {
+      "$comment": "rule:MOTION_CLOSED -- only evidence-grounded fields; pattern/threshold const-locked",
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "const": "none"
+        },
+        "reducedMotionFallback": {
+          "$ref": "#/definitions/reducedMotionFallback"
+        }
+      },
+      "required": [
+        "pattern",
+        "reducedMotionFallback"
+      ],
+      "additionalProperties": false
+    },
+    "node": {
+      "type": "object",
+      "properties": {
+        "section": {
+          "type": "string",
+          "enum": [
+            "chrome.preloader",
+            "chrome.header",
+            "chrome.scroll-progress",
+            "overlay.contact",
+            "chrome.cookie-pane",
+            "chrome.cursor",
+            "hero.video-title",
+            "content.numbered-statement",
+            "content.title-description",
+            "stats.card-grid",
+            "media.scroll-picture",
+            "ticker.marquee",
+            "content.event-accordion",
+            "media.text-image-shader",
+            "chrome.footer",
+            "error.not-found"
+          ]
+        },
+        "variant": {
+          "type": "string"
+        },
+        "content": {
+          "type": "object"
+        },
+        "motion": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "section",
+        "content",
+        "motion"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "section": {
+                "const": "chrome.preloader"
+              }
+            },
+            "required": [
+              "section"
+            ]
+          },
+          "then": {
+            "properties": {
+              "content": {
+                "$ref": "#/definitions/content.chrome.preloader"
+              },
+              "motion": {
+                "$ref": "#/definitions/motion.chrome.preloader"
+              }
+            },
+            "not": {
+              "required": [
+                "variant"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "section": {
+                "const": "chrome.header"
+              }
+            },
+            "required": [
+              "section"
+            ]
+          },
+          "then": {
+            "properties": {
+              "content": {
+                "$ref": "#/definitions/content.chrome.header"
+              },
+              "motion": {
+                "$ref": "#/definitions/motion.chrome.header"
+              }
+            },
+            "not": {
+              "required": [
+                "variant"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "section": {
+                "const": "chrome.scroll-progress"
+              }
+            },
+            "required": [
+              "section"
+            ]
+          },
+          "then": {
+            "properties": {
+              "content": {
+                "$ref": "#/definitions/content.chrome.scroll-progress"
+              },
+              "motion": {
+                "$ref": "#/definitions/motion.chrome.scroll-progress"
+              }
+            },
+            "not": {
+              "required": [
+                "variant"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "section": {
+                "const": "overlay.contact"
+              }
+            },
+            "required": [
+              "section"
+            ]
+          },
+          "then": {
+            "properties": {
+              "content": {
+                "$ref": "#/definitions/content.overlay.contact"
+              },
+              "motion": {
+                "$ref": "#/definitions/motion.overlay.contact"
+              }
+            },
+            "not": {
+              "required": [
+                "variant"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "section": {
+                "const": "chrome.cookie-pane"
+              }
+            },
+            "required": [
+              "section"
+            ]
+          },
+          "then": {
+            "properties": {
+              "content": {
+                "$ref": "#/definitions/content.chrome.cookie-pane"
+              },
+              "motion": {
+                "$ref": "#/definitions/motion.chrome.cookie-pane"
+              }
+            },
+            "not": {
+              "required": [
+                "variant"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "section": {
+                "const": "chrome.cursor"
+              }
+            },
+            "required": [
+              "section"
+            ]
+          },
+          "then": {
+            "properties": {
+              "content": {
+                "$ref": "#/definitions/content.chrome.cursor"
+              },
+              "motion": {
+                "$ref": "#/definitions/motion.chrome.cursor"
+              }
+            },
+            "not": {
+              "required": [
+                "variant"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "section": {
+                "const": "hero.video-title"
+              }
+            },
+            "required": [
+              "section"
+            ]
+          },
+          "then": {
+            "properties": {
+              "content": {
+                "$ref": "#/definitions/content.hero.video-title"
+              },
+              "motion": {
+                "$ref": "#/definitions/motion.hero.video-title"
+              }
+            },
+            "not": {
+              "required": [
+                "variant"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "section": {
+                "const": "content.numbered-statement"
+              }
+            },
+            "required": [
+              "section"
+            ]
+          },
+          "then": {
+            "properties": {
+              "content": {
+                "$ref": "#/definitions/content.content.numbered-statement"
+              },
+              "motion": {
+                "$ref": "#/definitions/motion.content.numbered-statement"
+              },
+              "variant": {
+                "enum": [
+                  "description-big"
+                ]
+              }
+            },
+            "required": [
+              "variant"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "section": {
+                "const": "content.title-description"
+              }
+            },
+            "required": [
+              "section"
+            ]
+          },
+          "then": {
+            "properties": {
+              "content": {
+                "$ref": "#/definitions/content.content.title-description"
+              },
+              "motion": {
+                "$ref": "#/definitions/motion.content.title-description"
+              },
+              "variant": {
+                "enum": [
+                  "size-md"
+                ]
+              }
+            },
+            "required": [
+              "variant"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "section": {
+                "const": "stats.card-grid"
+              }
+            },
+            "required": [
+              "section"
+            ]
+          },
+          "then": {
+            "properties": {
+              "content": {
+                "$ref": "#/definitions/content.stats.card-grid"
+              },
+              "motion": {
+                "$ref": "#/definitions/motion.stats.card-grid"
+              }
+            },
+            "not": {
+              "required": [
+                "variant"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "section": {
+                "const": "media.scroll-picture"
+              }
+            },
+            "required": [
+              "section"
+            ]
+          },
+          "then": {
+            "properties": {
+              "content": {
+                "$ref": "#/definitions/content.media.scroll-picture"
+              },
+              "motion": {
+                "$ref": "#/definitions/motion.media.scroll-picture"
+              }
+            },
+            "not": {
+              "required": [
+                "variant"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "section": {
+                "const": "ticker.marquee"
+              }
+            },
+            "required": [
+              "section"
+            ]
+          },
+          "then": {
+            "properties": {
+              "content": {
+                "$ref": "#/definitions/content.ticker.marquee"
+              },
+              "motion": {
+                "$ref": "#/definitions/motion.ticker.marquee"
+              }
+            },
+            "not": {
+              "required": [
+                "variant"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "section": {
+                "const": "content.event-accordion"
+              }
+            },
+            "required": [
+              "section"
+            ]
+          },
+          "then": {
+            "properties": {
+              "content": {
+                "$ref": "#/definitions/content.content.event-accordion"
+              },
+              "motion": {
+                "$ref": "#/definitions/motion.content.event-accordion"
+              }
+            },
+            "not": {
+              "required": [
+                "variant"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "section": {
+                "const": "media.text-image-shader"
+              }
+            },
+            "required": [
+              "section"
+            ]
+          },
+          "then": {
+            "properties": {
+              "content": {
+                "$ref": "#/definitions/content.media.text-image-shader"
+              },
+              "motion": {
+                "$ref": "#/definitions/motion.media.text-image-shader"
+              },
+              "variant": {
+                "enum": [
+                  "reverse"
+                ]
+              }
+            },
+            "required": [
+              "variant"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "section": {
+                "const": "chrome.footer"
+              }
+            },
+            "required": [
+              "section"
+            ]
+          },
+          "then": {
+            "properties": {
+              "content": {
+                "$ref": "#/definitions/content.chrome.footer"
+              },
+              "motion": {
+                "$ref": "#/definitions/motion.chrome.footer"
+              }
+            },
+            "not": {
+              "required": [
+                "variant"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "section": {
+                "const": "error.not-found"
+              }
+            },
+            "required": [
+              "section"
+            ]
+          },
+          "then": {
+            "properties": {
+              "content": {
+                "$ref": "#/definitions/content.error.not-found"
+              },
+              "motion": {
+                "$ref": "#/definitions/motion.error.not-found"
+              }
+            },
+            "not": {
+              "required": [
+                "variant"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

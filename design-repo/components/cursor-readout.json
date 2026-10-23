@@ -1,0 +1,14 @@
+{
+  "id": "component.cursor-readout",
+  "purpose": "Live pointer coordinate readout 'x . N / y . N' (integers) with a small dot; only on hover-capable devices.",
+  "props": {},
+  "tokens": [
+    "type.hero-cursor-readout"
+  ],
+  "cite": [
+    {
+      "at": "@home/Hero.jsx:8-29",
+      "quote": "function CursorInfo()"
+    }
+  ]
+}

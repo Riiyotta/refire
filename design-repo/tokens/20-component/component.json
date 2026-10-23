@@ -1,0 +1,486 @@
+{
+  "$description": "Approved component-scoped applications of foundation values (component tokens).",
+  "tokens": {
+    "component.header.padding-block": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "designPx": 30
+        },
+        "tablet": {
+          "designPx": 20
+        },
+        "mobile": {
+          "designPx": 18
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/Header.jsx:37",
+          "quote": "py-f30"
+        }
+      ]
+    },
+    "component.header.logo-size": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "w": {
+            "designPx": 159
+          },
+          "h": {
+            "designPx": 23
+          }
+        },
+        "tablet": {
+          "w": {
+            "designPx": 159
+          },
+          "h": {
+            "designPx": 23
+          }
+        },
+        "mobile": {
+          "w": {
+            "designPx": 104
+          },
+          "h": {
+            "designPx": 15
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/Header.jsx:43",
+          "quote": "h-f23 w-f159 mobile:h-f15 mobile:w-f104"
+        }
+      ]
+    },
+    "component.pill.box": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "width": {
+            "designPx": 116
+          },
+          "padding": {
+            "top": {
+              "designPx": 14
+            },
+            "right": {
+              "designPx": 22
+            },
+            "bottom": {
+              "designPx": 10
+            },
+            "left": {
+              "designPx": 20
+            }
+          },
+          "marginInlineStart": {
+            "designPx": 42
+          }
+        },
+        "tablet": {
+          "width": {
+            "designPx": 116
+          },
+          "marginInlineStart": {
+            "designPx": 38
+          }
+        },
+        "mobile": {
+          "width": {
+            "designPx": 78
+          },
+          "padding": {
+            "top": {
+              "designPx": 9
+            },
+            "right": {
+              "designPx": 10
+            },
+            "bottom": {
+              "designPx": 6
+            },
+            "left": {
+              "designPx": 10
+            }
+          },
+          "marginInlineStart": {
+            "designPx": 20
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/Header.jsx:52",
+          "quote": "ml-f42 w-f116 rounded-f150 pb-f10 pl-f20 pr-f22 pt-f14"
+        }
+      ]
+    },
+    "component.pill.outline-dash": {
+      "$type": "rule",
+      "$value": {
+        "dasharray": "360 360",
+        "restOffset": -640,
+        "hoverOffset": -438,
+        "rotate": "180deg"
+      },
+      "cite": [
+        {
+          "at": "src/index.css:173-175",
+          "quote": "stroke-dasharray: 360 360;"
+        },
+        {
+          "at": "src/index.css:179",
+          "quote": "stroke-dashoffset: -438;"
+        }
+      ]
+    },
+    "component.progress.height": {
+      "$type": "dimension",
+      "$value": "2px",
+      "cite": [
+        {
+          "at": "src/components/layout/ScrollProgress.jsx:16",
+          "quote": "h-[2px]"
+        }
+      ]
+    },
+    "component.cursor.box": {
+      "$type": "dimension",
+      "$value": {
+        "size": "74px",
+        "restScale": 0.4325,
+        "visibleDiameter": "32px"
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/Cursor.jsx:81",
+          "quote": "h-[74px] w-[74px]"
+        },
+        {
+          "at": "src/index.css:193",
+          "quote": "--scale: 0.4325;"
+        }
+      ]
+    },
+    "component.cookie-pane.box": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "width": {
+            "designPx": 430
+          },
+          "padding": {
+            "designPx": 26
+          },
+          "titleWidth": {
+            "designPx": 276
+          },
+          "linkGap": {
+            "designPx": 42
+          }
+        },
+        "tablet": {
+          "width": {
+            "designPx": 430
+          },
+          "padding": {
+            "designPx": 26
+          }
+        },
+        "mobile": {
+          "width": "100%",
+          "padding": {
+            "designPx": 18
+          },
+          "linkGap": {
+            "designPx": 10
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/CookiePane.jsx:43",
+          "quote": "w-f430 items-start justify-between bg-primary p-f26"
+        }
+      ]
+    },
+    "component.card.box": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "height": {
+            "designPx": 745
+          },
+          "padding": {
+            "top": {
+              "designPx": 35
+            },
+            "inline": {
+              "designPx": 38
+            },
+            "bottom": {
+              "designPx": 11
+            }
+          }
+        },
+        "tablet": {
+          "height": {
+            "designPx": 550
+          },
+          "padding": {
+            "top": {
+              "designPx": 31
+            },
+            "inline": {
+              "designPx": 20
+            },
+            "bottom": {
+              "designPx": 6
+            }
+          }
+        },
+        "mobile": {
+          "height": {
+            "designPx": 339
+          },
+          "padding": {
+            "top": {
+              "designPx": 10
+            },
+            "right": {
+              "designPx": 14
+            },
+            "bottom": 0,
+            "left": {
+              "designPx": 12
+            }
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "@home/KeyStats.jsx:12",
+          "quote": "h-f745 flex-col justify-between rounded-f15 bg-alt-dark px-f38 pb-f11 pt-f35"
+        }
+      ]
+    },
+    "component.button.box": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "padding": {
+            "block": {
+              "designPx": 17
+            },
+            "inline": {
+              "designPx": 45
+            }
+          }
+        },
+        "tablet": {
+          "padding": {
+            "block": {
+              "designPx": 7
+            },
+            "inline": {
+              "designPx": 32
+            }
+          }
+        },
+        "mobile": {
+          "padding": {
+            "block": {
+              "designPx": 7
+            },
+            "inline": {
+              "designPx": 20
+            }
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/ui/BlackButton.jsx:24",
+          "quote": "px-f45 py-f17"
+        }
+      ]
+    },
+    "component.glass-link.padding": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "designPx": 27
+        },
+        "tablet": {
+          "top": {
+            "designPx": 18
+          },
+          "inline": {
+            "designPx": 24
+          },
+          "bottom": {
+            "designPx": 17
+          }
+        },
+        "mobile": {
+          "top": {
+            "designPx": 11
+          },
+          "inline": {
+            "designPx": 12
+          },
+          "bottom": {
+            "designPx": 10
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "@home/Hero.jsx:140",
+          "quote": "p-f27"
+        }
+      ]
+    },
+    "component.form.field-rule": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "borderBottom": "2px",
+          "paddingBottom": {
+            "designPx": 19
+          }
+        },
+        "tablet": {
+          "borderBottom": "2px",
+          "paddingBottom": {
+            "designPx": 19
+          }
+        },
+        "mobile": {
+          "borderBottom": "1px",
+          "paddingBottom": {
+            "designPx": 19
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:9",
+          "quote": "border-b-2 border-primary pb-f19 mobile:border-b"
+        }
+      ]
+    },
+    "component.form.row-gap": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "designPx": 52
+        },
+        "tablet": {
+          "designPx": 48
+        },
+        "mobile": {
+          "designPx": 48
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:174",
+          "quote": "gap-y-f52 tablet:gap-y-f48"
+        }
+      ]
+    },
+    "component.form.message-height": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "designPx": 315
+        },
+        "tablet": {
+          "designPx": 163
+        },
+        "mobile": {
+          "designPx": 163
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:26",
+          "quote": "h-f315"
+        }
+      ]
+    },
+    "component.accordion.row-padding": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "designPx": 26
+        },
+        "tablet": {
+          "designPx": 22
+        },
+        "mobile": {
+          "designPx": 22
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/ui/Accordion.jsx:60",
+          "quote": "py-f26"
+        }
+      ]
+    },
+    "component.accordion.body-box": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "width": {
+            "designPx": 740
+          },
+          "paddingTop": {
+            "designPx": 18
+          },
+          "paddingBottom": {
+            "designPx": 56
+          }
+        },
+        "tablet": {
+          "width": {
+            "designPx": 395
+          },
+          "paddingTop": 0,
+          "paddingBottom": {
+            "designPx": 24
+          }
+        },
+        "mobile": {
+          "width": "85%",
+          "paddingTop": 0,
+          "paddingBottom": {
+            "designPx": 23
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/ui/Accordion.jsx:74",
+          "quote": "w-f740 pb-f56 pt-f18"
+        }
+      ]
+    },
+    "component.line.thickness": {
+      "$type": "dimension",
+      "$value": "1px",
+      "cite": [
+        {
+          "at": "src/components/ui/Line.jsx:13",
+          "quote": "h-px"
+        }
+      ]
+    }
+  }
+}

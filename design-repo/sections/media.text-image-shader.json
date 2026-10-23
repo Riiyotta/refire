@@ -1,0 +1,185 @@
+{
+  "id": "media.text-image-shader",
+  "category": "media",
+  "purpose": "Half-and-half closer: WebGL product picture on the left, capitalized title, paragraph and an arrow link to the brochure on the right.",
+  "cite": [
+    {
+      "at": "@home/TextImage.jsx:10-52",
+      "quote": "export default function TextImage({ data })"
+    }
+  ],
+  "usedInTemplates": [
+    "template.home"
+  ],
+  "constraints": {
+    "onePerPage": true,
+    "region": "main",
+    "mustPrecedeFooter": true
+  },
+  "content": {
+    "fields": {
+      "title": {
+        "type": "string",
+        "observedWords": 9,
+        "maxWords": 11,
+        "copyClass": "proprietary",
+        "observed": "REFIRE is actively expanding its footprint domestic and internationally",
+        "cite": [
+          {
+            "at": "src/data/home.js:67",
+            "quote": "title: 'REFIRE is actively expanding its footprint domestic and internationally'"
+          }
+        ]
+      },
+      "body": {
+        "type": "string",
+        "observedWords": 40,
+        "maxWords": 48,
+        "copyClass": "proprietary",
+        "observed": "In regions where policy is driving industry strategy and where commercialization can take place with fewer obstacles. We would like to help your region develop optimized policy choices, drive strategy, and build market opportunities for the benefit of the planet.",
+        "cite": [
+          {
+            "at": "src/data/home.js:68",
+            "quote": "In regions where policy is driving industry strategy"
+          }
+        ]
+      },
+      "links": {
+        "type": "list",
+        "item": {
+          "type": "object",
+          "fields": {
+            "label": {
+              "type": "string",
+              "observedWords": 3,
+              "maxWords": 4,
+              "copyClass": "proprietary",
+              "observed": "view our brochure",
+              "cite": [
+                {
+                  "at": "src/data/home.js:69",
+                  "quote": "links: [{ label: 'view our brochure', href: BROCHURE_HREF }]"
+                }
+              ]
+            },
+            "href": {
+              "type": "link",
+              "hrefKind": "document",
+              "cite": [
+                {
+                  "at": "src/data/home.js:69",
+                  "quote": "href: BROCHURE_HREF"
+                }
+              ],
+              "assetRole": "document.brochure"
+            }
+          }
+        },
+        "minItems": 1,
+        "maxItems": 1,
+        "cite": [
+          {
+            "at": "src/data/home.js:69",
+            "quote": "links: [{ label: 'view our brochure', href: BROCHURE_HREF }]"
+          }
+        ],
+        "note": "observed one link (stacked column)"
+      },
+      "image": {
+        "type": "asset",
+        "assetRole": "media.shader-picture",
+        "cite": [
+          {
+            "at": "src/data/home.js:70",
+            "quote": "image: '/int/images/prisma-2.jpg'"
+          }
+        ]
+      }
+    }
+  },
+  "motion": {
+    "pattern": "text-reveal-with-shader",
+    "trigger": "scroll-threshold",
+    "reducedMotionFallback": "none-in-source",
+    "cite": [
+      {
+        "at": "@home/TextImage.jsx:18-19",
+        "quote": "data-anim-threshold=\"0.3\""
+      },
+      {
+        "at": "src/components/ui/ShaderPicture.jsx:217",
+        "quote": "data-anim-threshold=\"0.7\""
+      }
+    ],
+    "threshold": 0.3,
+    "details": {
+      "text": "title splits by word 800ms stagger 0.1; body and links fade (delay 500); the trigger measures the whole section",
+      "picture": "shader reveal at 0.7, 1000ms circular-out; mouse distortion while in view"
+    }
+  },
+  "responsive": {
+    "desktop": {
+      "direction": "image-left",
+      "height": {
+        "designPx": 1143
+      }
+    },
+    "tablet": {
+      "direction": "image-left",
+      "height": {
+        "designPx": 500
+      }
+    },
+    "mobile": {
+      "direction": "image-on-top",
+      "height": "auto",
+      "imageHeight": {
+        "designPx": 418
+      }
+    },
+    "cite": [
+      {
+        "at": "@home/TextImage.jsx:13",
+        "quote": "mobile:flex-col-reverse"
+      },
+      {
+        "at": "@home/TextImage.jsx:44",
+        "quote": "mobile:h-f418"
+      }
+    ]
+  },
+  "tokens": [
+    "type.feature-title",
+    "type.feature-body",
+    "type.link-arrow",
+    "layout.split.text-image",
+    "layout.padding.text-image",
+    "surface.section",
+    "text.primary",
+    "motion.threshold.section",
+    "motion.threshold.shader",
+    "motion.stagger.10"
+  ],
+  "composes": [
+    "primitive.split-text",
+    "primitive.reveal",
+    "primitive.link-arrow",
+    "component.shader-picture"
+  ],
+  "variants": [
+    "reverse"
+  ],
+  "variantCite": [
+    {
+      "at": "@home/TextImage.jsx:7",
+      "quote": "isReverse (spec §3.8): image left, text right"
+    }
+  ],
+  "correction": "The text reveal measures the whole section, not the text block (src/motion/README.md correction, confirmed in code).",
+  "correctionCite": [
+    {
+      "at": "src/motion/reveal.js:22-24",
+      "quote": "'text-image': (el) => el.closest('section') || el,"
+    }
+  ]
+}

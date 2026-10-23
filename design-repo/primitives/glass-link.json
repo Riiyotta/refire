@@ -1,0 +1,26 @@
+{
+  "id": "primitive.glass-link",
+  "purpose": "Corner link on a frosted glass panel (10% white, backdrop blur) with only the top-left corner rounded, followed by a thin chevron. No hover state.",
+  "props": {
+    "label": "string",
+    "href": "link (document)"
+  },
+  "tokens": [
+    "type.hero-link",
+    "surface.glass",
+    "effect.backdrop-blur.glass",
+    "radius.glass-top-left",
+    "component.glass-link.padding",
+    "icon.chevron-right-thin"
+  ],
+  "cite": [
+    {
+      "at": "@home/Hero.jsx:133-144",
+      "quote": "className=\"glass relative inline-flex items-center overflow-hidden p-f27"
+    },
+    {
+      "at": "src/index.css:366-376",
+      "quote": ".glass::after {"
+    }
+  ]
+}

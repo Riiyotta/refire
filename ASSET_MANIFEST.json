@@ -1,0 +1,48 @@
+{
+  "source": "https://refire.com/int/",
+  "capturedAt": "2026-10-22",
+  "notes": [
+    "Captured from Playwright network log after scrolling the full page at 1440x900 and 390x844, plus HEAD checks with curl.",
+    "Only the .woff2 fonts are actually requested by Chrome; .woff/.ttf are fallbacks declared in @font-face.",
+    "prisma-1.jpg and prisma-2.jpg already exist locally in Refire_files/ (byte sizes match the live files: 565538 / 282819).",
+    "Inline SVGs are not network assets. Their verbatim markup is in CLONE_SPEC.md under 'Inline SVGs'; suggested file paths are listed here.",
+    "/int/images/main-image.jpg (default og:image in the bundle) returns 301, so it is not used. The page's og:image is /int/images/prisma-1.jpg.",
+    "Root-level /favicon/android-chrome-*.png links in <head> are broken (301 / no response); the /int/favicon/ copies resolve."
+  ],
+  "fonts": [
+    {"family": "SuisseIntl", "weight": 200, "style": "normal", "role": "Thin, used for key-stat numbers (4K+, 83K+)", "url": "https://refire.com/int/fonts/Suisse/SuisseIntl-Thin.woff2", "fallbackUrls": ["https://refire.com/int/fonts/Suisse/SuisseIntl-Thin.woff", "https://refire.com/int/fonts/Suisse/SuisseIntl-Thin.ttf"], "format": "woff2", "bytes": 59416, "loaded": true, "local": "public/assets/fonts/SuisseIntl-Thin.woff2"},
+    {"family": "SuisseIntl", "weight": 300, "style": "normal", "role": "Light: hero title, hero center text, big 'Save the date' paragraph, preloader percent", "url": "https://refire.com/int/fonts/Suisse/SuisseIntl-Light.woff2", "fallbackUrls": ["https://refire.com/int/fonts/Suisse/SuisseIntl-Light.woff", "https://refire.com/int/fonts/Suisse/SuisseIntl-Light.ttf"], "format": "woff2", "bytes": 58600, "loaded": true, "local": "public/assets/fonts/SuisseIntl-Light.woff2"},
+    {"family": "SuisseIntl", "weight": 400, "style": "normal", "role": "Regular: default body/UI", "url": "https://refire.com/int/fonts/Suisse/SuisseIntl-Regular.woff2", "fallbackUrls": ["https://refire.com/int/fonts/Suisse/SuisseIntl-Regular.woff", "https://refire.com/int/fonts/Suisse/SuisseIntl-Regular.ttf"], "format": "woff2", "bytes": 59628, "loaded": true, "local": "public/assets/fonts/SuisseIntl-Regular.woff2"},
+    {"family": "SuisseIntl", "weight": 500, "style": "normal", "role": "Medium: key-card top info ('KEY STAT 001')", "url": "https://refire.com/int/fonts/Suisse/SuisseIntl-Medium.woff2", "fallbackUrls": ["https://refire.com/int/fonts/Suisse/SuisseIntl-Medium.woff", "https://refire.com/int/fonts/Suisse/SuisseIntl-Medium.ttf"], "format": "woff2", "bytes": 58704, "loaded": true, "local": "public/assets/fonts/SuisseIntl-Medium.woff2"},
+    {"family": "SuisseIntl Mono", "weight": 400, "style": "normal", "role": "Declared in CSS but never used on this page (document.fonts status 'unloaded'). Optional.", "url": "https://refire.com/int/fonts/Suisse/SuisseIntlMono.woff2", "fallbackUrls": ["https://refire.com/int/fonts/Suisse/SuisseIntlMono.woff", "https://refire.com/int/fonts/Suisse/SuisseIntlMono.ttf"], "format": "woff2", "bytes": 15372, "loaded": false, "local": "public/assets/fonts/SuisseIntlMono.woff2"}
+  ],
+  "images": [
+    {"id": "prisma-1", "url": "https://refire.com/int/images/prisma-1.jpg", "format": "jpeg", "bytes": 565538, "width": 3840, "height": 2160, "usedIn": "ScrolledPictureSection (full-bleed, clip-path + scale on scroll); also og:image / twitter:image", "localCopy": "Refire_files/prisma-1.jpg", "local": "public/assets/images/prisma-1.jpg"},
+    {"id": "prisma-2", "url": "https://refire.com/int/images/prisma-2.jpg", "format": "jpeg", "bytes": 282819, "width": 3840, "height": 2160, "usedIn": "TextImageSection: Three.js ShaderPicture texture (img must be same-origin / crossOrigin=anonymous)", "localCopy": "Refire_files/prisma-2.jpg", "local": "public/assets/images/prisma-2.jpg"},
+    {"id": "poster", "url": "https://refire.com/int/images/poster.png", "format": "png", "bytes": 226647, "width": 1920, "height": 1080, "usedIn": "Hero <video poster>", "local": "public/assets/images/poster.png"}
+  ],
+  "videos": [
+    {"id": "hero-video", "url": "https://refire.com/int/videos/main-new.mp4", "format": "video/mp4", "bytes": 25245914, "width": 1920, "height": 1080, "durationSec": 37.266667, "attributes": "muted loop autoplay playsinline preload=auto, no controls, contextmenu suppressed", "usedIn": "Hero background (object-fit: cover)", "local": "public/assets/videos/main-new.mp4"}
+  ],
+  "documents": [
+    {"id": "brochure", "url": "https://refire.com/int/files/refire.pdf", "format": "application/pdf", "bytes": 15754171, "usedIn": "'view our brochure' links (hero + text/image section), target=_blank rel='noopener noreferrer'", "local": "public/assets/files/refire.pdf"}
+  ],
+  "favicons": [
+    {"url": "https://refire.com/int/favicon/favicon-32x32.png", "rel": "icon", "sizes": "32x32", "bytes": 973, "local": "public/assets/favicon/favicon-32x32.png"},
+    {"url": "https://refire.com/int/favicon/favicon-16x16.png", "rel": "icon", "sizes": "16x16", "bytes": 737, "local": "public/assets/favicon/favicon-16x16.png"},
+    {"url": "https://refire.com/int/favicon/apple-touch-icon.png", "rel": "apple-touch-icon", "sizes": "180x180", "bytes": 1918, "local": "public/assets/favicon/apple-touch-icon.png"},
+    {"url": "https://refire.com/int/favicon/android-chrome-192x192.png", "rel": "icon", "sizes": "192x192", "bytes": 1931, "local": "public/assets/favicon/android-chrome-192x192.png", "note": "page links /favicon/... (broken); use /int/favicon/ source"},
+    {"url": "https://refire.com/int/favicon/android-chrome-512x512.png", "rel": "icon", "sizes": "512x512", "bytes": 1986, "local": "public/assets/favicon/android-chrome-512x512.png", "note": "page links /favicon/... (broken); use /int/favicon/ source"}
+  ],
+  "inlineSvgs": [
+    {"id": "logo-refire", "viewBox": "0 0 159 23", "usedIn": "Header logo (fill currentColor)", "local": "public/assets/svg/logo-refire.svg", "markup": "CLONE_SPEC.md#inline-svgs"},
+    {"id": "pill-outline", "viewBox": "0 0 116 39", "usedIn": "Header Contact pill animated outline", "local": "public/assets/svg/pill-outline.svg", "markup": "CLONE_SPEC.md#inline-svgs"},
+    {"id": "arrow-right-long", "viewBox": "0 0 62 52", "usedIn": "Hero title arrow, KeyCard subtitle arrow, Contact overlay title arrow", "local": "public/assets/svg/arrow-right-long.svg", "markup": "CLONE_SPEC.md#inline-svgs"},
+    {"id": "chevron-right-thin", "viewBox": "0 0 10 16", "usedIn": "Hero 'view our brochure' link icon (stroke)", "local": "public/assets/svg/chevron-right-thin.svg", "markup": "CLONE_SPEC.md#inline-svgs"},
+    {"id": "chevron-right-bold", "viewBox": "0 0 10 16", "usedIn": "LinkArrow icon (drawSVG on hover)", "local": "public/assets/svg/chevron-right-bold.svg", "markup": "CLONE_SPEC.md#inline-svgs"},
+    {"id": "double-circle", "viewBox": "0 0 80 46", "usedIn": "KeyCard icon", "local": "public/assets/svg/double-circle.svg", "markup": "CLONE_SPEC.md#inline-svgs"},
+    {"id": "accordion-plus", "viewBox": "0 0 39 39", "usedIn": "Accordion drawer icon", "local": "public/assets/svg/accordion-plus.svg", "markup": "CLONE_SPEC.md#inline-svgs"},
+    {"id": "arrow-up", "viewBox": "0 0 12 14", "usedIn": "Footer Back to Top", "local": "public/assets/svg/arrow-up.svg", "markup": "CLONE_SPEC.md#inline-svgs"},
+    {"id": "chevron-down", "viewBox": "0 0 16 10", "usedIn": "Contact overlay department select", "local": "public/assets/svg/chevron-down.svg", "markup": "CLONE_SPEC.md#inline-svgs"}
+  ]
+}

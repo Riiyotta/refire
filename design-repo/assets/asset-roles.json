@@ -1,0 +1,203 @@
+{
+  "$description": "Closed asset-role vocabulary. Wired through schema/pagespec.schema.json (definitions.assetRole enum), tokens/llm/component-allowlist.json (assetRoles) and the example instances. Built from real usage sites only.",
+  "realCompanyNotice": "Refire is a real company and this repo documents an authorized rebuild of its live site. Its logo, product photography, hero film, brochure and proprietary copy belong to Refire. A generator may reuse the STRUCTURE (sections, tokens, motion) but must never fabricate or reproduce those assets or that copy for any new page: generated PageSpecs use neutral 'placeholder:<role>' sources and original copy. semantic_validate.py enforces this for every provenance:'generated' instance.",
+  "generationPolicies": {
+    "placeholder-only": "A generated PageSpec must use src/href 'placeholder:<role>'. Reproducing, tracing, re-encoding or AI-fabricating a look-alike of the real asset is forbidden. Only provenance:'reference' instances (the documented reproduction of the authorized clone) may point at allowedReferenceSources.",
+    "must-reuse-exact": "Use exactly the declared asset through its token; never substitute or redistribute.",
+    "may-reuse-exact": "Reuse exactly as the section contract fixes it; inventing new variants is out of contract."
+  },
+  "pinnedPolicies": {
+    "brand.logo": "placeholder-only",
+    "brand.favicon": "placeholder-only",
+    "media.hero-video": "placeholder-only",
+    "media.hero-poster": "placeholder-only",
+    "media.scroll-picture": "placeholder-only",
+    "media.shader-picture": "placeholder-only",
+    "media.social-image": "placeholder-only",
+    "document.brochure": "placeholder-only",
+    "font.brand-typeface": "must-reuse-exact"
+  },
+  "placeholderScheme": "placeholder:<assetRole>",
+  "roles": {
+    "brand.logo": {
+      "generationPolicy": "placeholder-only",
+      "licensing": "proprietary-trademark",
+      "pageSpecSlot": true,
+      "allowedReferenceSources": [
+        "inline-svg:logo-refire"
+      ],
+      "guidance": "Refire's wordmark. Never reproduce it, trace it, or fabricate a look-alike on a generated page. Use src 'placeholder:brand.logo' and let a human supply the real brand mark of whoever owns the generated page.",
+      "cite": [
+        {
+          "at": "src/components/ui/icons.jsx:5-7",
+          "quote": "export function LogoRefire(props)"
+        },
+        {
+          "at": "src/components/layout/Header.jsx:45",
+          "quote": "<LogoRefire />"
+        }
+      ]
+    },
+    "brand.favicon": {
+      "generationPolicy": "placeholder-only",
+      "licensing": "proprietary-trademark",
+      "pageSpecSlot": false,
+      "allowedReferenceSources": [
+        "/int/favicon/favicon-32x32.png",
+        "/int/favicon/favicon-16x16.png",
+        "/int/favicon/apple-touch-icon.png",
+        "/int/favicon/android-chrome-192x192.png",
+        "/int/favicon/android-chrome-512x512.png"
+      ],
+      "guidance": "Document-level brand icons. Not a PageSpec slot; generated pages must not ship Refire's favicons.",
+      "cite": [
+        {
+          "at": "index.html:17-21",
+          "quote": "/int/favicon/apple-touch-icon.png"
+        }
+      ]
+    },
+    "media.hero-video": {
+      "generationPolicy": "placeholder-only",
+      "licensing": "proprietary-media",
+      "pageSpecSlot": true,
+      "allowedReferenceSources": [
+        "/int/videos/main-new.mp4"
+      ],
+      "guidance": "Refire's own product film. Never reproduce, re-encode, excerpt or synthesize an imitation. Generated pages use 'placeholder:media.hero-video'.",
+      "cite": [
+        {
+          "at": "src/data/home.js:14",
+          "quote": "video: { src: '/int/videos/main-new.mp4'"
+        },
+        {
+          "at": "@home/Hero.jsx:62-73",
+          "quote": "src={data.video.src}"
+        }
+      ]
+    },
+    "media.hero-poster": {
+      "generationPolicy": "placeholder-only",
+      "licensing": "proprietary-media",
+      "pageSpecSlot": true,
+      "allowedReferenceSources": [
+        "/int/images/poster.png"
+      ],
+      "guidance": "Still frame of the hero film. Same restrictions as media.hero-video.",
+      "cite": [
+        {
+          "at": "src/data/home.js:14",
+          "quote": "poster: '/int/images/poster.png'"
+        }
+      ]
+    },
+    "media.scroll-picture": {
+      "generationPolicy": "placeholder-only",
+      "licensing": "proprietary-product-photography",
+      "pageSpecSlot": true,
+      "allowedReferenceSources": [
+        "/int/images/prisma-1.jpg"
+      ],
+      "guidance": "Refire PRISMA product photography. Never reproduce or AI-generate an imitation of Refire products. Generated pages use 'placeholder:media.scroll-picture' (a neutral 16:9 placeholder of at least 3840x2160 behaves identically).",
+      "cite": [
+        {
+          "at": "src/data/home.js:37",
+          "quote": "src: '/int/images/prisma-1.jpg'"
+        }
+      ]
+    },
+    "media.shader-picture": {
+      "generationPolicy": "placeholder-only",
+      "licensing": "proprietary-product-photography",
+      "pageSpecSlot": true,
+      "allowedReferenceSources": [
+        "/int/images/prisma-2.jpg"
+      ],
+      "guidance": "Refire product photography used as the WebGL texture. Same restrictions as media.scroll-picture; the texture must be same-origin.",
+      "cite": [
+        {
+          "at": "src/data/home.js:70",
+          "quote": "image: '/int/images/prisma-2.jpg'"
+        },
+        {
+          "at": "src/components/ui/ShaderPicture.jsx:87",
+          "quote": "texImg.crossOrigin = 'anonymous'"
+        }
+      ]
+    },
+    "media.social-image": {
+      "generationPolicy": "placeholder-only",
+      "licensing": "proprietary-product-photography",
+      "pageSpecSlot": false,
+      "allowedReferenceSources": [
+        "/int/images/prisma-1.jpg"
+      ],
+      "guidance": "og:image / twitter:image. Not a PageSpec slot; generated pages must not reuse Refire photography for social previews.",
+      "cite": [
+        {
+          "at": "index.html:11",
+          "quote": "<meta property=\"og:image\" content=\"/int/images/prisma-1.jpg\" />"
+        }
+      ]
+    },
+    "document.brochure": {
+      "generationPolicy": "placeholder-only",
+      "licensing": "proprietary-document",
+      "pageSpecSlot": true,
+      "allowedReferenceSources": [
+        "/int/files/refire.pdf"
+      ],
+      "guidance": "Refire's PDF brochure (the only document link on the site). Generated pages must link 'placeholder:document.brochure', never the real PDF and never an external URL.",
+      "cite": [
+        {
+          "at": "src/data/home.js:3",
+          "quote": "export const BROCHURE_HREF = '/int/files/refire.pdf'"
+        }
+      ]
+    },
+    "font.brand-typeface": {
+      "generationPolicy": "must-reuse-exact",
+      "licensing": "commercial-font-license",
+      "pageSpecSlot": false,
+      "allowedReferenceSources": [
+        "/int/fonts/Suisse/SuisseIntl-Thin.woff2",
+        "/int/fonts/Suisse/SuisseIntl-Light.woff2",
+        "/int/fonts/Suisse/SuisseIntl-Regular.woff2",
+        "/int/fonts/Suisse/SuisseIntl-Medium.woff2"
+      ],
+      "guidance": "SuisseIntl is a commercially licensed typeface. Reference it only through font.family.brand inside the authorized Refire rebuild; never redistribute the font files or substitute a look-alike and call it SuisseIntl. Outside the authorized rebuild, fall back to the declared stack (Arial, Helvetica, sans-serif).",
+      "cite": [
+        {
+          "at": "src/index.css:5-11",
+          "quote": "SuisseIntl-Thin.woff2"
+        },
+        {
+          "at": "tailwind.config.cjs:57",
+          "quote": "suisse: ['SuisseIntl'"
+        }
+      ]
+    },
+    "ui.icon": {
+      "generationPolicy": "may-reuse-exact",
+      "licensing": "site-ui-glyph",
+      "pageSpecSlot": false,
+      "allowedReferenceSources": [
+        "inline-svg:pill-outline",
+        "inline-svg:arrow-right-long",
+        "inline-svg:chevron-right-thin",
+        "inline-svg:chevron-right-bold",
+        "inline-svg:double-circle",
+        "inline-svg:accordion-plus",
+        "inline-svg:arrow-up",
+        "inline-svg:chevron-down"
+      ],
+      "guidance": "Generic geometric UI glyphs (arrows, chevrons, circles). They are fixed by the section contracts, not chosen per page; reuse exactly, never invent new glyphs.",
+      "cite": [
+        {
+          "at": "src/components/ui/icons.jsx:1-3",
+          "quote": "Inline SVGs"
+        }
+      ]
+    }
+  }
+}

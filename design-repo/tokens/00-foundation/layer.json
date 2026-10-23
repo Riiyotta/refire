@@ -1,0 +1,85 @@
+{
+  "$description": "Stacking order (elevation). The site has no shadows; depth is expressed only by z-order and blend.",
+  "tokens": {
+    "layer.cursor": {
+      "$type": "zIndex",
+      "$value": 103,
+      "cite": [
+        {
+          "at": "src/components/layout/Cursor.jsx:77",
+          "quote": "z-103"
+        }
+      ]
+    },
+    "layer.preloader": {
+      "$type": "zIndex",
+      "$value": 100,
+      "cite": [
+        {
+          "at": "src/components/layout/Preloader.jsx:82",
+          "quote": "z-100"
+        }
+      ]
+    },
+    "layer.header": {
+      "$type": "zIndex",
+      "$value": 99,
+      "cite": [
+        {
+          "at": "src/components/layout/Header.jsx:37",
+          "quote": "z-99"
+        }
+      ]
+    },
+    "layer.scroll-progress": {
+      "$type": "zIndex",
+      "$value": 99,
+      "cite": [
+        {
+          "at": "src/components/layout/ScrollProgress.jsx:16",
+          "quote": "z-99"
+        }
+      ]
+    },
+    "layer.cookie-pane": {
+      "$type": "zIndex",
+      "$value": 99,
+      "cite": [
+        {
+          "at": "src/components/layout/CookiePane.jsx:43",
+          "quote": "z-99"
+        }
+      ]
+    },
+    "layer.contact-overlay": {
+      "$type": "zIndex",
+      "$value": 89,
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:114",
+          "quote": "z-89"
+        }
+      ]
+    },
+    "layer.dropdown": {
+      "$type": "zIndex",
+      "$value": 3,
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:79",
+          "quote": "z-3"
+        }
+      ]
+    },
+    "layer.hero-overlay": {
+      "$type": "zIndex",
+      "$value": 2,
+      "cite": [
+        {
+          "at": "@home/Hero.jsx:78",
+          "quote": "z-2"
+        }
+      ]
+    }
+  }
+}

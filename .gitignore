@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+
+# Original browser-saved copy of the live site, kept locally for reference only
+Refire.html
+Refire_files/
+
+# Packaged design-repo artifact (regenerate with design-repo/extraction/package.py)
+design-repo.zip
+
+# Scratch QA/measurement captures from the build process, not part of the deliverable
+.playwright-mcp/

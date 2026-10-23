@@ -1,0 +1,33 @@
+{
+  "id": "primitive.icon",
+  "purpose": "Closed set of 8 inline UI glyphs; size and colour (currentColor) come from the consuming contract.",
+  "props": {
+    "glyph": [
+      "pill-outline",
+      "arrow-right-long",
+      "chevron-right-thin",
+      "chevron-right-bold",
+      "double-circle",
+      "accordion-plus",
+      "arrow-up",
+      "chevron-down"
+    ]
+  },
+  "tokens": [
+    "icon.pill-outline",
+    "icon.arrow-right-long",
+    "icon.chevron-right-thin",
+    "icon.chevron-right-bold",
+    "icon.double-circle",
+    "icon.accordion-plus",
+    "icon.arrow-up",
+    "icon.chevron-down"
+  ],
+  "cite": [
+    {
+      "at": "src/components/ui/icons.jsx:23-95",
+      "quote": "export function PillOutline"
+    }
+  ],
+  "assetRole": "ui.icon"
+}

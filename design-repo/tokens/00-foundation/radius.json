@@ -1,0 +1,90 @@
+{
+  "$description": "Every border radius in use; no box-shadow exists anywhere on the site.",
+  "tokens": {
+    "radius.card": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "designPx": 15
+        },
+        "tablet": {
+          "designPx": 14
+        },
+        "mobile": {
+          "designPx": 14
+        }
+      },
+      "cite": [
+        {
+          "at": "@home/KeyStats.jsx:12",
+          "quote": "rounded-f15"
+        }
+      ]
+    },
+    "radius.pill": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "designPx": 150
+        },
+        "tablet": {
+          "designPx": 150
+        },
+        "mobile": {
+          "designPx": 150
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/Header.jsx:52",
+          "quote": "rounded-f150"
+        }
+      ]
+    },
+    "radius.button": {
+      "$type": "dimension",
+      "$value": {
+        "desktop": {
+          "designPx": 100
+        },
+        "tablet": {
+          "designPx": 148
+        },
+        "mobile": {
+          "designPx": 100
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/ui/BlackButton.jsx:24",
+          "quote": "rounded-f100"
+        }
+      ]
+    },
+    "radius.glass-top-left": {
+      "$type": "dimension",
+      "$value": {
+        "topLeft": {
+          "designPx": 15
+        },
+        "others": 0
+      },
+      "cite": [
+        {
+          "at": "src/index.css:374",
+          "quote": "border-radius: calc(15 * var(--vw-unit)) 0 0 0;"
+        }
+      ]
+    },
+    "radius.circle": {
+      "$type": "dimension",
+      "$value": "50%",
+      "cite": [
+        {
+          "at": "src/index.css:213",
+          "quote": "border-radius: 50%;"
+        }
+      ]
+    }
+  }
+}

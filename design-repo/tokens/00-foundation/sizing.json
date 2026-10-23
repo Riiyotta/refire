@@ -1,0 +1,79 @@
+{
+  "$description": "The fluid sizing model. Every length in this repo expressed as {designPx} is resolved with sizing.fluid-rule against the active breakpoint's design width; {designPx, minPx} adds the clamp.",
+  "tokens": {
+    "sizing.design-width.desktop": {
+      "$type": "number",
+      "$value": 1920,
+      "unit": "designPx canvas width",
+      "appliesWhen": "viewport > 834px",
+      "cite": [
+        {
+          "at": "src/index.css:43-45",
+          "quote": "--gfs: 1920;"
+        },
+        {
+          "at": "Refire_files/887c3946dd796d39.css:1",
+          "quote": "--gfs:1920"
+        }
+      ]
+    },
+    "sizing.design-width.tablet": {
+      "$type": "number",
+      "$value": 744,
+      "unit": "designPx canvas width",
+      "appliesWhen": "521px <= viewport <= 834px",
+      "cite": [
+        {
+          "at": "src/index.css:52-57",
+          "quote": "--gfs: 744;"
+        }
+      ]
+    },
+    "sizing.design-width.mobile": {
+      "$type": "number",
+      "$value": 375,
+      "unit": "designPx canvas width",
+      "appliesWhen": "viewport <= 520px",
+      "cite": [
+        {
+          "at": "src/index.css:58-63",
+          "quote": "--gfs: 375;"
+        }
+      ]
+    },
+    "sizing.fluid-rule": {
+      "$type": "rule",
+      "$value": "length = designPx / designWidth(activeBreakpoint) * 100vw",
+      "cite": [
+        {
+          "at": "src/index.css:45",
+          "quote": "--vw-unit: calc(100vw / var(--gfs));"
+        },
+        {
+          "at": "tailwind.config.cjs:39",
+          "quote": "const F = (n) => `calc(${n} * var(--vw-unit))`"
+        }
+      ]
+    },
+    "sizing.min-clamp-rule": {
+      "$type": "rule",
+      "$value": "clamped length = max(minPx, fluid(designPx)); minPx is 12 for every clamped font size",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:43",
+          "quote": "`max(12px, ${F(n)})`"
+        }
+      ]
+    },
+    "sizing.label-min-px": {
+      "$type": "dimension",
+      "$value": "12px",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:43",
+          "quote": "max(12px"
+        }
+      ]
+    }
+  }
+}

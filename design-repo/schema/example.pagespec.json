@@ -1,0 +1,322 @@
+{
+  "pageSpecVersion": "1.0.0",
+  "id": "page.home",
+  "template": "template.home",
+  "route": "/",
+  "theme": "theme.refire-dark",
+  "provenance": "reference",
+  "meta": {
+    "title": "Refire",
+    "description": "REFIRE is an international hydrogen energy technology company specializing in R&D, design, prototyping, testing, application engineering, and manufacturing of fuel cell systems for mobility and power products, superchargers, and grid support products."
+  },
+  "nodes": [
+    {
+      "section": "chrome.preloader",
+      "content": {
+        "decorMark": "++",
+        "decorReadings": [
+          "1.00784",
+          "1.00811"
+        ],
+        "statusLabel": "initializing",
+        "tagline": "Creating a Sustainable Future"
+      },
+      "motion": {
+        "pattern": "preloader-progress",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "chrome.header",
+      "content": {
+        "logo": {
+          "assetRole": "brand.logo",
+          "src": "inline-svg:logo-refire"
+        },
+        "openLabel": "Contact",
+        "closeLabel": "Close"
+      },
+      "motion": {
+        "pattern": "label-swap",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "chrome.scroll-progress",
+      "content": {},
+      "motion": {
+        "pattern": "scroll-linked-progress",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "overlay.contact",
+      "content": {
+        "titleHref": "mailto:test@test.en",
+        "titleLines": [
+          "contact",
+          "us today"
+        ],
+        "formTitle": "Contact form",
+        "formText": "Send us a message and we’ll get back to you as soon as possible.",
+        "phoneList": {
+          "title": "Phone us",
+          "lines": [
+            {
+              "prefix": "Germany",
+              "text": "+1 790 790 9238",
+              "href": "tel:+17907909238"
+            },
+            {
+              "prefix": "France",
+              "text": "+1 893 233 2030",
+              "href": "tel:+18932332030"
+            }
+          ]
+        },
+        "hoursList": {
+          "title": "Hours",
+          "lines": [
+            "Monday - Friday 8:00AM - 8:00PM",
+            "Saturday & Sunday Closed"
+          ]
+        },
+        "departmentSelect": {
+          "placeholder": "Select a department you’d like to reach*",
+          "options": [
+            "Media",
+            "Sales",
+            "General"
+          ]
+        },
+        "fieldPlaceholders": [
+          "First Name*",
+          "Last Name*",
+          "Email*",
+          "Subject*"
+        ],
+        "messagePlaceholder": "Message*",
+        "consentNote": "*By submitting, the data provided will be used to perform your request according to the Privacy Policy",
+        "submitLabel": "submit",
+        "formSubmission": "non-submitting"
+      },
+      "motion": {
+        "pattern": "overlay-fade",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "chrome.cookie-pane",
+      "content": {
+        "message": "We use cookies to make things better",
+        "closeLabel": "Close"
+      },
+      "motion": {
+        "pattern": "fade",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "chrome.cursor",
+      "content": {},
+      "motion": {
+        "pattern": "cursor-follow",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "hero.video-title",
+      "content": {
+        "decor": "+ +",
+        "scrollLabel": "Scroll",
+        "eyebrow": "introducing",
+        "titleLines": [
+          "A New",
+          "generation"
+        ],
+        "descriptor": "of fuel cell systems",
+        "link": {
+          "label": "view our brochure",
+          "href": "/int/files/refire.pdf"
+        },
+        "video": {
+          "assetRole": "media.hero-video",
+          "src": "/int/videos/main-new.mp4"
+        },
+        "poster": {
+          "assetRole": "media.hero-poster",
+          "src": "/int/images/poster.png"
+        }
+      },
+      "motion": {
+        "pattern": "hero-entrance",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "content.numbered-statement",
+      "variant": "description-big",
+      "content": {
+        "number": "01",
+        "label": "Save the date",
+        "kicker": "Refire Group",
+        "statement": "We are excited to be part of Hannover Messe’s Hydrogen & Fuel Cell Expo. We look forward to meeting you there. Stay tuned for updates and plan your visit."
+      },
+      "motion": {
+        "pattern": "reveal-on-scroll",
+        "threshold": 0.3,
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "content.title-description",
+      "variant": "size-md",
+      "content": {
+        "title": "(About Refire)",
+        "description": "REFIRE is an international hydrogen energy technology company specializing in R&D, design, prototyping, testing, application engineering, and manufacturing of fuel cell systems for mobility and power products, superchargers, and grid support products."
+      },
+      "motion": {
+        "pattern": "reveal-on-scroll",
+        "threshold": 0.3,
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "stats.card-grid",
+      "content": {
+        "cards": [
+          {
+            "label": "key stat",
+            "index": 1,
+            "caption": "vehicles deployed",
+            "value": "4K+"
+          },
+          {
+            "label": "key stat",
+            "index": 2,
+            "caption": "Tonnes Of CO2 Saved",
+            "value": "83K+"
+          },
+          {
+            "label": "key stat",
+            "index": 3,
+            "caption": "Systems Delivered",
+            "value": "4K+"
+          }
+        ]
+      },
+      "motion": {
+        "pattern": "reveal-on-scroll",
+        "threshold": 0.3,
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "media.scroll-picture",
+      "content": {
+        "image": {
+          "assetRole": "media.scroll-picture",
+          "src": "/int/images/prisma-1.jpg"
+        },
+        "alt": ""
+      },
+      "motion": {
+        "pattern": "scroll-linked-clip-zoom",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "ticker.marquee",
+      "content": {
+        "text": "Visit Us — ",
+        "minCopies": 3
+      },
+      "motion": {
+        "pattern": "marquee-drag",
+        "threshold": 0.1,
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "content.event-accordion",
+      "content": {
+        "title": "Hannover Messe",
+        "heading": "BOOTH C45 | HALL 13 17-21 April 2023",
+        "address": "HANNOVER MESSE Exhibition Grounds, Hannover, Germany",
+        "body": "REFIRE was founded in 2015 when a passionate group of engineers came together with the shared dream of propelling the development of hydrogen energy and popularizing the application of fuel cells. REFIRE hopes to reduce mankind’s dependence on fossil energy and contribute to the harmonious coexistence among all lives on our planet by making use of “hydrogen”, the most abundant element in the universe.",
+        "schedule": [
+          {
+            "title": "17 April, PM",
+            "body": "Panel Discussion - Heavy Duty Trucks: is Hydrogen the Future? @Public Forum, 14:00 (STAND D25 | HALL13)"
+          },
+          {
+            "title": "18 April, AM",
+            "body": "GreenGT x REFIRE - product presentation@REFIRE booth"
+          },
+          {
+            "title": "18 April, PM",
+            "body": "PRISMA XXII technical unveiling@Technical Stage, 15:00 (STAND B51 | HALL 13)"
+          },
+          {
+            "title": "19 April, PM",
+            "body": "FC Development: Holistic by Design - presentation @REFIRE booth"
+          },
+          {
+            "title": "20 April, PM",
+            "body": "APAS x REFIRE - product presentation@REFIRE booth"
+          }
+        ],
+        "contacts": [
+          {
+            "label": "Media liaison: ",
+            "email": "media@refire.com"
+          },
+          {
+            "label": "General enquiries: ",
+            "email": "info@refire.com"
+          }
+        ]
+      },
+      "motion": {
+        "pattern": "reveal-on-scroll",
+        "threshold": 0.1,
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "media.text-image-shader",
+      "variant": "reverse",
+      "content": {
+        "title": "REFIRE is actively expanding its footprint domestic and internationally",
+        "body": "In regions where policy is driving industry strategy and where commercialization can take place with fewer obstacles. We would like to help your region develop optimized policy choices, drive strategy, and build market opportunities for the benefit of the planet.",
+        "links": [
+          {
+            "label": "view our brochure",
+            "href": "/int/files/refire.pdf"
+          }
+        ],
+        "image": {
+          "assetRole": "media.shader-picture",
+          "src": "/int/images/prisma-2.jpg"
+        }
+      },
+      "motion": {
+        "pattern": "text-reveal-with-shader",
+        "threshold": 0.3,
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "chrome.footer",
+      "content": {
+        "brand": "Refire",
+        "rightsText": " all rights reserved",
+        "backToTopLabel": "Back to Top"
+      },
+      "motion": {
+        "pattern": "none",
+        "reducedMotionFallback": "none-in-source"
+      }
+    }
+  ]
+}

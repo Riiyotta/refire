@@ -1,0 +1,249 @@
+{
+  "$description": "Rhythm/position/integrity rules JSON Schema cannot express (enforcedBy 'semantic' => schema/semantic_validate.py) plus the schema-level rules (enforcedBy 'schema' => schema/pagespec.schema.json $comment ids). verify_all.py proves every rule id here exists in the layer that enforces it, and vice versa.",
+  "rules": [
+    {
+      "id": "TEMPLATE_NODE_SEQUENCE",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "nodes[] must follow the declared template's node list in order (a PageSpec is checked against its template's REAL node list, not in isolation)."
+    },
+    {
+      "id": "SECTION_ALLOWED_IN_TEMPLATE",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "Every node's section must appear in the declared template's node list."
+    },
+    {
+      "id": "REQUIRED_SECTIONS_PRESENT",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "Every template node with required:true must be present."
+    },
+    {
+      "id": "NON_REPEATABLE_ONCE",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "A node with repeatable:false may appear at most once (keyed on section + variant)."
+    },
+    {
+      "id": "ROUTE_TEMPLATE_BINDING",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "route must be one of the declared template's routes ('/' -> template.home only; '*' -> template.not-found)."
+    },
+    {
+      "id": "THEME_TEMPLATE_BINDING",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "theme must equal the declared template's theme."
+    },
+    {
+      "id": "ONE_HERO",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "At most one hero.* section per page, and exactly one on templates that list one. Named exception: template.not-found has no hero."
+    },
+    {
+      "id": "HERO_FIRST_IN_MAIN",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "The hero must be the first main-region node. Named exception: template.not-found (no hero)."
+    },
+    {
+      "id": "FOOTER_LAST",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "chrome.footer, when present, must be the last node."
+    },
+    {
+      "id": "ERROR_PAGE_NO_FOOTER_NO_PROGRESS",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "template.not-found must never contain chrome.footer or chrome.scroll-progress (the source switches both off for the error page)."
+    },
+    {
+      "id": "NO_EXTERNAL_HREF",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "No string anywhere in a PageSpec may contain a scheme URL (http://, https://, any scheme://), a protocol-relative //host URL or a www. host; the only links are the local document, mailto: and tel: (the user required no outbound links)."
+    },
+    {
+      "id": "MAX_WORDS",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "Every text field's word count (tokens containing a letter or digit) must be <= its contract maxWords."
+    },
+    {
+      "id": "ASSET_ROLE_SLOT",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "Each asset/link slot must carry exactly the assetRole its section contract pins, and the role must exist in assets/asset-roles.json."
+    },
+    {
+      "id": "ASSET_SOURCE_POLICY",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "provenance 'reference' may only use a role's allowedReferenceSources; provenance 'generated' must use 'placeholder:<role>' for every placeholder-only role."
+    },
+    {
+      "id": "GENERATED_NO_PROPRIETARY_COPY",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "provenance 'generated' instances may not reuse Refire's proprietary copy: an exact (normalized) match of any proprietary field, or any shared run of 6 or more consecutive words with it."
+    },
+    {
+      "id": "GENERATED_CONTACT_DATA_RESERVED",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "provenance 'generated' instances must use reserved example contact data: emails at example.com/.org/.net and fictional +1 NXX-555-01XX phone numbers."
+    },
+    {
+      "id": "NO_MARKUP_IN_TEXT",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "Text fields must not contain '<' or '>' (the accordion body is injected as raw HTML by the source)."
+    },
+    {
+      "id": "META_DESCRIPTION_MIRRORS_ABOUT",
+      "severity": "warn",
+      "enforcedBy": "semantic",
+      "description": "Observed convention: the page meta description equals the content.title-description description. Non-fatal notice when they differ."
+    },
+    {
+      "id": "STAT_INDEXES_SEQUENTIAL",
+      "severity": "warn",
+      "enforcedBy": "semantic",
+      "description": "Observed convention: stat card indexes run 1, 2, 3. Non-fatal notice otherwise."
+    },
+    {
+      "id": "MOTION_CLOSED",
+      "severity": "error",
+      "enforcedBy": "schema",
+      "description": "Each node's motion object is closed (pattern, threshold, reducedMotionFallback only) and its pattern/threshold are const-locked per section type."
+    },
+    {
+      "id": "REDUCED_MOTION_FIELD",
+      "severity": "error",
+      "enforcedBy": "schema",
+      "description": "motion.reducedMotionFallback is required and must be 'none-in-source': it records the FACT that the source has no reduced-motion handling. It is not a recommendation."
+    },
+    {
+      "id": "CONTACT_FORM_NON_SUBMITTING",
+      "severity": "error",
+      "enforcedBy": "schema",
+      "description": "overlay.contact content.formSubmission must be the const 'non-submitting'."
+    },
+    {
+      "id": "NOT_FOUND_COPY_LOCKED",
+      "severity": "error",
+      "enforcedBy": "schema",
+      "description": "error.not-found copy and the not-found document title are const-locked to the stock strings."
+    },
+    {
+      "id": "ASSET_ROLE_CLOSED",
+      "severity": "error",
+      "enforcedBy": "schema",
+      "description": "assetRole is a closed enum; every slot pins its role with const."
+    },
+    {
+      "id": "HREF_ALLOWED_KINDS",
+      "severity": "error",
+      "enforcedBy": "schema",
+      "description": "href patterns admit only /int/files/*.pdf, mailto:, tel: and placeholder: values."
+    }
+  ],
+  "exceptions": {
+    "ONE_HERO": [
+      "template.not-found"
+    ],
+    "HERO_FIRST_IN_MAIN": [
+      "template.not-found"
+    ]
+  },
+  "adjacency": {
+    "hero.video-title": {
+      "recommendedAfter": [],
+      "recommendedBefore": [
+        "content.numbered-statement"
+      ]
+    },
+    "content.numbered-statement": {
+      "recommendedAfter": [
+        "hero.video-title"
+      ],
+      "recommendedBefore": [
+        "content.title-description"
+      ]
+    },
+    "content.title-description": {
+      "recommendedAfter": [
+        "content.numbered-statement"
+      ],
+      "recommendedBefore": [
+        "stats.card-grid"
+      ]
+    },
+    "stats.card-grid": {
+      "recommendedAfter": [
+        "content.title-description"
+      ],
+      "recommendedBefore": [
+        "media.scroll-picture"
+      ]
+    },
+    "media.scroll-picture": {
+      "recommendedAfter": [
+        "stats.card-grid"
+      ],
+      "recommendedBefore": [
+        "ticker.marquee"
+      ]
+    },
+    "ticker.marquee": {
+      "recommendedAfter": [
+        "media.scroll-picture"
+      ],
+      "recommendedBefore": [
+        "content.event-accordion"
+      ]
+    },
+    "content.event-accordion": {
+      "recommendedAfter": [
+        "ticker.marquee"
+      ],
+      "recommendedBefore": [
+        "media.text-image-shader"
+      ]
+    },
+    "media.text-image-shader": {
+      "recommendedAfter": [
+        "content.event-accordion"
+      ],
+      "recommendedBefore": [
+        "chrome.footer"
+      ]
+    },
+    "chrome.footer": {
+      "recommendedAfter": [
+        "media.text-image-shader"
+      ],
+      "recommendedBefore": []
+    }
+  },
+  "adjacencyNote": "Derived from the single real home sequence; with every home node required, the adjacency is fixed rather than a free recommendation.",
+  "motionBudget": {
+    "webglSurfacesPerPage": 1,
+    "videoSurfacesPerPage": 1,
+    "note": "observed maxima; enforced indirectly because the sections carrying them are non-repeatable",
+    "cite": [
+      {
+        "at": "@home/TextImage.jsx:46",
+        "quote": "<ShaderPicture src={data.image} />"
+      },
+      {
+        "at": "@home/Hero.jsx:62",
+        "quote": "<video"
+      }
+    ]
+  }
+}

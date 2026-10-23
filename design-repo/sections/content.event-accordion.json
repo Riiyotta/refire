@@ -1,0 +1,227 @@
+{
+  "id": "content.event-accordion",
+  "category": "content",
+  "purpose": "Event detail block: dim title left; on the right a booth/date heading, address, paragraph, a single-open schedule accordion and contact email links.",
+  "cite": [
+    {
+      "at": "@home/Hannover.jsx:9-50",
+      "quote": "export default function Hannover({ data })"
+    }
+  ],
+  "usedInTemplates": [
+    "template.home"
+  ],
+  "constraints": {
+    "onePerPage": true,
+    "region": "main"
+  },
+  "content": {
+    "fields": {
+      "title": {
+        "type": "string",
+        "observedWords": 2,
+        "maxWords": 3,
+        "copyClass": "proprietary",
+        "observed": "Hannover Messe",
+        "cite": [
+          {
+            "at": "src/data/home.js:42",
+            "quote": "title: 'Hannover Messe'"
+          }
+        ]
+      },
+      "heading": {
+        "type": "string",
+        "observedWords": 7,
+        "maxWords": 9,
+        "copyClass": "proprietary",
+        "observed": "BOOTH C45 | HALL 13 17-21 April 2023",
+        "cite": [
+          {
+            "at": "src/data/home.js:43",
+            "quote": "contentTitle: 'BOOTH C45 | HALL 13 17-21 April 2023'"
+          }
+        ]
+      },
+      "address": {
+        "type": "string",
+        "observedWords": 6,
+        "maxWords": 8,
+        "copyClass": "proprietary",
+        "observed": "HANNOVER MESSE Exhibition Grounds, Hannover, Germany",
+        "cite": [
+          {
+            "at": "src/data/home.js:44",
+            "quote": "contentSubtitle: 'HANNOVER MESSE Exhibition Grounds, Hannover, Germany'"
+          }
+        ]
+      },
+      "body": {
+        "type": "string",
+        "observedWords": 64,
+        "maxWords": 77,
+        "copyClass": "proprietary",
+        "observed": "REFIRE was founded in 2015 when a passionate group of engineers came together with the shared dream of propelling the development of hydrogen energy and popularizing the application of fuel cells. REFIRE hopes to reduce mankind’s dependence on fossil energy and contribute to the harmonious coexistence among all lives on our planet by making use of “hydrogen”, the most abundant element in the universe.",
+        "cite": [
+          {
+            "at": "src/data/home.js:46",
+            "quote": "REFIRE was founded in 2015 when a passionate group of engineers"
+          }
+        ]
+      },
+      "schedule": {
+        "type": "list",
+        "item": {
+          "type": "object",
+          "fields": {
+            "title": {
+              "type": "string",
+              "observedWords": 3,
+              "maxWords": 4,
+              "copyClass": "proprietary",
+              "observed": "17 April, PM",
+              "cite": [
+                {
+                  "at": "src/data/home.js:49",
+                  "quote": "title: '17 April, PM'"
+                }
+              ],
+              "maxChars": 24
+            },
+            "body": {
+              "type": "string",
+              "observedWords": 15,
+              "maxWords": 18,
+              "copyClass": "proprietary",
+              "observed": "Panel Discussion - Heavy Duty Trucks: is Hydrogen the Future? @Public Forum, 14:00 (STAND D25 | HALL13)",
+              "cite": [
+                {
+                  "at": "src/data/home.js:50",
+                  "quote": "body: 'Panel Discussion - Heavy Duty Trucks: is Hydrogen the Future? @Public Forum, 14:00 (STAND D25 | HALL13)'"
+                }
+              ]
+            }
+          }
+        },
+        "minItems": 1,
+        "maxItems": 5,
+        "cite": [
+          {
+            "at": "src/data/home.js:47-59",
+            "quote": "accordion: ["
+          }
+        ],
+        "note": "observed 5 rows; the accordion renders any count, so 1..5"
+      },
+      "contacts": {
+        "type": "list",
+        "item": {
+          "type": "object",
+          "fields": {
+            "label": {
+              "type": "string",
+              "observedWords": 2,
+              "maxWords": 3,
+              "copyClass": "proprietary",
+              "observed": "General enquiries: ",
+              "cite": [
+                {
+                  "at": "src/data/home.js:62",
+                  "quote": "label: 'General enquiries: '"
+                }
+              ]
+            },
+            "email": {
+              "type": "email",
+              "cite": [
+                {
+                  "at": "src/data/home.js:61",
+                  "quote": "email: 'media@refire.com'"
+                }
+              ]
+            }
+          }
+        },
+        "minItems": 1,
+        "maxItems": 2,
+        "cite": [
+          {
+            "at": "src/data/home.js:60-63",
+            "quote": "contacts: ["
+          }
+        ],
+        "note": "rendered as mailto links"
+      }
+    }
+  },
+  "motion": {
+    "pattern": "reveal-on-scroll",
+    "trigger": "scroll-threshold-per-row",
+    "reducedMotionFallback": "none-in-source",
+    "cite": [
+      {
+        "at": "src/components/ui/Accordion.jsx:54",
+        "quote": "data-anim-group=\"accordion-row\" data-anim-threshold={threshold}"
+      }
+    ],
+    "threshold": 0.1,
+    "details": {
+      "rows": "top line draws on mount; title splits (stagger 0.03); icon and body fade",
+      "toggle": "height 0 <-> auto 500ms quad-in-out, icon rotates 45deg over 300ms"
+    }
+  },
+  "responsive": {
+    "desktop": {
+      "direction": "row",
+      "titleWidth": {
+        "designPx": 352
+      },
+      "contentWidth": {
+        "designPx": 930
+      },
+      "contacts": "row"
+    },
+    "tablet": {
+      "direction": "row",
+      "titleWidth": {
+        "designPx": 197
+      },
+      "contentWidth": {
+        "designPx": 487
+      },
+      "contacts": "column"
+    },
+    "mobile": {
+      "direction": "column",
+      "titleWidth": "100%",
+      "contentWidth": "100%",
+      "contacts": "column"
+    },
+    "cite": [
+      {
+        "at": "@home/Hannover.jsx:12",
+        "quote": "mobile:flex-col mobile:justify-start"
+      },
+      {
+        "at": "@home/Hannover.jsx:32",
+        "quote": "mt-f126 flex tablet:mt-f63 tablet:flex-col"
+      }
+    ]
+  },
+  "tokens": [
+    "type.event-title",
+    "type.event-content-title",
+    "type.event-content-subtitle",
+    "type.event-content-text",
+    "type.contact-row",
+    "layout.split.event-accordion",
+    "layout.padding.event-accordion",
+    "surface.section",
+    "text.dim-heading",
+    "text.primary"
+  ],
+  "composes": [
+    "component.accordion",
+    "primitive.underline-link"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "component.gmt-clock",
+  "purpose": "Live clock reading 'HH:MM GMT' (24h, en-GB, Atlantic/Reykjavik), updated every second; shows a fixed placeholder before mount.",
+  "props": {},
+  "tokens": [
+    "type.header-clock"
+  ],
+  "cite": [
+    {
+      "at": "src/components/layout/Header.jsx:8-26",
+      "quote": "timeZone: 'Atlantic/Reykjavik',"
+    }
+  ]
+}

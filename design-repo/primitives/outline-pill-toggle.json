@@ -1,0 +1,38 @@
+{
+  "id": "primitive.outline-pill-toggle",
+  "purpose": "Header pill: a partially drawn SVG outline that completes on hover, wrapping a per-character label that swaps between two states.",
+  "props": {
+    "labels": [
+      "string (closed state)",
+      "string (open state)"
+    ]
+  },
+  "tokens": [
+    "type.header-pill",
+    "radius.pill",
+    "component.pill.box",
+    "component.pill.outline-dash",
+    "icon.pill-outline",
+    "motion.duration.1200",
+    "motion.ease.pill-draw",
+    "motion.duration.400"
+  ],
+  "cite": [
+    {
+      "at": "src/components/layout/Header.jsx:49-65",
+      "quote": "className=\"pill pointer-events-auto relative"
+    }
+  ],
+  "motion": {
+    "patterns": {
+      "hover": "outline dashoffset -640 -> -438 (1.2s pill-draw)",
+      "swap": "old label chars leave translateY 0 -> -100% (0.4s sine-in-out, stagger 0.01); after 400ms the new label chars enter 100% -> 0 (0.4s circular-out, stagger 0.01)"
+    },
+    "cite": [
+      {
+        "at": "src/motion/useSplitSwap.js:15-43",
+        "quote": "export function useSplitSwap(text, timeout = 0.4)"
+      }
+    ]
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "id": "content.numbered-statement",
+  "category": "content",
+  "purpose": "Numbered chapter opener: section-title rule, a small muted kicker and one very large light statement paragraph.",
+  "cite": [
+    {
+      "at": "@home/SaveTheDate.jsx:9-35",
+      "quote": "export default function SaveTheDate({ data })"
+    }
+  ],
+  "usedInTemplates": [
+    "template.home"
+  ],
+  "constraints": {
+    "onePerPage": true,
+    "region": "main"
+  },
+  "content": {
+    "fields": {
+      "number": {
+        "type": "string",
+        "observedWords": 1,
+        "maxWords": 2,
+        "copyClass": "ui-microcopy",
+        "observed": "01",
+        "cite": [
+          {
+            "at": "src/data/home.js:18",
+            "quote": "number: '01'"
+          }
+        ],
+        "maxChars": 2,
+        "pattern": "^[0-9]{2}$"
+      },
+      "label": {
+        "type": "string",
+        "observedWords": 3,
+        "maxWords": 4,
+        "copyClass": "proprietary",
+        "observed": "Save the date",
+        "cite": [
+          {
+            "at": "src/data/home.js:19",
+            "quote": "title: 'Save the date'"
+          }
+        ]
+      },
+      "kicker": {
+        "type": "string",
+        "observedWords": 2,
+        "maxWords": 3,
+        "copyClass": "proprietary",
+        "observed": "Refire Group",
+        "cite": [
+          {
+            "at": "src/data/home.js:20",
+            "quote": "subtitle: 'Refire Group'"
+          }
+        ]
+      },
+      "statement": {
+        "type": "string",
+        "observedWords": 28,
+        "maxWords": 34,
+        "copyClass": "proprietary",
+        "observed": "We are excited to be part of Hannover Messe’s Hydrogen & Fuel Cell Expo. We look forward to meeting you there. Stay tuned for updates and plan your visit.",
+        "cite": [
+          {
+            "at": "src/data/home.js:22",
+            "quote": "We are excited to be part of Hannover Messe’s Hydrogen & Fuel Cell Expo."
+          }
+        ]
+      }
+    }
+  },
+  "motion": {
+    "pattern": "reveal-on-scroll",
+    "trigger": "scroll-threshold",
+    "reducedMotionFallback": "none-in-source",
+    "cite": [
+      {
+        "at": "@home/SaveTheDate.jsx:14",
+        "quote": "data-anim-threshold=\"0.3\""
+      }
+    ],
+    "threshold": 0.3,
+    "details": {
+      "sequence": "line draws (delay 100), title row fades (delay 200), kicker fades, statement splits by word 800ms stagger 0.02"
+    }
+  },
+  "responsive": {
+    "desktop": {
+      "contentWidth": {
+        "designPx": 1470
+      }
+    },
+    "tablet": {
+      "contentWidth": {
+        "designPx": 557
+      }
+    },
+    "mobile": {
+      "contentWidth": "87%"
+    },
+    "cite": [
+      {
+        "at": "@home/SaveTheDate.jsx:19",
+        "quote": "w-f1470 shrink-0 tablet:w-f557 mobile:w-[87%]"
+      }
+    ]
+  },
+  "tokens": [
+    "type.statement-body",
+    "type.statement-subtitle",
+    "type.section-title-row",
+    "surface.section",
+    "text.primary",
+    "layout.padding.numbered-statement",
+    "layout.gutter",
+    "motion.threshold.section",
+    "motion.stagger.02"
+  ],
+  "composes": [
+    "component.section-title",
+    "primitive.reveal",
+    "primitive.split-text"
+  ],
+  "variants": [
+    "description-big"
+  ],
+  "variantCite": [
+    {
+      "at": "@home/SaveTheDate.jsx:6",
+      "quote": "descriptionSize \"big\""
+    }
+  ]
+}

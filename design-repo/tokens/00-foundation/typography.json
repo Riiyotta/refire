@@ -1,0 +1,1756 @@
+{
+  "$description": "Font families, weights and every rendered text role. size/lineHeight are resolved per breakpoint (desktop-first cascade already applied). {designPx} uses sizing.fluid-rule; {designPx,minPx} adds the 12px-style clamp; {ratio} is unitless; {px} is fixed.",
+  "tokens": {
+    "font.family.brand": {
+      "$type": "fontFamily",
+      "$value": [
+        "SuisseIntl",
+        "Arial",
+        "Helvetica",
+        "sans-serif"
+      ],
+      "assetRole": "font.brand-typeface",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:57",
+          "quote": "suisse: ['SuisseIntl', 'Arial', 'Helvetica', 'sans-serif']"
+        }
+      ]
+    },
+    "font.family.system-error": {
+      "$type": "fontFamily",
+      "$value": [
+        "-apple-system",
+        "BlinkMacSystemFont",
+        "Roboto",
+        "Segoe UI",
+        "Fira Sans",
+        "Avenir",
+        "Helvetica Neue",
+        "Lucida Grande",
+        "sans-serif"
+      ],
+      "note": "Used only by the not-found body; it deliberately does not use the brand typeface.",
+      "cite": [
+        {
+          "at": "src/index.css:464",
+          "quote": "font-family: -apple-system, BlinkMacSystemFont, Roboto, 'Segoe UI', 'Fira Sans', Avenir, 'Helvetica Neue', 'Lucida Grande', sans-serif"
+        }
+      ]
+    },
+    "font.weight.extralight": {
+      "$type": "fontWeight",
+      "$value": 200,
+      "file": "SuisseIntl-Thin.woff2",
+      "cite": [
+        {
+          "at": "src/index.css:5-11",
+          "quote": "font-weight: 200;"
+        }
+      ]
+    },
+    "font.weight.light": {
+      "$type": "fontWeight",
+      "$value": 300,
+      "file": "SuisseIntl-Light.woff2",
+      "cite": [
+        {
+          "at": "src/index.css:12-18",
+          "quote": "font-weight: 300;"
+        }
+      ]
+    },
+    "font.weight.regular": {
+      "$type": "fontWeight",
+      "$value": 400,
+      "file": "SuisseIntl-Regular.woff2",
+      "cite": [
+        {
+          "at": "src/index.css:19-25",
+          "quote": "font-weight: 400;"
+        }
+      ]
+    },
+    "font.weight.medium": {
+      "$type": "fontWeight",
+      "$value": 500,
+      "file": "SuisseIntl-Medium.woff2",
+      "cite": [
+        {
+          "at": "src/index.css:26-32",
+          "quote": "font-weight: 500;"
+        }
+      ]
+    },
+    "type.body-base": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 16
+          },
+          "tablet": {
+            "designPx": 16
+          },
+          "mobile": {
+            "designPx": 16
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "designPx": 20
+          },
+          "tablet": {
+            "designPx": 20
+          },
+          "mobile": {
+            "designPx": 20
+          }
+        },
+        "color": "{text.on-root}"
+      },
+      "cite": [
+        {
+          "at": "src/index.css:79-80",
+          "quote": "font-size: calc(16 * var(--vw-unit)); line-height: calc(20 * var(--vw-unit));"
+        }
+      ]
+    },
+    "type.preloader-percent": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.light}",
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 75
+          },
+          "tablet": {
+            "designPx": 60
+          },
+          "mobile": {
+            "designPx": 36
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1
+          },
+          "tablet": {
+            "ratio": 1
+          },
+          "mobile": {
+            "ratio": 1
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/Preloader.jsx:92",
+          "quote": "text-f75 font-light leading-none tablet:mt-f14 tablet:text-f60 mobile:mt-f8 mobile:text-f36"
+        }
+      ]
+    },
+    "type.preloader-decor": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "uppercase",
+        "letterSpacing": "0.3em",
+        "size": {
+          "desktop": {
+            "designPx": 14
+          },
+          "tablet": {
+            "designPx": 14
+          },
+          "mobile": {
+            "designPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1
+          },
+          "tablet": {
+            "ratio": 1
+          },
+          "mobile": {
+            "ratio": 1
+          }
+        },
+        "color": "{text.label-light}"
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/Preloader.jsx:102",
+          "quote": "text-f14 uppercase leading-none tracking-[.3em] text-grey mobile:p-f10 mobile:text-f12"
+        }
+      ]
+    },
+    "type.preloader-decor-mark": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "uppercase",
+        "letterSpacing": "0.3em",
+        "size": {
+          "desktop": {
+            "designPx": 20
+          },
+          "tablet": {
+            "designPx": 20
+          },
+          "mobile": {
+            "designPx": 16
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1
+          },
+          "tablet": {
+            "ratio": 1
+          },
+          "mobile": {
+            "ratio": 1
+          }
+        },
+        "color": "{text.label-light}"
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/Preloader.jsx:104",
+          "quote": "text-f20 mobile:text-f16"
+        }
+      ]
+    },
+    "type.header-clock": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "uppercase",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 16
+          },
+          "tablet": {
+            "designPx": 16
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "designPx": 20
+          },
+          "tablet": {
+            "designPx": 20
+          },
+          "mobile": {
+            "ratio": 1
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/Header.jsx:48",
+          "quote": "text-f16 uppercase leading-f20 mobile:text-fmin12 mobile:leading-none"
+        }
+      ]
+    },
+    "type.header-pill": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "uppercase",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 16
+          },
+          "tablet": {
+            "designPx": 16
+          },
+          "mobile": {
+            "designPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1
+          },
+          "tablet": {
+            "ratio": 1
+          },
+          "mobile": {
+            "ratio": 1
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/Header.jsx:52",
+          "quote": "text-f16 uppercase leading-none"
+        }
+      ]
+    },
+    "type.hero-decor": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "uppercase",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 20
+          },
+          "tablet": {
+            "designPx": 20
+          },
+          "mobile": {
+            "designPx": 16
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1.2
+          },
+          "tablet": {
+            "ratio": 1.2
+          },
+          "mobile": {
+            "ratio": 1.2
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "@home/Hero.jsx:78",
+          "quote": "text-f20 uppercase leading-[1.2]"
+        }
+      ]
+    },
+    "type.hero-scroll-label": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "uppercase",
+        "letterSpacing": "0.3em",
+        "size": {
+          "desktop": {
+            "designPx": 14,
+            "minPx": 12
+          },
+          "tablet": {
+            "designPx": 14,
+            "minPx": 12
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "designPx": 24,
+            "minPx": 22
+          },
+          "tablet": {
+            "designPx": 24,
+            "minPx": 22
+          },
+          "mobile": {
+            "ratio": 1
+          }
+        },
+        "color": "{text.muted}",
+        "mobileBlend": "{effect.blend.difference}"
+      },
+      "cite": [
+        {
+          "at": "@home/Hero.jsx:84",
+          "quote": "text-fmin14 uppercase leading-fmin-22-24 tracking-[.3em] text-dark-grey"
+        }
+      ]
+    },
+    "type.hero-cursor-readout": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "uppercase",
+        "letterSpacing": "0.3em",
+        "size": {
+          "desktop": {
+            "designPx": 14,
+            "minPx": 12
+          },
+          "tablet": {
+            "designPx": 14,
+            "minPx": 12
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1.2
+          },
+          "tablet": {
+            "ratio": 1.2
+          },
+          "mobile": {
+            "ratio": 1.2
+          }
+        },
+        "color": "{text.label-light}"
+      },
+      "cite": [
+        {
+          "at": "@home/Hero.jsx:23",
+          "quote": "text-fmin14 uppercase leading-[1.2] tracking-[.3em] mobile:w-fmax-80-90 mobile:text-fmin12"
+        }
+      ]
+    },
+    "type.hero-subtitle": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "uppercase",
+        "letterSpacing": "0.3em",
+        "size": {
+          "desktop": {
+            "designPx": 14,
+            "minPx": 12
+          },
+          "tablet": {
+            "designPx": 14,
+            "minPx": 12
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "designPx": 24,
+            "minPx": 22
+          },
+          "tablet": {
+            "designPx": 24,
+            "minPx": 22
+          },
+          "mobile": {
+            "ratio": 0.9
+          }
+        },
+        "color": "{text.label-light}"
+      },
+      "cite": [
+        {
+          "at": "@home/Hero.jsx:95",
+          "quote": "text-fmin14 uppercase leading-fmin-22-24 tracking-[.3em] text-grey"
+        }
+      ]
+    },
+    "type.hero-title": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.light}",
+        "transform": "capitalize",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 157
+          },
+          "tablet": {
+            "designPx": 82
+          },
+          "mobile": {
+            "designPx": 55
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "designPx": 146
+          },
+          "tablet": {
+            "ratio": 0.9
+          },
+          "mobile": {
+            "ratio": 0.9
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "@home/Hero.jsx:99",
+          "quote": "text-f157 font-light capitalize leading-f146 tablet:text-f82 tablet:leading-[.9] mobile:text-f55"
+        }
+      ]
+    },
+    "type.hero-center-text": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.light}",
+        "transform": "first-letter-of-each-word-uppercase",
+        "letterSpacing": "0.05em",
+        "size": {
+          "desktop": {
+            "designPx": 42
+          },
+          "tablet": {
+            "designPx": 36
+          },
+          "mobile": {
+            "designPx": 18
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1
+          },
+          "tablet": {
+            "designPx": 42
+          },
+          "mobile": {
+            "ratio": 0.95
+          }
+        },
+        "color": "{text.hero-center}",
+        "blend": "{effect.blend.difference}"
+      },
+      "cite": [
+        {
+          "at": "@home/Hero.jsx:129",
+          "quote": "text-f42 font-light leading-none tracking-[.05em] text-alt-dark-grey2 mix-blend-difference"
+        }
+      ]
+    },
+    "type.hero-link": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "capitalize",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 24
+          },
+          "tablet": {
+            "designPx": 18
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1
+          },
+          "tablet": {
+            "ratio": 1
+          },
+          "mobile": {
+            "ratio": 1
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "@home/Hero.jsx:140",
+          "quote": "text-f24 capitalize leading-none"
+        }
+      ]
+    },
+    "type.section-title-row": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "uppercase",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 16,
+            "minPx": 12
+          },
+          "tablet": {
+            "designPx": 14,
+            "minPx": 12
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "designPx": 24,
+            "minPx": 22
+          },
+          "tablet": {
+            "designPx": 24,
+            "minPx": 22
+          },
+          "mobile": {
+            "designPx": 24,
+            "minPx": 22
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "src/components/ui/SectionTitle.jsx:16",
+          "quote": "text-fmin16 leading-fmin-22-24 uppercase tablet:text-fmin14 mobile:text-fmin12"
+        }
+      ]
+    },
+    "type.statement-subtitle": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "uppercase",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 16,
+            "minPx": 12
+          },
+          "tablet": {
+            "designPx": 16,
+            "minPx": 12
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "designPx": 24,
+            "minPx": 22
+          },
+          "tablet": {
+            "designPx": 24,
+            "minPx": 22
+          },
+          "mobile": {
+            "designPx": 24,
+            "minPx": 22
+          }
+        },
+        "color": "{text.muted}"
+      },
+      "cite": [
+        {
+          "at": "@home/SaveTheDate.jsx:20",
+          "quote": "text-fmin16 uppercase leading-fmin-22-24 text-dark-grey"
+        }
+      ]
+    },
+    "type.statement-body": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.light}",
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 95
+          },
+          "tablet": {
+            "designPx": 36
+          },
+          "mobile": {
+            "designPx": 24
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "designPx": 100
+          },
+          "tablet": {
+            "designPx": 38
+          },
+          "mobile": {
+            "designPx": 25
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "@home/SaveTheDate.jsx:28",
+          "quote": "text-f95 font-light leading-f100 tablet:text-f36 tablet:leading-f38 mobile:text-f24 mobile:leading-f25"
+        }
+      ]
+    },
+    "type.dim-heading-caps": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "uppercase",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 60
+          },
+          "tablet": {
+            "designPx": 36
+          },
+          "mobile": {
+            "designPx": 24
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1.05
+          },
+          "tablet": {
+            "ratio": 1.05
+          },
+          "mobile": {
+            "ratio": 1.05
+          }
+        },
+        "color": "{text.dim-heading}"
+      },
+      "cite": [
+        {
+          "at": "@home/AboutRefire.jsx:20",
+          "quote": "text-f60 uppercase leading-[1.05] text-alt-dark-grey tablet:text-f36"
+        }
+      ]
+    },
+    "type.lead-paragraph": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 24
+          },
+          "tablet": {
+            "designPx": 14,
+            "minPx": 12
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1.375
+          },
+          "tablet": {
+            "ratio": 1.375
+          },
+          "mobile": {
+            "ratio": 1.4
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "@home/AboutRefire.jsx:22",
+          "quote": "text-f24 leading-[1.375] tablet:w-f342 tablet:text-fmin14 mobile:w-f294 mobile:text-fmin12 mobile:leading-[1.4]"
+        }
+      ]
+    },
+    "type.card-top-info": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.medium}",
+        "transform": "uppercase",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 16
+          },
+          "tablet": {
+            "designPx": 16
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1.5
+          },
+          "tablet": {
+            "ratio": 1.5
+          },
+          "mobile": {
+            "ratio": 1.5
+          }
+        },
+        "color": "{text.muted}"
+      },
+      "cite": [
+        {
+          "at": "@home/KeyStats.jsx:17",
+          "quote": "text-f16 font-medium uppercase leading-[1.5] text-dark-grey mobile:text-fmin12"
+        }
+      ]
+    },
+    "type.card-label": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "capitalize",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 24
+          },
+          "tablet": {
+            "designPx": 20
+          },
+          "mobile": {
+            "designPx": 14,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1.38
+          },
+          "tablet": {
+            "ratio": 1.38
+          },
+          "mobile": {
+            "ratio": 1.38
+          }
+        },
+        "color": "{text.muted}"
+      },
+      "cite": [
+        {
+          "at": "@home/KeyStats.jsx:30",
+          "quote": "text-f24 capitalize leading-[1.38] text-dark-grey tablet:text-f20 mobile:text-fmin14"
+        }
+      ]
+    },
+    "type.card-value": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.extralight}",
+        "transform": "uppercase",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 188
+          },
+          "tablet": {
+            "designPx": 170
+          },
+          "mobile": {
+            "designPx": 100
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1
+          },
+          "tablet": {
+            "ratio": 1
+          },
+          "mobile": {
+            "ratio": 1
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "@home/KeyStats.jsx:40",
+          "quote": "text-f188 font-extralight uppercase leading-none tablet:ml-0 tablet:text-f170 mobile:text-f100"
+        }
+      ]
+    },
+    "type.ticker": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "capitalize",
+        "letterSpacing": "-0.04em",
+        "size": {
+          "desktop": {
+            "designPx": 250
+          },
+          "tablet": {
+            "designPx": 100
+          },
+          "mobile": {
+            "designPx": 64
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1.05
+          },
+          "tablet": {
+            "ratio": 1.05
+          },
+          "mobile": {
+            "ratio": 1.05
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "@home/Ticker.jsx:16",
+          "quote": "text-f250 capitalize leading-[1.05] tracking-[-.04em]"
+        }
+      ]
+    },
+    "type.event-title": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 60
+          },
+          "tablet": {
+            "designPx": 36
+          },
+          "mobile": {
+            "designPx": 24
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "designPx": 65
+          },
+          "tablet": {
+            "designPx": 37
+          },
+          "mobile": {
+            "designPx": 26
+          }
+        },
+        "color": "{text.dim-heading}"
+      },
+      "cite": [
+        {
+          "at": "@home/Hannover.jsx:13",
+          "quote": "text-f60 leading-f65 text-alt-dark-grey tablet:w-f197 tablet:text-f36 tablet:leading-f37 mobile:mb-f30 mobile:w-full mobile:text-f24 mobile:leading-f26"
+        }
+      ]
+    },
+    "type.event-content-title": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 60
+          },
+          "tablet": {
+            "designPx": 28
+          },
+          "mobile": {
+            "designPx": 24
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "designPx": 65
+          },
+          "tablet": {
+            "designPx": 36
+          },
+          "mobile": {
+            "designPx": 26
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "@home/Hannover.jsx:20",
+          "quote": "text-f60 leading-f65 tablet:mb-f10 tablet:text-f28 tablet:leading-f36 mobile:text-f24 mobile:leading-f26"
+        }
+      ]
+    },
+    "type.event-content-subtitle": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 18
+          },
+          "tablet": {
+            "designPx": 12,
+            "minPx": 12
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "designPx": 33
+          },
+          "tablet": {
+            "designPx": 16,
+            "minPx": 16
+          },
+          "mobile": {
+            "ratio": 1.4
+          }
+        },
+        "color": "{text.dim-heading}"
+      },
+      "cite": [
+        {
+          "at": "@home/Hannover.jsx:23",
+          "quote": "text-f18 leading-f33 text-alt-dark-grey tablet:max-w-f172 tablet:text-fmin12 tablet:leading-fmin-16-16 mobile:leading-[1.4]"
+        }
+      ]
+    },
+    "type.event-content-text": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 24
+          },
+          "tablet": {
+            "designPx": 14,
+            "minPx": 12
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "designPx": 33
+          },
+          "tablet": {
+            "designPx": 17,
+            "minPx": 14
+          },
+          "mobile": {
+            "ratio": 1.4
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "@home/Hannover.jsx:27",
+          "quote": "text-f24 leading-f33 tablet:text-fmin14 tablet:leading-fmin-14-17 mobile:max-w-f294 mobile:text-fmin12 mobile:leading-[1.4]"
+        }
+      ]
+    },
+    "type.accordion-title": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 38
+          },
+          "tablet": {
+            "designPx": 20
+          },
+          "mobile": {
+            "designPx": 16
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1
+          },
+          "tablet": {
+            "ratio": 1
+          },
+          "mobile": {
+            "ratio": 1
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "src/components/ui/Accordion.jsx:66",
+          "quote": "text-f38 leading-none tablet:text-f20 mobile:max-w-[61%] mobile:text-f16"
+        }
+      ]
+    },
+    "type.accordion-body": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 24
+          },
+          "tablet": {
+            "designPx": 12,
+            "minPx": 12
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1.375
+          },
+          "tablet": {
+            "ratio": 1.375
+          },
+          "mobile": {
+            "ratio": 1.375
+          }
+        },
+        "color": "{text.accordion-body}"
+      },
+      "cite": [
+        {
+          "at": "src/components/ui/Accordion.jsx:74",
+          "quote": "text-f24 leading-[1.375] text-accordion"
+        }
+      ]
+    },
+    "type.contact-row": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 16,
+            "minPx": 12
+          },
+          "tablet": {
+            "designPx": 16,
+            "minPx": 12
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1
+          },
+          "tablet": {
+            "ratio": 1
+          },
+          "mobile": {
+            "ratio": 1
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "@home/Hannover.jsx:36",
+          "quote": "text-fmin16 leading-none mobile:text-fmin12"
+        }
+      ]
+    },
+    "type.feature-title": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "capitalize",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 60
+          },
+          "tablet": {
+            "designPx": 32
+          },
+          "mobile": {
+            "designPx": 24
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1.05
+          },
+          "tablet": {
+            "ratio": 1.05
+          },
+          "mobile": {
+            "ratio": 1.11
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "@home/TextImage.jsx:26",
+          "quote": "text-f60 capitalize leading-[1.05] tablet:mb-f46 tablet:text-f32 mobile:mb-f14 mobile:max-w-[88%] mobile:text-f24 mobile:leading-[1.11]"
+        }
+      ]
+    },
+    "type.feature-body": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 24
+          },
+          "tablet": {
+            "designPx": 12,
+            "minPx": 12
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1.375
+          },
+          "tablet": {
+            "ratio": 1.4
+          },
+          "mobile": {
+            "ratio": 1.4
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "@home/TextImage.jsx:30",
+          "quote": "text-f24 leading-[1.375] tablet:max-w-f293 tablet:text-fmin12 tablet:leading-[1.4]"
+        }
+      ]
+    },
+    "type.link-arrow": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "uppercase",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 24
+          },
+          "tablet": {
+            "designPx": 18
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1
+          },
+          "tablet": {
+            "ratio": 1
+          },
+          "mobile": {
+            "ratio": 1
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "src/components/ui/LinkArrow.jsx:47",
+          "quote": "text-f24 leading-none uppercase tablet:text-f18 mobile:text-fmin12"
+        }
+      ]
+    },
+    "type.footer-row": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "column 1 uppercase, columns 2-3 capitalize",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 20
+          },
+          "tablet": {
+            "designPx": 16,
+            "minPx": 12
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1.2
+          },
+          "tablet": {
+            "ratio": 1.2
+          },
+          "mobile": {
+            "ratio": 1.2
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/Footer.jsx:17",
+          "quote": "text-f20 leading-[1.2] tablet:pb-f14 tablet:pt-f24 tablet:text-fmin16 mobile:pb-f10 mobile:pt-f20 mobile:text-fmin12"
+        }
+      ]
+    },
+    "type.cookie-pane": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 16
+          },
+          "tablet": {
+            "designPx": 16
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "designPx": 24
+          },
+          "tablet": {
+            "designPx": 24
+          },
+          "mobile": {
+            "designPx": 14,
+            "minPx": 14
+          }
+        },
+        "color": "{text.inverse}"
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/CookiePane.jsx:43",
+          "quote": "text-f16 leading-f24 text-dark mobile:w-full mobile:p-f18 mobile:text-fmin12 mobile:leading-fmin-14-14"
+        }
+      ]
+    },
+    "type.overlay-base": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 16,
+            "minPx": 12
+          },
+          "tablet": {
+            "designPx": 14,
+            "minPx": 12
+          },
+          "mobile": {
+            "designPx": 14,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "designPx": 24,
+            "minPx": 22
+          },
+          "tablet": {
+            "designPx": 20,
+            "minPx": 18
+          },
+          "mobile": {
+            "designPx": 20,
+            "minPx": 18
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:123",
+          "quote": "text-fmin16 leading-fmin-22-24 text-primary tablet:text-fmin14 tablet:leading-fmin-18-20"
+        }
+      ]
+    },
+    "type.overlay-title": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "capitalize",
+        "letterSpacing": "-0.01em",
+        "size": {
+          "desktop": {
+            "designPx": 176
+          },
+          "tablet": {
+            "designPx": 80
+          },
+          "mobile": {
+            "designPx": 40
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1.02
+          },
+          "tablet": {
+            "ratio": 1.02
+          },
+          "mobile": {
+            "ratio": 1.02
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:130",
+          "quote": "text-f176 capitalize leading-[1.02] tracking-[-.01em]"
+        }
+      ]
+    },
+    "type.overlay-label": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "uppercase",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 16,
+            "minPx": 12
+          },
+          "tablet": {
+            "designPx": 16,
+            "minPx": 12
+          },
+          "mobile": {
+            "designPx": 14,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "designPx": 24,
+            "minPx": 22
+          },
+          "tablet": {
+            "designPx": 24,
+            "minPx": 22
+          },
+          "mobile": {
+            "designPx": 24,
+            "minPx": 22
+          }
+        },
+        "color": "{text.muted}"
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:139",
+          "quote": "uppercase text-dark-grey tablet:text-fmin16 tablet:leading-fmin-22-24 mobile:text-fmin14"
+        }
+      ]
+    },
+    "type.form-field": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 28
+          },
+          "tablet": {
+            "designPx": 16,
+            "minPx": 12
+          },
+          "mobile": {
+            "designPx": 16,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "ratio": 1.18
+          },
+          "tablet": {
+            "ratio": 1.45
+          },
+          "mobile": {
+            "ratio": 1.45
+          }
+        },
+        "color": "{text.primary}"
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:8",
+          "quote": "text-f28 leading-[1.18] tablet:text-fmin16 tablet:leading-[1.45]"
+        }
+      ]
+    },
+    "type.form-note": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "designPx": 16
+          },
+          "tablet": {
+            "designPx": 12,
+            "minPx": 12
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "designPx": 24
+          },
+          "tablet": {
+            "ratio": 1.4
+          },
+          "mobile": {
+            "ratio": 1.4
+          }
+        },
+        "color": "{text.muted}"
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:186",
+          "quote": "w-f382 text-f16 leading-f24 text-dark-grey tablet:mt-f40 tablet:max-w-full tablet:text-fmin12 tablet:leading-[1.4]"
+        }
+      ]
+    },
+    "type.button-label": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.brand}",
+        "weight": "{font.weight.regular}",
+        "transform": "uppercase",
+        "letterSpacing": "0.15em",
+        "size": {
+          "desktop": {
+            "designPx": 16
+          },
+          "tablet": {
+            "designPx": 16
+          },
+          "mobile": {
+            "designPx": 12,
+            "minPx": 12
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "designPx": 24
+          },
+          "tablet": {
+            "designPx": 24
+          },
+          "mobile": {
+            "designPx": 24
+          }
+        },
+        "color": "{text.inverse}",
+        "letterSpacingTablet": "normal",
+        "letterSpacingMobile": "0.15em"
+      },
+      "cite": [
+        {
+          "at": "src/components/ui/BlackButton.jsx:24",
+          "quote": "text-f16 leading-f24 tracking-[.15em]"
+        }
+      ]
+    },
+    "type.error-code": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.system-error}",
+        "weight": 500,
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "px": 24
+          },
+          "tablet": {
+            "px": 24
+          },
+          "mobile": {
+            "px": 24
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "px": 15
+          },
+          "tablet": {
+            "px": 15
+          },
+          "mobile": {
+            "px": 15
+          }
+        },
+        "color": "{text.error-page}"
+      },
+      "note": "line-height 15px is inherited from the site body base at 1440 (specs/404.md); the error body does not scale fluidly",
+      "cite": [
+        {
+          "at": "src/index.css:465",
+          "quote": "font-size: 24px; font-weight: 500;"
+        }
+      ]
+    },
+    "type.error-message": {
+      "$type": "typography",
+      "$value": {
+        "family": "{font.family.system-error}",
+        "weight": 400,
+        "transform": "none",
+        "letterSpacing": "normal",
+        "size": {
+          "desktop": {
+            "px": 14
+          },
+          "tablet": {
+            "px": 14
+          },
+          "mobile": {
+            "px": 14
+          }
+        },
+        "lineHeight": {
+          "desktop": {
+            "px": 49
+          },
+          "tablet": {
+            "px": 49
+          },
+          "mobile": {
+            "px": 49
+          }
+        },
+        "color": "{text.error-page}"
+      },
+      "cite": [
+        {
+          "at": "src/index.css:466-467",
+          "quote": "line-height: 49px; height: 49px;"
+        },
+        {
+          "at": "src/index.css:467",
+          "quote": "font-size: 14px; font-weight: normal;"
+        }
+      ]
+    }
+  }
+}

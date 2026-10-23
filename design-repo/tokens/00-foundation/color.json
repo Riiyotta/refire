@@ -1,0 +1,252 @@
+{
+  "$description": "Foundation colours. Only values actually rendered by the source are included (usage verified by grep over src/); declared-but-unused source colours are listed in extraction/measured-values.json#excluded.",
+  "tokens": {
+    "color.paper": {
+      "$type": "color",
+      "$value": "#fefefe",
+      "sourceName": "--primary-color",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:11",
+          "quote": "primary: '#fefefe'"
+        },
+        {
+          "at": "Refire_files/887c3946dd796d39.css:1",
+          "quote": "--primary-color:#fefefe"
+        }
+      ]
+    },
+    "color.ink": {
+      "$type": "color",
+      "$value": "#060508",
+      "sourceName": "--dark-color",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:12",
+          "quote": "dark: '#060508'"
+        },
+        {
+          "at": "Refire_files/887c3946dd796d39.css:1",
+          "quote": "--dark-color:#060508"
+        }
+      ]
+    },
+    "color.ink-raised": {
+      "$type": "color",
+      "$value": "#0e0e0e",
+      "sourceName": "--alt-dark-color",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:13",
+          "quote": "'alt-dark': '#0e0e0e'"
+        },
+        {
+          "at": "Refire_files/887c3946dd796d39.css:1",
+          "quote": "--alt-dark-color:#0e0e0e"
+        }
+      ]
+    },
+    "color.grey-100": {
+      "$type": "color",
+      "$value": "#d0d0d0",
+      "sourceName": "--most-light-grey",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:27",
+          "quote": "'most-light-grey': '#d0d0d0'"
+        }
+      ]
+    },
+    "color.grey-200": {
+      "$type": "color",
+      "$value": "#c8c8c8",
+      "sourceName": "--grey-color",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:14",
+          "quote": "grey: '#c8c8c8'"
+        }
+      ]
+    },
+    "color.grey-400": {
+      "$type": "color",
+      "$value": "#8e8e8e",
+      "sourceName": "--alt-dark-grey2",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:15",
+          "quote": "'alt-dark-grey2': '#8e8e8e'"
+        }
+      ]
+    },
+    "color.grey-450": {
+      "$type": "color",
+      "$value": "#8b8b8b",
+      "sourceName": "--dark-grey-color",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:16",
+          "quote": "'dark-grey': '#8b8b8b'"
+        }
+      ]
+    },
+    "color.grey-480": {
+      "$type": "color",
+      "$value": "#888888",
+      "sourceName": "literal #888 (accordion body)",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:29",
+          "quote": "accordion: '#888888'"
+        }
+      ]
+    },
+    "color.grey-500": {
+      "$type": "color",
+      "$value": "#828183",
+      "sourceName": "--gb-color",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:26",
+          "quote": "gb: '#828183'"
+        }
+      ]
+    },
+    "color.grey-650": {
+      "$type": "color",
+      "$value": "#555555",
+      "sourceName": "--darkness-grey-color",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:19",
+          "quote": "'darkness-grey': '#555555'"
+        }
+      ]
+    },
+    "color.grey-750": {
+      "$type": "color",
+      "$value": "#383838",
+      "sourceName": "--most-dark-color",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:22",
+          "quote": "'most-dark': '#383838'"
+        }
+      ]
+    },
+    "color.grey-760": {
+      "$type": "color",
+      "$value": "#383739",
+      "sourceName": "--alt-dark-grey-color",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:17",
+          "quote": "'alt-dark-grey': '#383739'"
+        }
+      ]
+    },
+    "color.grey-050": {
+      "$type": "color",
+      "$value": "#eeeeee",
+      "sourceName": "WebGL clear colour 0xEEEEEE",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:34",
+          "quote": "'webgl-clear': '#eeeeee'"
+        }
+      ]
+    },
+    "color.taupe-selection": {
+      "$type": "color",
+      "$value": "#a59e99",
+      "sourceName": "::selection background",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:30",
+          "quote": "selection: '#a59e99'"
+        },
+        {
+          "at": "src/index.css:122-124",
+          "quote": "background: theme('colors.selection')"
+        }
+      ]
+    },
+    "color.ink-alpha-10": {
+      "$type": "color",
+      "$value": "rgba(6,5,8,.1)",
+      "sourceName": "progress track",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:31",
+          "quote": "'progress-track': 'rgba(6,5,8,.1)'"
+        }
+      ]
+    },
+    "color.white-alpha-10": {
+      "$type": "color",
+      "$value": "hsla(0,0%,100%,.1)",
+      "sourceName": "hero link glass",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:32",
+          "quote": "glass: 'hsla(0,0%,100%,.1)'"
+        }
+      ]
+    },
+    "color.grey-alpha-25": {
+      "$type": "color",
+      "$value": "hsla(0,0%,71%,.25)",
+      "sourceName": "cursor circle",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:33",
+          "quote": "'cursor-circle': 'hsla(0,0%,71%,.25)'"
+        }
+      ]
+    },
+    "color.pure-white": {
+      "$type": "color",
+      "$value": "#fff",
+      "sourceName": "error page body (light scheme)",
+      "cite": [
+        {
+          "at": "src/index.css:463",
+          "quote": "color: #000; background: #fff;"
+        }
+      ]
+    },
+    "color.pure-black": {
+      "$type": "color",
+      "$value": "#000",
+      "sourceName": "error page text (light scheme)",
+      "cite": [
+        {
+          "at": "src/index.css:463",
+          "quote": "color: #000; background: #fff;"
+        }
+      ]
+    },
+    "color.black-alpha-30": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, .3)",
+      "sourceName": "error code divider (light scheme)",
+      "cite": [
+        {
+          "at": "src/index.css:465",
+          "quote": "border-right: 1px solid rgba(0, 0, 0, .3)"
+        }
+      ]
+    },
+    "color.white-alpha-30": {
+      "$type": "color",
+      "$value": "rgba(255, 255, 255, .3)",
+      "sourceName": "error code divider (dark scheme)",
+      "cite": [
+        {
+          "at": "src/index.css:470",
+          "quote": "border-right-color: rgba(255, 255, 255, .3)"
+        }
+      ]
+    }
+  }
+}

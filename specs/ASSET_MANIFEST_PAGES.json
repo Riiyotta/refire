@@ -1,0 +1,16 @@
+{
+  "source": "https://refire.com/int/",
+  "note": "The /int/ build has only '/' (home) and '/_error' (404). The 404 page loads no assets beyond the shared CSS/JS and the SuisseIntl woff2 fonts, which are already in ASSET_MANIFEST.json. No new assets are needed.",
+  "pages": {
+    "404": {
+      "url": "https://refire.com/int/404",
+      "assetsAlsoOnHome": [
+        "https://refire.com/int/fonts/Suisse/SuisseIntl-Regular.woff2",
+        "https://refire.com/int/fonts/Suisse/SuisseIntl-Medium.woff2",
+        "https://refire.com/int/fonts/Suisse/SuisseIntl-Light.woff2",
+        "https://refire.com/int/fonts/Suisse/SuisseIntl-Thin.woff2"
+      ]
+    }
+  },
+  "assets": []
+}

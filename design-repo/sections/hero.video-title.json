@@ -1,0 +1,228 @@
+{
+  "id": "hero.video-title",
+  "category": "hero",
+  "purpose": "Full-viewport opener: muted looping background film, oversized two-line light title with an arrow, a blended descriptor, and a frosted corner link to the brochure.",
+  "cite": [
+    {
+      "at": "@home/Hero.jsx:36-149",
+      "quote": "export default function Hero({ data })"
+    },
+    {
+      "at": "src/pages/Home.jsx:16",
+      "quote": "<Hero data={home.hero} />"
+    }
+  ],
+  "usedInTemplates": [
+    "template.home"
+  ],
+  "constraints": {
+    "onePerPage": true,
+    "region": "main",
+    "mustBeFirstInMain": true
+  },
+  "content": {
+    "fields": {
+      "decor": {
+        "type": "string",
+        "observedWords": 0,
+        "maxWords": 1,
+        "copyClass": "ui-microcopy",
+        "observed": "+ +",
+        "cite": [
+          {
+            "at": "src/data/home.js:6",
+            "quote": "decor: '+ +'"
+          }
+        ],
+        "maxChars": 4
+      },
+      "scrollLabel": {
+        "type": "string",
+        "observedWords": 1,
+        "maxWords": 2,
+        "copyClass": "ui-microcopy",
+        "observed": "Scroll",
+        "cite": [
+          {
+            "at": "src/data/home.js:7",
+            "quote": "scroll: 'Scroll'"
+          }
+        ]
+      },
+      "eyebrow": {
+        "type": "string",
+        "observedWords": 1,
+        "maxWords": 2,
+        "copyClass": "proprietary",
+        "observed": "introducing",
+        "cite": [
+          {
+            "at": "src/data/home.js:8",
+            "quote": "subtitle: 'introducing'"
+          }
+        ]
+      },
+      "titleLines": {
+        "type": "list",
+        "item": {
+          "type": "string",
+          "observedWords": 2,
+          "maxWords": 3,
+          "copyClass": "proprietary",
+          "observed": "A New",
+          "cite": [
+            {
+              "at": "src/data/home.js:11",
+              "quote": "titleLines: ['A New', 'generation']"
+            }
+          ]
+        },
+        "minItems": 2,
+        "maxItems": 2,
+        "cite": [
+          {
+            "at": "src/data/home.js:11",
+            "quote": "titleLines: ['A New', 'generation']"
+          }
+        ],
+        "note": "line 1 is followed by the long arrow; fixed at two lines (F(157) type)"
+      },
+      "descriptor": {
+        "type": "string",
+        "observedWords": 4,
+        "maxWords": 5,
+        "copyClass": "proprietary",
+        "observed": "of fuel cell systems",
+        "cite": [
+          {
+            "at": "src/data/home.js:12",
+            "quote": "centerText: 'of fuel cell systems'"
+          }
+        ]
+      },
+      "link": {
+        "type": "object",
+        "fields": {
+          "label": {
+            "type": "string",
+            "observedWords": 3,
+            "maxWords": 4,
+            "copyClass": "proprietary",
+            "observed": "view our brochure",
+            "cite": [
+              {
+                "at": "src/data/home.js:13",
+                "quote": "link: { label: 'view our brochure', href: BROCHURE_HREF }"
+              }
+            ]
+          },
+          "href": {
+            "type": "link",
+            "hrefKind": "document",
+            "cite": [
+              {
+                "at": "src/data/home.js:13",
+                "quote": "href: BROCHURE_HREF"
+              }
+            ],
+            "assetRole": "document.brochure"
+          }
+        }
+      },
+      "video": {
+        "type": "asset",
+        "assetRole": "media.hero-video",
+        "cite": [
+          {
+            "at": "src/data/home.js:14",
+            "quote": "video: { src: '/int/videos/main-new.mp4'"
+          }
+        ]
+      },
+      "poster": {
+        "type": "asset",
+        "assetRole": "media.hero-poster",
+        "cite": [
+          {
+            "at": "src/data/home.js:14",
+            "quote": "poster: '/int/images/poster.png'"
+          }
+        ]
+      }
+    }
+  },
+  "motion": {
+    "pattern": "hero-entrance",
+    "trigger": "page-visible",
+    "reducedMotionFallback": "none-in-source",
+    "cite": [
+      {
+        "at": "src/motion/reveal.js:102-106",
+        "quote": "s.groups.filter((g) => g.name === 'hero').forEach((g) => {"
+      }
+    ],
+    "details": {
+      "title": "each line blur-in (opacity 0, +15% y, blur 20px -> clear) 1500ms circular-in-out, delays 0 / 200ms",
+      "arrow": "slide-fade from -20% x, 700ms, delay 700ms",
+      "labels": "fade 700ms, delay 500ms",
+      "descriptor": "per-character fade 3000ms circular-out, delay 700ms, stagger 0.02",
+      "link": "fade 1000ms, delay 700ms",
+      "video": "plays only while the hero is in view and the preloader has finished"
+    }
+  },
+  "responsive": {
+    "desktop": {
+      "titleColumnWidth": {
+        "designPx": 765
+      },
+      "descriptorOffset": {
+        "designPx": 178
+      }
+    },
+    "tablet": {
+      "leftColumnWidth": {
+        "designPx": 403
+      },
+      "stack": "title above descriptor",
+      "descriptorOffset": 0
+    },
+    "mobile": {
+      "wrap": true,
+      "scrollLabel": "moves to bottom, blended difference",
+      "linkRow": "full width, right-aligned"
+    },
+    "cite": [
+      {
+        "at": "@home/Hero.jsx:91",
+        "quote": "tablet:w-f403 tablet:flex-col tablet:items-start"
+      },
+      {
+        "at": "@home/Hero.jsx:84",
+        "quote": "mobile:bottom-f9 mobile:top-auto"
+      }
+    ]
+  },
+  "tokens": [
+    "type.hero-title",
+    "type.hero-center-text",
+    "type.hero-subtitle",
+    "type.hero-decor",
+    "type.hero-scroll-label",
+    "type.hero-link",
+    "surface.section",
+    "text.primary",
+    "layer.hero-overlay",
+    "layout.hero.height",
+    "layout.gutter",
+    "icon.size.hero-title-arrow",
+    "motion.duration.1500",
+    "motion.duration.3000"
+  ],
+  "composes": [
+    "primitive.reveal",
+    "primitive.split-text",
+    "primitive.glass-link",
+    "primitive.icon",
+    "component.cursor-readout"
+  ]
+}

@@ -1,0 +1,669 @@
+{
+  "$description": "Citation ledger. Every cite.at in this repo must name a path listed in `sources`; ranges are checked against the recorded line counts even when no source tree is present, and against the real files (plus quote matching) when it is. External evidence lives here, never in registry.manifest.json entryPoints.",
+  "sourceRoot": "The clone project that contains this design-repo (its parent directory). It is NOT shipped. verify_all.py resolves citations against ../ by default or --source-root PATH, and WARNS (does not fail) when it is absent.",
+  "pathAliases": {
+    "@home": "src/components/home"
+  },
+  "pathAliasesNote": "Cited paths starting with @home are resolved to the clone's home-section component directory. The alias keeps a literal machine-path grep for absolute home directories at zero hits.",
+  "citationFormat": "{at: 'relative/path:line' | 'relative/path:start-end', quote: 'verbatim text that must appear in those lines (whitespace-collapsed)'}",
+  "sources": {
+    ".playwright-mcp/c1440b.v.txt": {
+      "lines": 83,
+      "role": "pixel-audit measurement capture"
+    },
+    ".playwright-mcp/ov1440.txt": {
+      "lines": 1,
+      "role": "pixel-audit measurement capture"
+    },
+    "@home/AboutRefire.jsx": {
+      "lines": 28,
+      "role": "source"
+    },
+    "@home/Hannover.jsx": {
+      "lines": 50,
+      "role": "source"
+    },
+    "@home/Hero.jsx": {
+      "lines": 149,
+      "role": "source"
+    },
+    "@home/KeyStats.jsx": {
+      "lines": 65,
+      "role": "source"
+    },
+    "@home/SaveTheDate.jsx": {
+      "lines": 35,
+      "role": "source"
+    },
+    "@home/ScrolledPicture.jsx": {
+      "lines": 34,
+      "role": "source"
+    },
+    "@home/TextImage.jsx": {
+      "lines": 52,
+      "role": "source"
+    },
+    "@home/Ticker.jsx": {
+      "lines": 20,
+      "role": "source"
+    },
+    "ASSET_MANIFEST.json": {
+      "lines": 48,
+      "role": "recon asset manifest"
+    },
+    "CLONE_SPEC.md": {
+      "lines": 684,
+      "role": "recon spec (home)"
+    },
+    "Refire_files/887c3946dd796d39.css": {
+      "lines": 1,
+      "role": "original site's saved bundles (ground truth)"
+    },
+    "Refire_files/index-0bba0de55cdcb42c.js": {
+      "lines": 1,
+      "role": "original site's saved bundles (ground truth)"
+    },
+    "index.html": {
+      "lines": 27,
+      "role": "clone document head"
+    },
+    "package.json": {
+      "lines": 26,
+      "role": "source"
+    },
+    "specs/404.md": {
+      "lines": 72,
+      "role": "recon spec"
+    },
+    "specs/ROUTES.md": {
+      "lines": 68,
+      "role": "recon spec"
+    },
+    "src/App.jsx": {
+      "lines": 15,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/layout/ContactOverlay.jsx": {
+      "lines": 200,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/layout/CookiePane.jsx": {
+      "lines": 58,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/layout/Cursor.jsx": {
+      "lines": 86,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/layout/Footer.jsx": {
+      "lines": 33,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/layout/Header.jsx": {
+      "lines": 70,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/layout/Layout.jsx": {
+      "lines": 82,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/layout/Preloader.jsx": {
+      "lines": 124,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/layout/ScrollProgress.jsx": {
+      "lines": 23,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/ui/Accordion.jsx": {
+      "lines": 81,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/ui/BlackButton.jsx": {
+      "lines": 39,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/ui/Line.jsx": {
+      "lines": 20,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/ui/LinkArrow.jsx": {
+      "lines": 60,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/ui/Marquee.jsx": {
+      "lines": 61,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/ui/Reveal.jsx": {
+      "lines": 32,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/ui/SectionTitle.jsx": {
+      "lines": 30,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/ui/ShaderPicture.jsx": {
+      "lines": 228,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/ui/SplitText.jsx": {
+      "lines": 65,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/ui/UnderlineLink.jsx": {
+      "lines": 17,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/components/ui/icons.jsx": {
+      "lines": 95,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/data/home.js": {
+      "lines": 71,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/data/site.js": {
+      "lines": 51,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/index.css": {
+      "lines": 471,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/motion/README.md": {
+      "lines": 75,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/motion/anims.js": {
+      "lines": 79,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/motion/gsap.js": {
+      "lines": 11,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/motion/marquee.js": {
+      "lines": 156,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/motion/reveal.js": {
+      "lines": 123,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/motion/scroll.js": {
+      "lines": 60,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/motion/useSplitSwap.js": {
+      "lines": 44,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/pages/Home.jsx": {
+      "lines": 26,
+      "role": "clone source (read-only evidence)"
+    },
+    "src/pages/NotFound.jsx": {
+      "lines": 32,
+      "role": "clone source (read-only evidence)"
+    },
+    "tailwind.config.cjs": {
+      "lines": 104,
+      "role": "clone style configuration"
+    }
+  },
+  "corrections": [
+    {
+      "claim": "Custom cursor follows with lerp 0.2 per frame",
+      "where": "CLONE_SPEC.md sections 2.4, 4.3, 5 and the src/motion/README.md hook table",
+      "actual": "lerp 0.12 per tick",
+      "cite": [
+        {
+          "at": "CLONE_SPEC.md:197",
+          "quote": "Follow: lerp with amount **0.2** per frame"
+        },
+        {
+          "at": "CLONE_SPEC.md:593",
+          "quote": "Custom cursor lerp 0.2 (2.4)."
+        },
+        {
+          "at": "src/motion/README.md:35",
+          "quote": "Lerp 0.2/frame toward the mouse"
+        },
+        {
+          "at": "src/components/layout/Cursor.jsx:30",
+          "quote": "const amt = 0.12"
+        }
+      ]
+    },
+    {
+      "claim": "Custom eases are 'still to register'",
+      "where": "src/motion/README.md",
+      "actual": "both CustomEases are registered",
+      "cite": [
+        {
+          "at": "src/motion/README.md:22",
+          "quote": "Custom eases still to register"
+        },
+        {
+          "at": "src/motion/gsap.js:8-9",
+          "quote": "CustomEase.create('easeDecorLine', '0.075, 0.82, 0.165, 1')"
+        }
+      ]
+    },
+    {
+      "claim": "Preloader '--p is set directly and the preloader unmounts immediately'",
+      "where": "src/motion/README.md",
+      "actual": "4s sine tween, then 1s fade (delay .2s) and 2s blur",
+      "cite": [
+        {
+          "at": "src/motion/README.md:29",
+          "quote": "Currently `--p` is set directly"
+        },
+        {
+          "at": "src/components/layout/Preloader.jsx:47-77",
+          "quote": "duration: 4, '--p': progress"
+        }
+      ]
+    },
+    {
+      "claim": "Cookie pane 'currently mounts/unmounts instantly'",
+      "where": "src/motion/README.md",
+      "actual": "700ms circular-in-out fade in and out",
+      "cite": [
+        {
+          "at": "src/motion/README.md:36",
+          "quote": "currently mounts/unmounts instantly"
+        },
+        {
+          "at": "src/components/layout/CookiePane.jsx:25-29",
+          "quote": "duration: 0.7, ease: 'circ.inOut'"
+        }
+      ]
+    },
+    {
+      "claim": "Preloader percent renders '00%..100%'",
+      "where": "CLONE_SPEC.md section 1",
+      "actual": "the counter is the raw integer with no zero padding; '00%' is an invisible width spacer",
+      "cite": [
+        {
+          "at": "CLONE_SPEC.md:104",
+          "quote": "Preloader percent (00%..100%)"
+        },
+        {
+          "at": "src/components/layout/Preloader.jsx:93-95",
+          "quote": "{count}%"
+        }
+      ]
+    },
+    {
+      "claim": "Contact pill label swap is a single 400ms transition",
+      "where": "CLONE_SPEC.md section 2.2",
+      "actual": "sequential out-in: old label leaves (400ms sine-in-out), then after 400ms the new label enters (400ms circular-out)",
+      "cite": [
+        {
+          "at": "CLONE_SPEC.md:185",
+          "quote": "The swap is a char split-text transition, 400ms."
+        },
+        {
+          "at": "src/motion/useSplitSwap.js:7-11",
+          "quote": "the old label leaves first"
+        }
+      ]
+    },
+    {
+      "claim": "Asset local copies live under public/assets/...",
+      "where": "ASSET_MANIFEST.json `local` fields",
+      "actual": "the local copies are under public/int/... (served at /int/...)",
+      "cite": [
+        {
+          "at": "ASSET_MANIFEST.json:13",
+          "quote": "public/assets/fonts/SuisseIntl-Thin.woff2"
+        },
+        {
+          "at": "src/index.css:7",
+          "quote": "src: url(/int/fonts/Suisse/SuisseIntl-Thin.woff2)"
+        }
+      ]
+    },
+    {
+      "claim": "SuisseIntl Mono is 'declared in CSS but unused'",
+      "where": "ASSET_MANIFEST.json / task brief",
+      "actual": "true of the ORIGINAL's CSS only; the clone does not declare Mono at all (the file ships in public/ but no @font-face references it)",
+      "cite": [
+        {
+          "at": "ASSET_MANIFEST.json:17",
+          "quote": "Declared in CSS but never used on this page"
+        },
+        {
+          "at": "src/index.css:2-3",
+          "quote": "Mono declared upstream but unused on the home page, so it is not declared here"
+        }
+      ]
+    }
+  ],
+  "confirmed": [
+    {
+      "claim": "fades default to 700ms circular-in-out; split defaults 800ms circular-out stagger 0.01",
+      "cite": [
+        {
+          "at": "src/motion/anims.js:24-29",
+          "quote": "if (SPLIT_TYPES.has(type)) return { duration: 800, ease: 'circ.out', stagger: 0.01 }"
+        }
+      ]
+    },
+    {
+      "claim": "reveal thresholds are 0.1 (default), 0.3 (sections), 0.7 (shader)",
+      "cite": [
+        {
+          "at": "src/motion/reveal.js:26",
+          "quote": "const DEFAULT_THRESHOLD = 0.1"
+        },
+        {
+          "at": "@home/AboutRefire.jsx:13",
+          "quote": "data-anim-threshold=\"0.3\""
+        },
+        {
+          "at": "src/components/ui/ShaderPicture.jsx:217",
+          "quote": "data-anim-threshold=\"0.7\""
+        }
+      ]
+    },
+    {
+      "claim": "text+image reveal measures the whole section",
+      "cite": [
+        {
+          "at": "src/motion/reveal.js:22-24",
+          "quote": "'text-image': (el) => el.closest('section') || el,"
+        }
+      ]
+    },
+    {
+      "claim": "scrolled-picture mapping (98/2/1 -> 100/0/1.1) matches the live measurement table",
+      "cite": [
+        {
+          "at": "src/motion/scroll.js:51-53",
+          "quote": "'--y': 10 * (1 - lerp(0.8, 1, s)),"
+        },
+        {
+          "at": "CLONE_SPEC.md:402-404",
+          "quote": "`--scale = 1 + 0.1·s` (1 → 1.1)"
+        }
+      ]
+    },
+    {
+      "claim": "contact overlay geometry fix landed: clone content block matches the original at 1440 (y 204.1, 1440x695.9)",
+      "cite": [
+        {
+          "at": ".playwright-mcp/ov1440.txt:1",
+          "quote": "P div 0,204.1 1440x695.9 rgb(6, 5, 8)     cls=Contact_root__JlQMi"
+        },
+        {
+          "at": ".playwright-mcp/c1440b.v.txt:7",
+          "quote": "P div 0,204.1 1440x695.9 rgb(6, 5, 8)"
+        }
+      ]
+    },
+    {
+      "claim": "original :root colour tokens match the clone colour map",
+      "cite": [
+        {
+          "at": "Refire_files/887c3946dd796d39.css:1",
+          "quote": "--primary-color:#fefefe;--dark-color:#060508;--alt-dark-color:#0e0e0e;--grey-color:#c8c8c8"
+        },
+        {
+          "at": "tailwind.config.cjs:11-17",
+          "quote": "primary: '#fefefe'"
+        }
+      ]
+    },
+    {
+      "claim": "footer keeps the original's non-breaking space between brand and copyright sign",
+      "cite": [
+        {
+          "at": "Refire_files/index-0bba0de55cdcb42c.js:1",
+          "quote": "children:[\"Refire \\xa9\",s]"
+        },
+        {
+          "at": "src/components/layout/Footer.jsx:18",
+          "quote": "{`${copy.brand} ©${year}`}"
+        }
+      ]
+    }
+  ],
+  "excluded": [
+    {
+      "what": "--alt-grey-color",
+      "value": "#848484",
+      "reason": "declared in the source colour map but never rendered",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:18",
+          "quote": "'alt-grey': '#848484'"
+        }
+      ]
+    },
+    {
+      "what": "--light-grey-color",
+      "value": "silver",
+      "reason": "declared in the source colour map but never rendered",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:20",
+          "quote": "'light-grey': 'silver'"
+        }
+      ]
+    },
+    {
+      "what": "--light-dark-color",
+      "value": "#2a2a2a",
+      "reason": "declared in the source colour map but never rendered",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:21",
+          "quote": "'light-dark': '#2a2a2a'"
+        }
+      ]
+    },
+    {
+      "what": "--alt-light-grey-color",
+      "value": "#3d3c3e",
+      "reason": "declared in the source colour map but never rendered",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:23",
+          "quote": "'alt-light-grey': '#3d3c3e'"
+        }
+      ]
+    },
+    {
+      "what": "--code-dark-color",
+      "value": "#4f4f4f",
+      "reason": "declared in the source colour map but never rendered",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:24",
+          "quote": "'code-dark': '#4f4f4f'"
+        }
+      ]
+    },
+    {
+      "what": "--red-color",
+      "value": "#c39797",
+      "reason": "declared in the source colour map but never rendered",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:25",
+          "quote": "red: '#c39797'"
+        }
+      ]
+    },
+    {
+      "what": "--tr-grey-color",
+      "value": "rgba(6,5,8,.15)",
+      "reason": "declared in the source colour map but never rendered",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:28",
+          "quote": "'tr-grey': 'rgba(6,5,8,.15)'"
+        }
+      ]
+    },
+    {
+      "what": "easeFormHoverLine",
+      "value": "cubic-bezier(0.215, 0.61, 0.355, 1)",
+      "reason": "registered but never used by any animation",
+      "cite": [
+        {
+          "at": "src/motion/gsap.js:8",
+          "quote": "CustomEase.create('easeFormHoverLine', '0.215, 0.61, 0.355, 1')"
+        }
+      ]
+    },
+    {
+      "what": "fadeUp animation preset",
+      "value": "opacity 0->1, translateY 100%->0",
+      "reason": "defined in the animation table, never used by any element",
+      "cite": [
+        {
+          "at": "src/motion/anims.js:16",
+          "quote": "fadeUp: { start: { opacity: 0, yPercent: 100 }"
+        }
+      ]
+    },
+    {
+      "what": "SuisseIntl Mono",
+      "value": "SuisseIntlMono.woff2",
+      "reason": "not declared by the clone's CSS; unused on the original page",
+      "cite": [
+        {
+          "at": "src/index.css:2-3",
+          "quote": "Mono declared upstream but unused"
+        }
+      ]
+    }
+  ],
+  "structuralFacts": [
+    {
+      "id": "NO_OUTBOUND_LINKS",
+      "fact": "The user required no external-domain links. The only links are the local PDF /int/files/refire.pdf, mailto: links (two event contacts plus the contact title's mailto:test@test.en, a placeholder copied verbatim from the original) and two tel: links.",
+      "enforcedBy": [
+        "schema: href.* patterns (HREF_ALLOWED_KINDS)",
+        "semantic: NO_EXTERNAL_HREF"
+      ],
+      "cite": [
+        {
+          "at": "specs/ROUTES.md:19-23",
+          "quote": "mailto:media@refire.com, mailto:info@refire.com, mailto:test@test.en"
+        },
+        {
+          "at": "src/data/site.js:16",
+          "quote": "titleHref: 'mailto:test@test.en'"
+        },
+        {
+          "at": "src/data/home.js:3",
+          "quote": "BROCHURE_HREF = '/int/files/refire.pdf'"
+        }
+      ]
+    },
+    {
+      "id": "CONTACT_FORM_NON_SUBMITTING",
+      "fact": "The contact form never submits: submission is blocked and the real endpoint is unknown.",
+      "enforcedBy": [
+        "schema: overlay.contact content.formSubmission const 'non-submitting'"
+      ],
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:173",
+          "quote": "onSubmit={(e) => e.preventDefault()} noValidate"
+        },
+        {
+          "at": "CLONE_SPEC.md:683",
+          "quote": "The contact form's submit endpoint and validation messages were not exercised"
+        }
+      ]
+    },
+    {
+      "id": "NOT_FOUND_HEADER_NEAR_INVISIBLE",
+      "fact": "On the 404 the shared header is white-on-white by design: the difference blend does not invert against the fixed white body. This matches the original. The 404 also has no progress bar and no footer.",
+      "enforcedBy": [
+        "semantic: ERROR_PAGE_NO_FOOTER_NO_PROGRESS",
+        "templates.json template.not-found forbiddenSections"
+      ],
+      "cite": [
+        {
+          "at": "specs/404.md:64-65",
+          "quote": "It renders near-white on white."
+        },
+        {
+          "at": "src/pages/NotFound.jsx:21",
+          "quote": "showFooter={false} showProgress={false}"
+        }
+      ]
+    },
+    {
+      "id": "NO_REDUCED_MOTION_HANDLING",
+      "fact": "Neither the clone nor the original implements any prefers-reduced-motion handling; all motion always runs. Recorded as a fact, not a recommendation. PageSpecs carry motion.reducedMotionFallback = 'none-in-source' to make this explicit.",
+      "enforcedBy": [
+        "schema: REDUCED_MOTION_FIELD",
+        "verify_all.py absence re-check when the source tree is present"
+      ],
+      "absenceCheck": {
+        "paths": [
+          "src",
+          "index.html",
+          "tailwind.config.cjs"
+        ],
+        "pattern": "reduced-motion|reducedMotion|prefers-reduced"
+      },
+      "cite": [
+        {
+          "at": "src/motion/reveal.js:41-47",
+          "quote": "export function useReveals(isVisible)"
+        },
+        {
+          "at": "src/components/layout/Layout.jsx:40-44",
+          "quote": "const instance = new Lenis({ lerp: 0.1, wheelMultiplier: 1, smoothWheel: true })"
+        }
+      ]
+    },
+    {
+      "id": "REAL_COMPANY_CONTENT",
+      "fact": "Refire is a real company; the user is authorized to rebuild its site. Logo, product photography, hero film, brochure and proprietary copy must never be fabricated or reproduced on a new page; generated pages use neutral placeholders.",
+      "enforcedBy": [
+        "assets/asset-roles.json pinnedPolicies",
+        "semantic: ASSET_SOURCE_POLICY, GENERATED_NO_PROPRIETARY_COPY, GENERATED_CONTACT_DATA_RESERVED"
+      ],
+      "cite": [
+        {
+          "at": "index.html:7",
+          "quote": "REFIRE is an international hydrogen energy technology company"
+        }
+      ]
+    },
+    {
+      "id": "ONE_PAGE_SITE",
+      "fact": "/int/ is a one-page site: exactly two routes, '/' (home) and '*' (stock 404).",
+      "cite": [
+        {
+          "at": "specs/ROUTES.md:7-15",
+          "quote": "sortedPages: [\"/\", \"/_app\", \"/_error\"]"
+        },
+        {
+          "at": "src/App.jsx:10-11",
+          "quote": "<Route path=\"*\" element={<NotFound />} />"
+        }
+      ]
+    },
+    {
+      "id": "EN_SITE_OUT_OF_SCOPE",
+      "fact": "en.refire.com is a separate site with its own design system. The user deliberately kept it OUT of scope; it must not be recreated from this repo.",
+      "cite": [
+        {
+          "at": "specs/ROUTES.md:47-53",
+          "quote": "If the rebuild should include those pages, en.refire.com needs its own recon pass."
+        }
+      ]
+    }
+  ]
+}

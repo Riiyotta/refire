@@ -1,0 +1,161 @@
+{
+  "meta": {
+    "source": "Clone of https://refire.com/int/ in this project (src/pages, src/components). Original route inventory: specs/ROUTES.md.",
+    "status": "measured-from-codebase",
+    "$comment": "The /int/ locale is a one-page site: its build lists only / and _error, and every other refire.com path 301-redirects to en.refire.com. en.refire.com is a separate site and was deliberately left out of scope by the user. Do not add its routes here.",
+    "totalRoutes": 2,
+    "totalTemplates": 2
+  },
+  "categories": {
+    "CHROME": "Fixed, site-wide UI rendered by the shared Layout around every page's content (header, overlays, cursor, preloader).",
+    "HERO": "The first full-viewport block of a page.",
+    "CONTENT": "Text-led editorial blocks: headings, paragraphs, stats, accordions.",
+    "MEDIA": "Image- or motion-led blocks whose main job is visual (scroll-linked picture, marquee, WebGL image).",
+    "FOOTER": "The closing row at the bottom of a page.",
+    "ERROR": "Body content for error states."
+  },
+  "sections": {
+    "chrome.preloader": {
+      "category": "CHROME",
+      "description": "Full-screen loading overlay with a 0–100% progress line and counter and blinking dots. It fades and blurs out, then unmounts and hands off to the page's entrance animation.",
+      "scope": "Every template; Layout renders it on mount by default.",
+      "implementedBy": "src/components/layout/Preloader.jsx"
+    },
+    "chrome.header": {
+      "category": "CHROME",
+      "description": "Fixed top bar with the Refire logo, a live HH:MM GMT clock and a Contact pill that opens the contact overlay. It uses a difference blend mode, never hides on scroll, and has no nav menu. On the 404 it renders near-invisible white-on-white, matching the original.",
+      "scope": "Every template.",
+      "implementedBy": "src/components/layout/Header.jsx"
+    },
+    "chrome.scroll-progress": {
+      "category": "CHROME",
+      "description": "2px fixed bar showing smoothed page scroll progress, drawn with a difference blend.",
+      "scope": "Only the home template; the 404 turns it off (showProgress=false).",
+      "implementedBy": "src/components/layout/ScrollProgress.jsx"
+    },
+    "chrome.contact-overlay": {
+      "category": "CHROME",
+      "description": "Full-screen contact form: department select, name/email/message inputs, phone numbers (tel links) and opening hours. Page scroll is locked while it is open, and on mobile it scrolls internally. Submission is blocked because the real endpoint is unknown.",
+      "scope": "Every template; opened from the header's Contact pill.",
+      "implementedBy": "src/components/layout/ContactOverlay.jsx"
+    },
+    "chrome.cookie-pane": {
+      "category": "CHROME",
+      "description": "Small cookie notice that fades in on mount and has a Close button. It stays mounted with pointer events off after closing.",
+      "scope": "Every template.",
+      "implementedBy": "src/components/layout/CookiePane.jsx"
+    },
+    "chrome.cursor": {
+      "category": "CHROME",
+      "description": "Custom cursor that follows the pointer with easing, shrinks on press and fades when the pointer leaves the window.",
+      "scope": "Every template, on hover-capable devices.",
+      "implementedBy": "src/components/layout/Cursor.jsx"
+    },
+    "hero.video": {
+      "category": "HERO",
+      "description": "Full-viewport muted, looping background video with the 'A New → Generation / of fuel cell systems' headline, side labels and a 'view our brochure' link to the local PDF.",
+      "scope": "Only the home template.",
+      "implementedBy": "src/components/home/Hero.jsx"
+    },
+    "content.save-the-date": {
+      "category": "CONTENT",
+      "description": "Numbered '01 Save the date' block: a decorative line, a header row and one large paragraph that reveals word by word.",
+      "scope": "Only the home template.",
+      "implementedBy": "src/components/home/SaveTheDate.jsx"
+    },
+    "content.about": {
+      "category": "CONTENT",
+      "description": "'(About Refire)' title next to a short company description.",
+      "scope": "Only the home template.",
+      "implementedBy": "src/components/home/AboutRefire.jsx"
+    },
+    "content.key-stats": {
+      "category": "CONTENT",
+      "description": "Row of three key-figure cards, each with a label, index number, title and large value.",
+      "scope": "Only the home template.",
+      "implementedBy": "src/components/home/KeyStats.jsx"
+    },
+    "media.scrolled-picture": {
+      "category": "MEDIA",
+      "description": "Full-width photo whose side inset shrinks from 2% to full bleed while it zooms from 1 to 1.1, both tied to scroll position.",
+      "scope": "Only the home template.",
+      "implementedBy": "src/components/home/ScrolledPicture.jsx"
+    },
+    "media.ticker": {
+      "category": "MEDIA",
+      "description": "'Visit Us —' marquee that auto-scrolls at about 36px/s, can be dragged with momentum, and pauses off-screen.",
+      "scope": "Only the home template.",
+      "implementedBy": "src/components/home/Ticker.jsx"
+    },
+    "content.event-details": {
+      "category": "CONTENT",
+      "description": "Hannover Messe event block: title and details, a 5-item accordion, and contact email links (mailto).",
+      "scope": "Only the home template.",
+      "implementedBy": "src/components/home/Hannover.jsx"
+    },
+    "media.text-image": {
+      "category": "MEDIA",
+      "description": "Two-column block pairing a WebGL image (mouse-driven distortion plus a slide/zoom entrance at about 70% in view) with a title, text and a brochure link.",
+      "scope": "Only the home template.",
+      "implementedBy": "src/components/home/TextImage.jsx"
+    },
+    "footer.copyright": {
+      "category": "FOOTER",
+      "description": "Bottom row with the copyright line and a Back To Top button.",
+      "scope": "Only the home template; the 404 turns it off (showFooter=false).",
+      "implementedBy": "src/components/layout/Footer.jsx"
+    },
+    "error.not-found": {
+      "category": "ERROR",
+      "description": "Stock 'Next.js-style' 404 body, centered in the viewport: '404' with a right divider and 'This page could not be found.' It uses the system font stack, not SuisseIntl, and inverts in OS dark mode.",
+      "scope": "Only the 404 template.",
+      "implementedBy": "src/pages/NotFound.jsx"
+    }
+  },
+  "templates": [
+    {
+      "id": "template.home",
+      "name": "Home",
+      "routeCount": 1,
+      "routes": ["/int/"],
+      "routePattern": null,
+      "chrome": "full",
+      "implementedBy": "src/pages/Home.jsx",
+      "sections": [
+        "chrome.preloader",
+        "chrome.header",
+        "chrome.scroll-progress",
+        "chrome.contact-overlay",
+        "chrome.cookie-pane",
+        "chrome.cursor",
+        "hero.video",
+        "content.save-the-date",
+        "content.about",
+        "content.key-stats",
+        "media.scrolled-picture",
+        "media.ticker",
+        "content.event-details",
+        "media.text-image",
+        "footer.copyright"
+      ]
+    },
+    {
+      "id": "template.not-found",
+      "name": "404 Not Found",
+      "routeCount": 1,
+      "routes": ["/int/404"],
+      "routePattern": null,
+      "chrome": "reduced",
+      "implementedBy": "src/pages/NotFound.jsx",
+      "$comment": "Also the catch-all (*) for any unknown /int/ path. It is counted once, because only /int/404 is a real route on the original.",
+      "sections": [
+        "chrome.preloader",
+        "chrome.header",
+        "chrome.contact-overlay",
+        "chrome.cookie-pane",
+        "chrome.cursor",
+        "error.not-found"
+      ]
+    }
+  ]
+}

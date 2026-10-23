@@ -1,0 +1,146 @@
+{
+  "id": "chrome.header",
+  "category": "chrome",
+  "purpose": "Fixed, always-visible brand bar: logo (closes the contact overlay), live GMT clock, and the Contact/Close pill that toggles the contact overlay.",
+  "cite": [
+    {
+      "at": "src/components/layout/Header.jsx:33-70",
+      "quote": "export default function Header()"
+    },
+    {
+      "at": "src/components/layout/Layout.jsx:71",
+      "quote": "<Header />"
+    }
+  ],
+  "usedInTemplates": [
+    "template.home",
+    "template.not-found"
+  ],
+  "constraints": {
+    "onePerPage": true,
+    "region": "chrome",
+    "positionInTemplate": 2
+  },
+  "content": {
+    "fields": {
+      "logo": {
+        "type": "asset",
+        "assetRole": "brand.logo",
+        "cite": [
+          {
+            "at": "src/components/layout/Header.jsx:45",
+            "quote": "<LogoRefire />"
+          }
+        ]
+      },
+      "openLabel": {
+        "type": "string",
+        "observedWords": 1,
+        "maxWords": 2,
+        "copyClass": "ui-microcopy",
+        "observed": "Contact",
+        "cite": [
+          {
+            "at": "src/data/site.js:10",
+            "quote": "contact: 'Contact'"
+          }
+        ]
+      },
+      "closeLabel": {
+        "type": "string",
+        "observedWords": 1,
+        "maxWords": 2,
+        "copyClass": "ui-microcopy",
+        "observed": "Close",
+        "cite": [
+          {
+            "at": "src/data/site.js:10",
+            "quote": "close: 'Close'"
+          }
+        ]
+      }
+    }
+  },
+  "motion": {
+    "pattern": "label-swap",
+    "trigger": "on-toggle",
+    "reducedMotionFallback": "none-in-source",
+    "cite": [
+      {
+        "at": "src/motion/useSplitSwap.js:15-43",
+        "quote": "export function useSplitSwap(text, timeout = 0.4)"
+      }
+    ],
+    "details": {
+      "hover": "outline draws in over 1200ms"
+    }
+  },
+  "responsive": {
+    "desktop": {
+      "paddingBlock": {
+        "designPx": 30
+      }
+    },
+    "tablet": {
+      "paddingBlock": {
+        "designPx": 20
+      }
+    },
+    "mobile": {
+      "paddingBlock": {
+        "designPx": 18
+      },
+      "logo": {
+        "w": {
+          "designPx": 104
+        },
+        "h": {
+          "designPx": 15
+        }
+      },
+      "pillWidth": {
+        "designPx": 78
+      }
+    },
+    "cite": [
+      {
+        "at": "src/components/layout/Header.jsx:37",
+        "quote": "py-f30 text-primary mix-blend-difference"
+      },
+      {
+        "at": "src/components/layout/Header.jsx:43",
+        "quote": "mobile:h-f15 mobile:w-f104"
+      }
+    ]
+  },
+  "tokens": [
+    "text.primary",
+    "effect.blend.difference",
+    "layer.header",
+    "component.header.padding-block",
+    "component.header.logo-size",
+    "layout.gutter"
+  ],
+  "composes": [
+    "primitive.outline-pill-toggle",
+    "component.gmt-clock"
+  ],
+  "behavior": {
+    "neverHidesOnScroll": true,
+    "blend": "difference (inverts against whatever is behind it)",
+    "logoAction": "closes the contact overlay; it is a button, not a link"
+  },
+  "contextBehavior": {
+    "template.not-found": "near-invisible by design: white-on-white, because the difference blend does not invert against the fixed white error body. Matches the original; do not 'fix' it."
+  },
+  "contextCite": [
+    {
+      "at": "specs/404.md:64-65",
+      "quote": "It renders near-white on white."
+    },
+    {
+      "at": "src/pages/NotFound.jsx:18-20",
+      "quote": "mix-blend-difference header stays near-white like the source _error page"
+    }
+  ]
+}

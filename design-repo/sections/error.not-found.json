@@ -1,0 +1,85 @@
+{
+  "id": "error.not-found",
+  "category": "error",
+  "purpose": "Stock 'page not found' body, centered, system font, following the OS colour scheme.",
+  "cite": [
+    {
+      "at": "src/pages/NotFound.jsx:6-32",
+      "quote": "export default function NotFound()"
+    },
+    {
+      "at": "src/index.css:462-471",
+      "quote": "404 page (specs/404.md): stock Next.js error markup"
+    }
+  ],
+  "usedInTemplates": [
+    "template.not-found"
+  ],
+  "constraints": {
+    "onePerPage": true,
+    "region": "main"
+  },
+  "content": {
+    "fields": {
+      "statusCode": {
+        "type": "const",
+        "value": "404",
+        "copyClass": "locked",
+        "cite": [
+          {
+            "at": "src/pages/NotFound.jsx:24",
+            "quote": "<h1 className=\"error-page__h1\">404</h1>"
+          }
+        ]
+      },
+      "message": {
+        "type": "const",
+        "value": "This page could not be found.",
+        "copyClass": "locked",
+        "cite": [
+          {
+            "at": "src/pages/NotFound.jsx:26",
+            "quote": "<h2>This page could not be found.</h2>"
+          }
+        ]
+      }
+    }
+  },
+  "motion": {
+    "pattern": "none",
+    "trigger": "none",
+    "reducedMotionFallback": "none-in-source",
+    "cite": [
+      {
+        "at": "specs/404.md:67-69",
+        "quote": "No page-specific animation. The error body is static"
+      }
+    ]
+  },
+  "responsive": {
+    "desktop": {
+      "layout": "centered both axes, 282px inner width"
+    },
+    "tablet": {
+      "layout": "unchanged"
+    },
+    "mobile": {
+      "layout": "unchanged"
+    },
+    "cite": [
+      {
+        "at": "specs/404.md:50",
+        "quote": "There is no responsive change."
+      }
+    ]
+  },
+  "tokens": [
+    "type.error-code",
+    "type.error-message",
+    "surface.error-page",
+    "text.error-page",
+    "border.error-divider",
+    "font.family.system-error"
+  ],
+  "composes": []
+}

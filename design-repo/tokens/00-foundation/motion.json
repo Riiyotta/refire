@@ -1,0 +1,577 @@
+{
+  "$description": "Every duration, easing, stagger, threshold and continuous-motion parameter actually used. Ease names are neutral; sourceName records the original library name for traceability only. There is NO reduced-motion handling anywhere in the source (recorded as fact; see README).",
+  "tokens": {
+    "motion.duration.100": {
+      "$type": "duration",
+      "$value": "100ms",
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:30",
+          "quote": "duration-100 ease-linear"
+        }
+      ],
+      "usedBy": "form placeholder opacity"
+    },
+    "motion.duration.300": {
+      "$type": "duration",
+      "$value": "300ms",
+      "cite": [
+        {
+          "at": "src/index.css:48",
+          "quote": "--td: 0.3s;"
+        }
+      ],
+      "usedBy": "hover colour/dot, accordion icon rotate, select dropdown fade, cursor visibility fade"
+    },
+    "motion.duration.400": {
+      "$type": "duration",
+      "$value": "400ms",
+      "cite": [
+        {
+          "at": "src/motion/useSplitSwap.js:26-28",
+          "quote": "yPercent: -100, duration: 0.4, ease: 'sine.inOut', stagger: 0.01"
+        }
+      ],
+      "usedBy": "header label swap, cursor press"
+    },
+    "motion.duration.500": {
+      "$type": "duration",
+      "$value": "500ms",
+      "cite": [
+        {
+          "at": "src/index.css:230",
+          "quote": "transition: opacity 0.5s var(--ttf)"
+        }
+      ],
+      "usedBy": "contact overlay fade, accordion height, email underline collapse, accordion circle draw"
+    },
+    "motion.duration.600": {
+      "$type": "duration",
+      "$value": "600ms",
+      "cite": [
+        {
+          "at": "src/motion/scroll.js:56",
+          "quote": "duration: 0.6,"
+        }
+      ],
+      "usedBy": "scroll-picture tween, select option underline, submit hover swap"
+    },
+    "motion.duration.700": {
+      "$type": "duration",
+      "$value": "700ms",
+      "cite": [
+        {
+          "at": "src/motion/anims.js:28",
+          "quote": "return { duration: 700, ease: 'circ.inOut' }"
+        }
+      ],
+      "usedBy": "fade reveal default, cookie pane fade"
+    },
+    "motion.duration.800": {
+      "$type": "duration",
+      "$value": "800ms",
+      "cite": [
+        {
+          "at": "src/motion/anims.js:26",
+          "quote": "duration: 800, ease: 'circ.out', stagger: 0.01"
+        }
+      ],
+      "usedBy": "split-text reveal default, link-arrow underline"
+    },
+    "motion.duration.1000": {
+      "$type": "duration",
+      "$value": "1000ms",
+      "cite": [
+        {
+          "at": "src/motion/anims.js:27",
+          "quote": "duration: 1000, ease: 'easeDecorLine'"
+        }
+      ],
+      "usedBy": "line draw, shader reveal, preloader fade-out, hero link fade"
+    },
+    "motion.duration.1200": {
+      "$type": "duration",
+      "$value": "1200ms",
+      "cite": [
+        {
+          "at": "src/index.css:176",
+          "quote": "transition: stroke-dashoffset 1.2s cubic-bezier(0.86, 0, 0.12, 1);"
+        }
+      ],
+      "usedBy": "contact pill outline draw"
+    },
+    "motion.duration.1500": {
+      "$type": "duration",
+      "$value": "1500ms",
+      "cite": [
+        {
+          "at": "@home/Hero.jsx:102",
+          "quote": "anim=\"fadeBlur\" delay={0} duration={1500}"
+        }
+      ],
+      "usedBy": "hero title blur-in"
+    },
+    "motion.duration.2000": {
+      "$type": "duration",
+      "$value": "2000ms",
+      "cite": [
+        {
+          "at": "src/components/layout/Preloader.jsx:76",
+          "quote": "filter: 'blur(20px)', duration: 2"
+        }
+      ],
+      "usedBy": "preloader progress-group blur-out"
+    },
+    "motion.duration.2500": {
+      "$type": "duration",
+      "$value": "2500ms",
+      "cite": [
+        {
+          "at": "src/index.css:157",
+          "quote": "animation: showHideDot 2.5s ease-in-out infinite;"
+        }
+      ],
+      "usedBy": "preloader dot blink cycle"
+    },
+    "motion.duration.3000": {
+      "$type": "duration",
+      "$value": "3000ms",
+      "cite": [
+        {
+          "at": "@home/Hero.jsx:126",
+          "quote": "duration={3000}"
+        }
+      ],
+      "usedBy": "hero center text per-character fade"
+    },
+    "motion.duration.4000": {
+      "$type": "duration",
+      "$value": "4000ms",
+      "cite": [
+        {
+          "at": "src/components/layout/Preloader.jsx:48",
+          "quote": "duration: 4, '--p': progress, ease: 'sine.inOut'"
+        }
+      ],
+      "usedBy": "preloader progress + counter"
+    },
+    "motion.ease.circular-in-out": {
+      "$type": "easing",
+      "$value": {
+        "curve": "circular",
+        "direction": "in-out"
+      },
+      "sourceName": "circ.inOut",
+      "cite": [
+        {
+          "at": "src/motion/anims.js:28",
+          "quote": "ease: 'circ.inOut'"
+        }
+      ]
+    },
+    "motion.ease.circular-out": {
+      "$type": "easing",
+      "$value": {
+        "curve": "circular",
+        "direction": "out"
+      },
+      "sourceName": "circ.out",
+      "cite": [
+        {
+          "at": "src/motion/anims.js:26",
+          "quote": "ease: 'circ.out'"
+        }
+      ]
+    },
+    "motion.ease.sine-in-out": {
+      "$type": "easing",
+      "$value": {
+        "curve": "sine",
+        "direction": "in-out"
+      },
+      "sourceName": "sine.inOut",
+      "cite": [
+        {
+          "at": "src/components/layout/Preloader.jsx:48",
+          "quote": "ease: 'sine.inOut'"
+        }
+      ]
+    },
+    "motion.ease.sine-out": {
+      "$type": "easing",
+      "$value": {
+        "curve": "sine",
+        "direction": "out"
+      },
+      "sourceName": "sine.out",
+      "cite": [
+        {
+          "at": "src/components/ui/LinkArrow.jsx:30",
+          "quote": "duration: 0.4, ease: 'sine.out'"
+        }
+      ]
+    },
+    "motion.ease.quad-in-out": {
+      "$type": "easing",
+      "$value": {
+        "curve": "quadratic",
+        "direction": "in-out"
+      },
+      "sourceName": "power1.inOut",
+      "cite": [
+        {
+          "at": "src/components/ui/Accordion.jsx:48",
+          "quote": "ease: 'power1.inOut'"
+        }
+      ]
+    },
+    "motion.ease.cubic-out": {
+      "$type": "easing",
+      "$value": {
+        "curve": "cubic",
+        "direction": "out"
+      },
+      "sourceName": "power2.out",
+      "cite": [
+        {
+          "at": "src/components/layout/Cursor.jsx:37",
+          "quote": "ease: 'power2.out'"
+        }
+      ]
+    },
+    "motion.ease.quint-in-out": {
+      "$type": "easing",
+      "$value": {
+        "curve": "quintic",
+        "direction": "in-out"
+      },
+      "sourceName": "power4.inOut",
+      "cite": [
+        {
+          "at": "src/components/ui/LinkArrow.jsx:26",
+          "quote": "duration: 0.8, ease: 'power4.inOut'"
+        }
+      ]
+    },
+    "motion.ease.linear": {
+      "$type": "easing",
+      "$value": {
+        "curve": "linear"
+      },
+      "sourceName": "none",
+      "cite": [
+        {
+          "at": "src/motion/scroll.js:54",
+          "quote": "ease: 'none',"
+        }
+      ]
+    },
+    "motion.ease.css-ease": {
+      "$type": "easing",
+      "$value": "ease",
+      "cite": [
+        {
+          "at": "src/index.css:47",
+          "quote": "--ttf: ease;"
+        }
+      ]
+    },
+    "motion.ease.css-ease-in-out": {
+      "$type": "easing",
+      "$value": "ease-in-out",
+      "cite": [
+        {
+          "at": "src/index.css:199",
+          "quote": "transition: background-color 0.4s ease-in-out, transform 0.4s ease-in-out;"
+        }
+      ]
+    },
+    "motion.ease.decor-line": {
+      "$type": "easing",
+      "$value": "cubic-bezier(0.075, 0.82, 0.165, 1)",
+      "cite": [
+        {
+          "at": "src/motion/gsap.js:9",
+          "quote": "CustomEase.create('easeDecorLine', '0.075, 0.82, 0.165, 1')"
+        }
+      ]
+    },
+    "motion.ease.pill-draw": {
+      "$type": "easing",
+      "$value": "cubic-bezier(0.86, 0, 0.12, 1)",
+      "cite": [
+        {
+          "at": "src/index.css:176",
+          "quote": "cubic-bezier(0.86, 0, 0.12, 1)"
+        }
+      ]
+    },
+    "motion.ease.underline-collapse": {
+      "$type": "easing",
+      "$value": "cubic-bezier(1, 0, 0.29, 1)",
+      "cite": [
+        {
+          "at": "src/index.css:432",
+          "quote": "cubic-bezier(1, 0, 0.29, 1)"
+        }
+      ]
+    },
+    "motion.ease.option-underline": {
+      "$type": "easing",
+      "$value": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+      "cite": [
+        {
+          "at": "src/index.css:268",
+          "quote": "cubic-bezier(0.165, 0.84, 0.44, 1)"
+        }
+      ]
+    },
+    "motion.ease.button-swap": {
+      "$type": "easing",
+      "$value": "cubic-bezier(0.36, 0.28, 0, 0.99)",
+      "cite": [
+        {
+          "at": "src/index.css:320",
+          "quote": "cubic-bezier(0.36, 0.28, 0, 0.99)"
+        }
+      ]
+    },
+    "motion.ease.button-rest": {
+      "$type": "easing",
+      "$value": "cubic-bezier(0.19, 0.39, 0, 0.99)",
+      "note": "rest-state transition only; there is no 'from' state, so it never produces a visible entrance",
+      "cite": [
+        {
+          "at": "src/index.css:309",
+          "quote": "transition: transform 1.5s cubic-bezier(0.19, 0.39, 0, 0.99) 2s;"
+        }
+      ]
+    },
+    "motion.stagger.01": {
+      "$type": "number",
+      "$value": 0.01,
+      "unit": "s",
+      "cite": [
+        {
+          "at": "src/motion/anims.js:26",
+          "quote": "stagger: 0.01"
+        }
+      ]
+    },
+    "motion.stagger.02": {
+      "$type": "number",
+      "$value": 0.02,
+      "unit": "s",
+      "cite": [
+        {
+          "at": "@home/SaveTheDate.jsx:26",
+          "quote": "stagger={0.02}"
+        }
+      ]
+    },
+    "motion.stagger.03": {
+      "$type": "number",
+      "$value": 0.03,
+      "unit": "s",
+      "cite": [
+        {
+          "at": "@home/AboutRefire.jsx:19",
+          "quote": "stagger={0.03}"
+        }
+      ]
+    },
+    "motion.stagger.05": {
+      "$type": "number",
+      "$value": 0.05,
+      "unit": "s",
+      "cite": [
+        {
+          "at": "@home/KeyStats.jsx:38",
+          "quote": "stagger={0.05}"
+        }
+      ]
+    },
+    "motion.stagger.10": {
+      "$type": "number",
+      "$value": 0.1,
+      "unit": "s",
+      "cite": [
+        {
+          "at": "@home/TextImage.jsx:24",
+          "quote": "stagger={0.1}"
+        }
+      ]
+    },
+    "motion.threshold.default": {
+      "$type": "number",
+      "$value": 0.1,
+      "cite": [
+        {
+          "at": "src/motion/reveal.js:26",
+          "quote": "const DEFAULT_THRESHOLD = 0.1"
+        }
+      ]
+    },
+    "motion.threshold.section": {
+      "$type": "number",
+      "$value": 0.3,
+      "cite": [
+        {
+          "at": "@home/SaveTheDate.jsx:14",
+          "quote": "data-anim-threshold=\"0.3\""
+        }
+      ]
+    },
+    "motion.threshold.shader": {
+      "$type": "number",
+      "$value": 0.7,
+      "cite": [
+        {
+          "at": "src/components/ui/ShaderPicture.jsx:217",
+          "quote": "data-anim-threshold=\"0.7\""
+        }
+      ]
+    },
+    "motion.rule.reveal-trigger": {
+      "$type": "rule",
+      "$value": "fires once when the element is inside the viewport grown by max(20% of the viewport, 200px) AND clamp(1 - elementTop / viewportHeight, 0, 1) >= threshold; gated on the preloader having finished",
+      "cite": [
+        {
+          "at": "src/motion/reveal.js:13-18",
+          "quote": "const mx = Math.max(0.2 * vw, 200)"
+        },
+        {
+          "at": "src/motion/reveal.js:115",
+          "quote": "if (inViewBox(r, vw, vh) && startClear(r, vh) >= g.threshold) fire(g)"
+        }
+      ]
+    },
+    "motion.param.smooth-scroll-lerp": {
+      "$type": "number",
+      "$value": 0.1,
+      "cite": [
+        {
+          "at": "src/components/layout/Layout.jsx:41",
+          "quote": "lerp: 0.1, wheelMultiplier: 1, smoothWheel: true"
+        }
+      ]
+    },
+    "motion.param.cursor-lerp": {
+      "$type": "number",
+      "$value": 0.12,
+      "note": "corrects CLONE_SPEC.md's 0.2",
+      "cite": [
+        {
+          "at": "src/components/layout/Cursor.jsx:30",
+          "quote": "const amt = 0.12"
+        }
+      ]
+    },
+    "motion.param.cursor-press-scale": {
+      "$type": "number",
+      "$value": 0.2,
+      "unit": "shrink fraction",
+      "cite": [
+        {
+          "at": "src/components/layout/Cursor.jsx:52",
+          "quote": "'--mD': down ? 0.2 : 0"
+        }
+      ]
+    },
+    "motion.param.marquee-speed": {
+      "$type": "number",
+      "$value": 0.6,
+      "unit": "px per tick, leftward",
+      "cite": [
+        {
+          "at": "src/motion/marquee.js:25",
+          "quote": "speed = 0.6, threshold = 0.1, swipeDelta = 10"
+        }
+      ]
+    },
+    "motion.param.marquee-swipe-gain": {
+      "$type": "number",
+      "$value": 2,
+      "cite": [
+        {
+          "at": "src/motion/marquee.js:99",
+          "quote": "s.delta += 2 * (ix + iy)"
+        }
+      ]
+    },
+    "motion.param.marquee-delta-decay": {
+      "$type": "number",
+      "$value": 0.5,
+      "cite": [
+        {
+          "at": "src/motion/marquee.js:45",
+          "quote": "s.delta *= 0.5"
+        }
+      ]
+    },
+    "motion.param.marquee-swipe-threshold": {
+      "$type": "dimension",
+      "$value": "10px",
+      "cite": [
+        {
+          "at": "src/motion/marquee.js:25",
+          "quote": "swipeDelta = 10"
+        }
+      ]
+    },
+    "motion.param.shader-grid": {
+      "$type": "number",
+      "$value": 20,
+      "cite": [
+        {
+          "at": "src/components/ui/ShaderPicture.jsx:44",
+          "quote": "const GRID = 20"
+        }
+      ]
+    },
+    "motion.param.shader-relaxation": {
+      "$type": "number",
+      "$value": 0.9,
+      "cite": [
+        {
+          "at": "src/components/ui/ShaderPicture.jsx:45",
+          "quote": "const RELAXATION = 0.9"
+        }
+      ]
+    },
+    "motion.param.shader-mouse-radius": {
+      "$type": "number",
+      "$value": 0.15,
+      "cite": [
+        {
+          "at": "src/components/ui/ShaderPicture.jsx:46",
+          "quote": "const MOUSE_RADIUS = 0.15"
+        }
+      ]
+    },
+    "motion.param.shader-strength": {
+      "$type": "number",
+      "$value": 70,
+      "cite": [
+        {
+          "at": "src/components/ui/ShaderPicture.jsx:47",
+          "quote": "const STRENGTH = 100 * 0.7"
+        }
+      ]
+    },
+    "motion.param.scroll-picture-range": {
+      "$type": "rule",
+      "$value": "s = clamp(1 - sectionTop / viewportHeight, 0, 1); scale = 1 + 0.1 s; rightEdge% = 98 + 2 s; leftEdge% = 2 (1 - s)",
+      "cite": [
+        {
+          "at": "src/motion/scroll.js:51-53",
+          "quote": "'--x': 100 * lerp(0.98, 1, s),"
+        },
+        {
+          "at": "src/index.css:443-445",
+          "quote": "--x: 98;"
+        }
+      ]
+    }
+  }
+}

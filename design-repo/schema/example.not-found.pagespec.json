@@ -1,0 +1,131 @@
+{
+  "pageSpecVersion": "1.0.0",
+  "id": "page.not-found",
+  "template": "template.not-found",
+  "route": "*",
+  "theme": "theme.system-error",
+  "provenance": "reference",
+  "meta": {
+    "title": "404: This page could not be found",
+    "description": "REFIRE is an international hydrogen energy technology company specializing in R&D, design, prototyping, testing, application engineering, and manufacturing of fuel cell systems for mobility and power products, superchargers, and grid support products."
+  },
+  "nodes": [
+    {
+      "section": "chrome.preloader",
+      "content": {
+        "decorMark": "++",
+        "decorReadings": [
+          "1.00784",
+          "1.00811"
+        ],
+        "statusLabel": "initializing",
+        "tagline": "Creating a Sustainable Future"
+      },
+      "motion": {
+        "pattern": "preloader-progress",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "chrome.header",
+      "content": {
+        "logo": {
+          "assetRole": "brand.logo",
+          "src": "inline-svg:logo-refire"
+        },
+        "openLabel": "Contact",
+        "closeLabel": "Close"
+      },
+      "motion": {
+        "pattern": "label-swap",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "overlay.contact",
+      "content": {
+        "titleHref": "mailto:test@test.en",
+        "titleLines": [
+          "contact",
+          "us today"
+        ],
+        "formTitle": "Contact form",
+        "formText": "Send us a message and we’ll get back to you as soon as possible.",
+        "phoneList": {
+          "title": "Phone us",
+          "lines": [
+            {
+              "prefix": "Germany",
+              "text": "+1 790 790 9238",
+              "href": "tel:+17907909238"
+            },
+            {
+              "prefix": "France",
+              "text": "+1 893 233 2030",
+              "href": "tel:+18932332030"
+            }
+          ]
+        },
+        "hoursList": {
+          "title": "Hours",
+          "lines": [
+            "Monday - Friday 8:00AM - 8:00PM",
+            "Saturday & Sunday Closed"
+          ]
+        },
+        "departmentSelect": {
+          "placeholder": "Select a department you’d like to reach*",
+          "options": [
+            "Media",
+            "Sales",
+            "General"
+          ]
+        },
+        "fieldPlaceholders": [
+          "First Name*",
+          "Last Name*",
+          "Email*",
+          "Subject*"
+        ],
+        "messagePlaceholder": "Message*",
+        "consentNote": "*By submitting, the data provided will be used to perform your request according to the Privacy Policy",
+        "submitLabel": "submit",
+        "formSubmission": "non-submitting"
+      },
+      "motion": {
+        "pattern": "overlay-fade",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "chrome.cookie-pane",
+      "content": {
+        "message": "We use cookies to make things better",
+        "closeLabel": "Close"
+      },
+      "motion": {
+        "pattern": "fade",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "chrome.cursor",
+      "content": {},
+      "motion": {
+        "pattern": "cursor-follow",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "error.not-found",
+      "content": {
+        "statusCode": "404",
+        "message": "This page could not be found."
+      },
+      "motion": {
+        "pattern": "none",
+        "reducedMotionFallback": "none-in-source"
+      }
+    }
+  ]
+}

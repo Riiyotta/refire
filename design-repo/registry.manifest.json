@@ -1,0 +1,117 @@
+{
+  "repositoryId": "refire-int-design-repo",
+  "repositoryVersion": "1.0.0",
+  "pageSpecVersion": "1.0.0",
+  "allowlistVersion": "1.0.0",
+  "versionFieldNote": "allowlistVersion is machine-checked (verify_all.py fails if it differs from tokens/llm/component-allowlist.json version). pageSpecVersion is machine-checked against the schema's pageSpecVersion const. repositoryVersion is documentation-only and hand-maintained; nothing checks it.",
+  "status": "design-review-pending",
+  "productionApproved": false,
+  "source": {
+    "site": "refire.com/int/ (live marketing site of Refire, a real hydrogen fuel-cell company)",
+    "authorization": "the user is authorized by Refire to rebuild it",
+    "project": "the parent directory of this design-repo (a pixel-faithful clone); not shipped"
+  },
+  "defaultTheme": "theme.refire-dark",
+  "schemaValidatedThemes": [
+    "theme.refire-dark",
+    "theme.system-error"
+  ],
+  "counts": {
+    "foundationTokens": 163,
+    "semanticTokens": 25,
+    "componentTokens": 16,
+    "layoutTokens": 16,
+    "typeRoles": 42,
+    "themes": 2,
+    "primitives": 11,
+    "components": 7,
+    "sections": 16,
+    "templates": 2,
+    "routes": 2,
+    "assetRoles": 10,
+    "graphRules": 25,
+    "exampleInstances": 3
+  },
+  "countsNote": "Recomputed from disk by extraction/verify_all.py on every run; a mismatch fails.",
+  "entryPoints": {
+    "readme": "README.md",
+    "changelog": "CHANGELOG.md",
+    "schema": "schema/pagespec.schema.json",
+    "validator": "schema/semantic_validate.py",
+    "examples": [
+      "schema/example.pagespec.json",
+      "schema/example.not-found.pagespec.json",
+      "schema/example.generated.pagespec.json"
+    ],
+    "adversarialTests": "schema/tests/adversarial_test.py",
+    "templates": "templates/templates.json",
+    "compatibilityGraph": "compatibility/graph.json",
+    "assetRoles": "assets/asset-roles.json",
+    "componentAllowlist": "tokens/llm/component-allowlist.json",
+    "tokenCatalog": "tokens/llm/token-catalog.json",
+    "tokenPolicy": "tokens/llm/token-policy.json",
+    "themes": [
+      "tokens/themes/refire-dark.json",
+      "tokens/themes/system-error.json"
+    ],
+    "measuredValues": "extraction/measured-values.json",
+    "verify": "extraction/verify_all.py",
+    "selfContainmentTest": "extraction/selfcontain_test.py",
+    "package": "extraction/package.py",
+    "requirements": "extraction/requirements.txt",
+    "sectionsDir": "sections/",
+    "primitivesDir": "primitives/",
+    "componentsDir": "components/",
+    "tokensDir": "tokens/"
+  },
+  "entryPointsNote": "Only files inside this design-repo. External evidence (source files, specs, captures) is cited in extraction/measured-values.json.",
+  "scope": {
+    "inScopeRoutes": [
+      "/",
+      "*"
+    ],
+    "outOfScope": {
+      "en.refire.com": "deliberate scope reduction chosen by the user; a separate site with its own design system; must NOT be recreated from this repo"
+    }
+  },
+  "structuralFacts": [
+    "NO_OUTBOUND_LINKS",
+    "CONTACT_FORM_NON_SUBMITTING",
+    "NOT_FOUND_HEADER_NEAR_INVISIBLE",
+    "NO_REDUCED_MOTION_HANDLING",
+    "REAL_COMPANY_CONTENT",
+    "ONE_PAGE_SITE",
+    "EN_SITE_OUT_OF_SCOPE"
+  ],
+  "structuralFactsNote": "Each id is detailed with citations in extraction/measured-values.json structuralFacts.",
+  "sourceStack": {
+    "documentationOnly": true,
+    "note": "Recorded for traceability. It never shapes token names, section ids, schema fields or validator logic.",
+    "clone": {
+      "ui": "React 18 (react-dom 18)",
+      "build": "Vite 5",
+      "styling": "Tailwind CSS v3 (tailwind.config.cjs) + global CSS; fluid sizing via a --vw-unit custom property and f{N}/fmin{N} utilities, resolved in this repo to {designPx[,minPx]} token values",
+      "routing": "react-router-dom 6, basename /int",
+      "motion": "gsap 3.13 (CustomEase, DrawSVGPlugin)",
+      "smoothScroll": "lenis 1.1.13 (lerp 0.1)",
+      "webgl": "three.js 0.150 (one image shader)"
+    },
+    "original": "Next.js static export with GSAP 3.8 and a custom virtual-scroll engine (per CLONE_SPEC.md section 0.1)",
+    "cite": [
+      {
+        "at": "package.json:11-24",
+        "quote": "\"gsap\": \"3.13.0\","
+      },
+      {
+        "at": "CLONE_SPEC.md:18-20",
+        "quote": "**GSAP 3.8.0**"
+      }
+    ]
+  },
+  "delivery": {
+    "sourceProject": "run the clone with `npm ci` then `npm run dev` / `npm run build` from its lockfile; never ship node_modules",
+    "designRepo": "Python 3.8+ and `pip install -r extraction/requirements.txt` (jsonschema>=4). The design-repo adds nothing to the project's package.json.",
+    "zip": "python3 extraction/package.py builds ../design-repo.zip with the CLI zip tool, excluding __MACOSX, .DS_Store, Thumbs.db and desktop.ini; regenerate it last after every change and never commit it next to the live folder"
+  },
+  "generatedBy": "design-repo-extraction methodology (BUILD-GUIDE + MASTER-GUIDE pre-ship checklist)"
+}

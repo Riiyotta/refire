@@ -1,0 +1,514 @@
+{
+  "tokens": {
+    "layout.gutter": {
+      "$type": "spacing",
+      "$value": {
+        "desktop": {
+          "designPx": 30
+        },
+        "tablet": {
+          "designPx": 20
+        },
+        "mobile": {
+          "designPx": 10
+        }
+      },
+      "cite": [
+        {
+          "at": "src/index.css:46",
+          "quote": "--gap-content: calc(30 * var(--vw-unit));"
+        },
+        {
+          "at": "src/index.css:55",
+          "quote": "--gap-content: calc(20 * var(--vw-unit));"
+        },
+        {
+          "at": "src/index.css:61",
+          "quote": "--gap-content: calc(10 * var(--vw-unit));"
+        }
+      ]
+    },
+    "layout.section-seam": {
+      "$type": "rule",
+      "$value": "every section after the hero overlaps the previous one by 1px (margin-top -1px) to hide seams between dark blocks",
+      "cite": [
+        {
+          "at": "@home/SaveTheDate.jsx:12",
+          "quote": "-mt-px bg-dark"
+        }
+      ]
+    },
+    "layout.hero.height": {
+      "$type": "dimension",
+      "$value": "100vh",
+      "cite": [
+        {
+          "at": "@home/Hero.jsx:58",
+          "quote": "relative flex h-screen flex-col justify-end bg-dark pl-gap"
+        }
+      ]
+    },
+    "layout.padding.numbered-statement": {
+      "$type": "spacing",
+      "$value": {
+        "top": {
+          "desktop": {
+            "designPx": 120
+          },
+          "tablet": {
+            "designPx": 80
+          },
+          "mobile": {
+            "designPx": 53
+          }
+        },
+        "bottom": {
+          "desktop": {
+            "designPx": 118
+          },
+          "tablet": {
+            "designPx": 76
+          },
+          "mobile": {
+            "designPx": 45
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "@home/SaveTheDate.jsx:12",
+          "quote": "pb-f118 pt-f120 text-primary tablet:pb-f76 tablet:pt-f80 mobile:pb-f45 mobile:pt-f53"
+        }
+      ]
+    },
+    "layout.padding.title-description": {
+      "$type": "spacing",
+      "$value": {
+        "top": {
+          "desktop": {
+            "designPx": 118
+          },
+          "tablet": {
+            "designPx": 76
+          },
+          "mobile": {
+            "designPx": 45
+          }
+        },
+        "bottom": {
+          "desktop": {
+            "designPx": 112
+          },
+          "tablet": {
+            "designPx": 55
+          },
+          "mobile": {
+            "designPx": 30
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "@home/AboutRefire.jsx:11",
+          "quote": "pb-f112 pt-f118 text-primary tablet:pb-f55 tablet:pt-f76 mobile:pb-f30 mobile:pt-f45"
+        }
+      ]
+    },
+    "layout.padding.card-grid": {
+      "$type": "spacing",
+      "$value": {
+        "top": {
+          "desktop": {
+            "designPx": 112
+          },
+          "tablet": {
+            "designPx": 55
+          },
+          "mobile": {
+            "designPx": 30
+          }
+        },
+        "bottom": {
+          "desktop": {
+            "designPx": 156
+          },
+          "tablet": {
+            "designPx": 78
+          },
+          "mobile": {
+            "designPx": 48
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "@home/KeyStats.jsx:53",
+          "quote": "pb-f156 pt-f112 tablet:pb-f78 tablet:pt-f55 mobile:pb-f48 mobile:pt-f30"
+        }
+      ]
+    },
+    "layout.padding.scroll-picture": {
+      "$type": "spacing",
+      "$value": {
+        "top": {
+          "desktop": {
+            "designPx": 156
+          },
+          "tablet": {
+            "designPx": 78
+          },
+          "mobile": {
+            "designPx": 48
+          }
+        },
+        "bottom": {
+          "desktop": {
+            "designPx": 140
+          },
+          "tablet": {
+            "designPx": 68
+          },
+          "mobile": {
+            "designPx": 40
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "@home/ScrolledPicture.jsx:16",
+          "quote": "pb-f140 pt-f156 tablet:pb-f68 tablet:pt-f78 mobile:pb-f40 mobile:pt-f48"
+        }
+      ]
+    },
+    "layout.padding.ticker": {
+      "$type": "spacing",
+      "$value": {
+        "top": {
+          "desktop": {
+            "designPx": 140
+          },
+          "tablet": {
+            "designPx": 68
+          },
+          "mobile": {
+            "designPx": 40
+          }
+        },
+        "bottom": {
+          "desktop": {
+            "designPx": 160
+          },
+          "tablet": {
+            "designPx": 65
+          },
+          "mobile": {
+            "designPx": 40
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "@home/Ticker.jsx:10",
+          "quote": "pb-f160 pt-f140 text-primary tablet:pb-f65 tablet:pt-f68 mobile:py-f40"
+        }
+      ]
+    },
+    "layout.padding.event-accordion": {
+      "$type": "spacing",
+      "$value": {
+        "top": {
+          "desktop": {
+            "designPx": 160
+          },
+          "tablet": {
+            "designPx": 65
+          },
+          "mobile": {
+            "designPx": 40
+          }
+        },
+        "bottom": {
+          "desktop": {
+            "designPx": 205
+          },
+          "tablet": {
+            "designPx": 75
+          },
+          "mobile": {
+            "designPx": 46
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "@home/Hannover.jsx:11",
+          "quote": "pb-f205 pt-f160 text-primary tablet:pb-f75 tablet:pt-f65 mobile:pb-f46 mobile:pt-f40"
+        }
+      ]
+    },
+    "layout.padding.text-image": {
+      "$type": "spacing",
+      "$value": {
+        "top": {
+          "desktop": {
+            "designPx": 205
+          },
+          "tablet": {
+            "designPx": 75
+          },
+          "mobile": {
+            "designPx": 46
+          }
+        },
+        "bottom": {
+          "desktop": {
+            "designPx": 115
+          },
+          "tablet": {
+            "designPx": 75
+          },
+          "mobile": {
+            "designPx": 70
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "@home/TextImage.jsx:12",
+          "quote": "pb-f115 pt-f205 text-primary tablet:py-f75 mobile:pb-f70 mobile:pt-f46"
+        }
+      ]
+    },
+    "layout.padding.footer": {
+      "$type": "spacing",
+      "$value": {
+        "top": {
+          "desktop": {
+            "designPx": 115
+          },
+          "tablet": {
+            "designPx": 75
+          },
+          "mobile": {
+            "designPx": 70
+          }
+        },
+        "bottom": {
+          "desktop": 0,
+          "tablet": 0,
+          "mobile": 0
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/Footer.jsx:15",
+          "quote": "pt-f115 text-primary tablet:pt-f75 mobile:pt-f70"
+        }
+      ]
+    },
+    "layout.grid.card-grid": {
+      "$type": "grid",
+      "$value": {
+        "desktop": {
+          "columns": 3,
+          "gap": {
+            "designPx": 42
+          },
+          "paddingInline": 0
+        },
+        "tablet": {
+          "columns": 1,
+          "gap": {
+            "designPx": 30
+          },
+          "paddingInline": {
+            "designPx": 71
+          }
+        },
+        "mobile": {
+          "columns": 1,
+          "gap": {
+            "designPx": 52
+          },
+          "paddingInline": 0
+        }
+      },
+      "cite": [
+        {
+          "at": "@home/KeyStats.jsx:55",
+          "quote": "grid-cols-3 gap-f42 tablet:grid-cols-1 tablet:gap-f30 tablet:px-f71 mobile:gap-f52 mobile:px-0"
+        }
+      ]
+    },
+    "layout.grid.footer": {
+      "$type": "grid",
+      "$value": {
+        "desktop": {
+          "columns": 3,
+          "align": [
+            "start",
+            "center",
+            "end"
+          ]
+        },
+        "tablet": {
+          "columns": 3,
+          "align": [
+            "start",
+            "center",
+            "end"
+          ]
+        },
+        "mobile": {
+          "columns": 3,
+          "align": [
+            "start",
+            "center",
+            "end"
+          ]
+        }
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/Footer.jsx:17",
+          "quote": "grid grid-cols-3 border-t border-darkness-grey"
+        }
+      ]
+    },
+    "layout.split.text-image": {
+      "$type": "grid",
+      "$value": {
+        "desktop": {
+          "direction": "row-reverse",
+          "height": {
+            "designPx": 1143
+          },
+          "itemMaxWidth": "calc(50% - fluid(15))"
+        },
+        "tablet": {
+          "direction": "row-reverse",
+          "height": {
+            "designPx": 500
+          },
+          "textItemMaxWidth": "calc(50% - fluid(15))",
+          "imageItemMaxWidth": "calc(50% - fluid(10))"
+        },
+        "mobile": {
+          "direction": "column-reverse",
+          "height": "auto",
+          "itemMaxWidth": "none",
+          "imageHeight": {
+            "designPx": 418
+          }
+        }
+      },
+      "cite": [
+        {
+          "at": "@home/TextImage.jsx:13",
+          "quote": "h-f1143 flex-row-reverse justify-between px-gap tablet:h-f500 mobile:h-auto mobile:flex-col-reverse"
+        },
+        {
+          "at": "tailwind.config.cjs:78-79",
+          "quote": "'half-f15': `calc(50% - ${F(15)})`"
+        }
+      ]
+    },
+    "layout.split.event-accordion": {
+      "$type": "grid",
+      "$value": {
+        "desktop": {
+          "direction": "row",
+          "paddingInlineEnd": {
+            "designPx": 204
+          },
+          "titleWidth": {
+            "designPx": 352
+          },
+          "contentWidth": {
+            "designPx": 930
+          }
+        },
+        "tablet": {
+          "direction": "row",
+          "paddingInlineEnd": "{layout.gutter}",
+          "titleWidth": {
+            "designPx": 197
+          },
+          "contentWidth": {
+            "designPx": 487
+          }
+        },
+        "mobile": {
+          "direction": "column",
+          "titleWidth": "100%",
+          "contentWidth": "100%"
+        }
+      },
+      "cite": [
+        {
+          "at": "@home/Hannover.jsx:12",
+          "quote": "pl-gap pr-f204 tablet:px-gap mobile:flex-col"
+        },
+        {
+          "at": "@home/Hannover.jsx:16",
+          "quote": "w-f930 tablet:w-f487 mobile:w-full"
+        }
+      ]
+    },
+    "layout.split.contact-overlay": {
+      "$type": "grid",
+      "$value": {
+        "desktop": {
+          "direction": "row",
+          "leftWidth": {
+            "designPx": 800
+          },
+          "rightWidth": {
+            "designPx": 783
+          },
+          "paddingTop": {
+            "designPx": 100
+          },
+          "paddingBottom": {
+            "designPx": 54
+          }
+        },
+        "tablet": {
+          "direction": "row",
+          "leftWidth": {
+            "designPx": 340
+          },
+          "rightWidth": {
+            "designPx": 270
+          }
+        },
+        "mobile": {
+          "direction": "column",
+          "leftWidth": "100%",
+          "rightWidth": "100%",
+          "paddingTop": {
+            "designPx": 124
+          },
+          "paddingBottom": {
+            "designPx": 10
+          }
+        },
+        "verticalAnchor": "content sits at the bottom of a min-height 100vh column (margin-top auto)"
+      },
+      "cite": [
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:123",
+          "quote": "pb-f54 pt-f100"
+        },
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:125",
+          "quote": "w-f800 flex-none tablet:w-f340 mobile:w-full"
+        },
+        {
+          "at": "src/components/layout/ContactOverlay.jsx:172",
+          "quote": "w-f783 flex-none pt-f30 tablet:w-f270"
+        }
+      ]
+    }
+  }
+}

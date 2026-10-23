@@ -1,0 +1,72 @@
+{
+  "tokens": {
+    "breakpoint.desktop": {
+      "$type": "breakpoint",
+      "$value": {
+        "minPx": 835
+      },
+      "designWidth": "{sizing.design-width.desktop}",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:51-54",
+          "quote": "tablet: { max: '834px' }"
+        }
+      ]
+    },
+    "breakpoint.tablet": {
+      "$type": "breakpoint",
+      "$value": {
+        "maxPx": 834,
+        "minPx": 521
+      },
+      "designWidth": "{sizing.design-width.tablet}",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:52",
+          "quote": "tablet: { max: '834px' }"
+        },
+        {
+          "at": "src/index.css:52",
+          "quote": "@media (max-width: 834px)"
+        }
+      ]
+    },
+    "breakpoint.mobile": {
+      "$type": "breakpoint",
+      "$value": {
+        "maxPx": 520
+      },
+      "designWidth": "{sizing.design-width.mobile}",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:53",
+          "quote": "mobile: { max: '520px' }"
+        },
+        {
+          "at": "src/index.css:58",
+          "quote": "@media (max-width: 520px)"
+        }
+      ]
+    },
+    "breakpoint.cascade": {
+      "$type": "rule",
+      "$value": "desktop-first: tablet values override desktop; mobile values override tablet; a value not restated at mobile inherits the tablet value",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:49-50",
+          "quote": "Order matters: tablet rules must come before mobile overrides"
+        }
+      ]
+    },
+    "breakpoint.hover-capability": {
+      "$type": "rule",
+      "$value": "hover styles apply under (hover: hover); the same styles apply on :active under (hover: none)",
+      "cite": [
+        {
+          "at": "tailwind.config.cjs:97",
+          "quote": "'@media (hover: hover) { &:hover }', '@media (hover: none) { &:active }'"
+        }
+      ]
+    }
+  }
+}
