@@ -1,6 +1,6 @@
 # Refire /int design-repo
 
-**Status:** `design-review-pending`. `productionApproved: false`. Nothing here is approved for production until a human design review signs it off. Repository version `1.1.0` (see `CHANGELOG.md`).
+**Status:** `design-review-pending`. `productionApproved: false`. Nothing here is approved for production until a human design review signs it off. Repository version `1.2.0` (see `CHANGELOG.md`).
 
 This repo is an AI-ready, machine-validated description of the rebuilt **refire.com/int/** site: tokens, primitives, components, section contracts, page templates, a compatibility graph, a Draft-07 PageSpec schema and a semantic validator. A generator can use it to compose pages that keep Refire's structure, typography, rhythm and motion without inventing colours, copy budgets or sections. Every value cites the real source, and the citations are machine-verified.
 
@@ -12,17 +12,35 @@ It is a **snapshot** of the clone project that contains it (its parent directory
 
 Refire is a real hydrogen fuel-cell company, and the user is authorized by Refire to rebuild its site. Its **logo, product photography (PRISMA images), hero film, brochure PDF and proprietary copy belong to Refire.**
 
-- A generator may reuse the **structure**: sections, tokens and motion.
-- It must **never fabricate, trace, re-encode, imitate or reproduce** those assets, and never reuse that copy on any new page.
-- Every new page is a PageSpec with `"provenance": "generated"`. It must:
-  - use `placeholder:<assetRole>` sources for every placeholder-only role (logo, favicon, hero video and poster, both product photos, social image, brochure);
-  - use original copy;
-  - use reserved example contact data: `@example.com/.org/.net` addresses and fictional `+1 NXX-555-01XX` numbers.
-- `schema/semantic_validate.py` enforces this through `ASSET_SOURCE_POLICY`, `GENERATED_NO_PROPRIETARY_COPY` and `GENERATED_CONTACT_DATA_RESERVED`.
-- SuisseIntl is a **commercially licensed** typeface (`font.brand-typeface`, policy `must-reuse-exact`). Use it only inside the authorized rebuild. Outside it, fall back to the declared stack (Arial, Helvetica, sans-serif). Never redistribute the font files.
-- `"provenance": "reference"` is reserved for the documented reproduction of the authorized clone. That means the two examples `schema/example.pagespec.json` and `schema/example.not-found.pagespec.json`.
+Every PageSpec carries a required, closed **`mode`**: `"reference"` or `"generated"` (`pageSpecVersion` 1.1.0; it replaces the earlier `provenance` field).
 
-`assets/asset-roles.json` holds the closed asset-role vocabulary (10 roles) with per-role generation and licensing guidance. The compliance-critical policies are pinned twice: in the JSON, and independently in `extraction/verify_all.py`.
+- `"reference"` is the faithful, documented reproduction of the authorized clone. Real brand, copy and assets are allowed as evidence. Only `schema/example.pagespec.json` and `schema/example.not-found.pagespec.json` use it.
+- `"generated"` is any new page built from this repo for someone else. It must contain **nothing that identifies or reproduces the source**. `schema/example.generated.pagespec.json` (home) and `schema/example.generated-not-found.pagespec.json` (404) are the worked examples: a fictional brand ("Brindle Valley"), original copy, placeholder assets, reserved `.example` / `example.com` addresses and fictional +1 NXX-555-01XX numbers.
+
+A generator may reuse the **structure** (sections, tokens, motion). In `generated` mode `schema/semantic_validate.py` rejects, each under its own rule:
+
+| Rule | Rejects |
+|---|---|
+| `GENERATED_MODE_REFERENCE_ASSET` | a reference-only or blocked-for-generation asset role anywhere (logo, favicon, hero film, poster, both PRISMA photos, social image, brochure, SuisseIntl) |
+| `GENERATED_MODE_ROLE` | a role that is not one of the generation-safe roles the field lists under `generatedAssetRoles` |
+| `GENERATED_MODE_BRAND` | the brand name in any spelling (Refire, REFIRE, Refire Group, refire.com, PRISMA, R E F I R E, re-fire) |
+| `GENERATED_MODE_CTA` | source call-to-action text ("view our brochure", "Visit Us", "Get Refire") |
+| `GENERATED_MODE_COPY` | source marketing copy: company descriptor, founding story, expansion pitch, hero tagline, key statistics, the event programme and booth ids, the cookie and form sentences |
+| `GENERATED_MODE_URL` | the source domain and mailboxes, its placeholder mailto, its two phone numbers |
+| `GENERATED_MODE_ASSET` | protected asset files and ids: the wordmark svg id, PRISMA photos, hero poster and film, brochure, favicons, the typeface name, any `/int/...` asset path |
+| `GENERATED_MODE_PERSON` | third-party identities the source names: the partner organisations GreenGT and APAS and the Hannover Messe fair |
+| `GENERATED_NO_PROPRIETARY_COPY`, `GENERATED_CONTACT_DATA_RESERVED`, `ASSET_SOURCE_POLICY` | (kept from 1.1.0) shared 6-word runs with proprietary fields, non-reserved mailboxes and phone numbers, non-placeholder sources |
+
+How it works, and what it cannot do:
+
+- The patterns live in one registry, `assets/asset-roles.json#sourceBrand.patterns` (25 patterns in 6 categories). Each was derived from literals found in this project's source, carries `cite` entries that `verify_all.py` resolves against the real files, lists `mustMatch` examples and category-level `mustNotMatch` controls, and is pinned by an independent canary string in `verify_all.py`. Removing or loosening a pattern, or emptying a category (the validator then fails closed with `GENERATED_MODE_PATTERNS_MISSING`), fails verification.
+- Strings are normalised before matching: NFKC (full-width forms fold), zero-width and soft-hyphen characters are removed, curly quotes become straight, Unicode dashes become `-`. Section ids, template, theme, `assetRole`, variants and motion names are closed machine vocabulary and are not scanned. That includes the theme id `theme.refire-dark`: a generated page must still bind the home template to it, because the theme is a token file of this repo. It is a design-repo identifier, not page content.
+- **No human has reviewed the pinned patterns** (`sourceBrand.reviewStatus` says `UNREVIEWED`, and `verify_all.py` fails if it ever claims otherwise). **Detection is string and regex based.** A paraphrase, a translation, a homoglyph that NFKC does not fold (for example a Cyrillic letter), text inside an image, or a new fact about Refire not seen in this source will pass. The brand patterns are substring matches on purpose. The raw-colour rule treats any `#` followed by 3, 4, 6 or 8 hex digits as a colour, so copy such as "#123" is rejected.
+- Not applicable to this source (recorded in `sourceBrand.notApplicable`): no review, rating or testimonial exists (so no rating rule), the site links no external domain (`NO_EXTERNAL_HREF` rejects every absolute URL in every mode, stricter than a reserved-host rule), no legal entity name appears (the footer reads "Refire (c) year"), and no individual is named.
+- Role availability is closed: `reference-only` | `generation-safe` | `blocked-for-generation`. It is pinned in code twice (`PINNED_AVAILABILITY` in `schema/semantic_validate.py` and in `extraction/verify_all.py`), so editing the registry alone cannot loosen a role. The generation-safe roles are `brand.logo-placeholder`, `media.video-placeholder`, `media.image-generated`, `document.placeholder`, `font.system-stack`, `person.fictional`, `url.placeholder`, `copy.original`, `brand.fictional` and the generic `ui.icon`. Every reference-only or blocked role lists `generationSafeSubstitutes` and `generatedModeGuidance`.
+- SuisseIntl is a **commercially licensed** typeface (`font.brand-typeface`, availability `blocked-for-generation`, policy `must-reuse-exact` inside the authorized rebuild only). Outside it, use `font.system-stack` (Arial, Helvetica, sans-serif). Never redistribute the font files.
+
+`assets/asset-roles.json` holds the closed asset-role vocabulary (19 roles) with per-role availability, generation and licensing guidance.
 
 ## Scope
 
@@ -61,22 +79,22 @@ tokens/10-semantic/     text.* / surface.* / border.* roles
 tokens/20-component/    approved component-scoped values
 tokens/30-layout/       gutter, section paddings, grids and splits per breakpoint
 tokens/themes/          theme.refire-dark (default), theme.system-error (light + prefers-dark modes)
-tokens/llm/             component-allowlist.json, token-catalog.json, token-policy.json
-assets/asset-roles.json closed assetRole vocabulary + generation/licensing policy
+tokens/llm/             component-allowlist.json, token-catalog.json, token-policy.json, motion-patterns.json
+assets/asset-roles.json closed assetRole vocabulary: availability, generation-safe roles, licensing, sourceBrand patterns
 primitives/  components/  sections/      contracts (purpose, props or content, tokens, motion, responsive, citations)
 templates/templates.json                 2 templates (structured nodes), 2 routes, page meta budgets, out-of-scope record
-compatibility/graph.json                 29 rules with severity and the layer that enforces each (schema, semantic, contract, gate)
+compatibility/graph.json                 45 rules with severity and the layer that enforces each (schema, semantic, contract, gate)
 schema/pagespec.schema.json              Draft-07 PageSpec contract
-schema/example*.pagespec.json            home (reference), 404 (reference), generated home (placeholders only)
+schema/example*.pagespec.json            home (reference), 404 (reference), home (generated), 404 (generated)
 schema/section-contract.schema.json     closed Draft-07 shape of every sections/*.json (source vs semantic, retrievalEligible)
-schema/semantic_validate.py              schema layer + semantic layer + section-contract lint
+schema/semantic_validate.py              schema layer + semantic layer (incl. GENERATED_MODE_* and TOKEN_* rules) + section-contract lint
 schema/tests/adversarial_test.py         mutations that must be rejected + controls that must pass
 extraction/measured-values.json          citation ledger, groundwork corrections, exclusions, structural facts
 extraction/verify_all.py                 repo integrity and drift checks (includes the wrapper gate)
 extraction/wrapper_gate.py               whole-page-wrapper gate over measured section heights
 extraction/wrapper-whitelist.json        reviewed exceptions to the gate (agent attestations, not human sign-offs)
 extraction/measure_sections.mjs          OPTIONAL: re-measures section heights into measured-values.json (needs Playwright)
-extraction/prove_drift.py                drift proof for the gate, the retrieval pin and the source/semantic checks
+extraction/prove_drift.py                drift proof for the gate, the retrieval and availability pins, the source/semantic checks, the sourceBrand registry and generated-mode enforcement
 extraction/evidence/                     verbatim excerpts of two untracked pixel-audit capture lines
 extraction/selfcontain_test.py           isolated-copy proof
 extraction/package.py                    builds ../design-repo.zip with the CLI zip tool
@@ -92,12 +110,12 @@ extraction/requirements.txt              jsonschema>=4
    - `motion`: the const pattern and threshold, plus `reducedMotionFallback: "none-in-source"`.
 
    There is **no style or token override field**. Styling is owned by the contracts (`tokens/llm/token-policy.json`).
-3. **Set `provenance: "generated"`**. Use `placeholder:<role>` for media and the brochure, and reserved example contact data.
+3. **Set `mode: "generated"`** (required; the only other value is `"reference"`). Use the generation-safe `placeholder:<role>` each field lists under `generatedAssetRoles`, a brand name of your own, original copy and reserved example contact data. See the generated-mode rules above.
 4. **Validate** with `python3 schema/semantic_validate.py my-page.json`. Exit 0 means no errors. Warnings flag observed conventions:
    - the meta description mirrors the about description;
    - stat indexes run 1..n.
 
-`schema/example.generated.pagespec.json` is a complete worked example.
+`schema/example.generated.pagespec.json` is a complete worked example, and `schema/example.generated-not-found.pagespec.json` covers the 404.
 
 ## Sizing model
 
@@ -135,7 +153,7 @@ python3 schema/semantic_validate.py          # examples: schema + semantic, 0 er
 python3 schema/tests/adversarial_test.py     # every mutation rejected, every control passes
 python3 extraction/verify_all.py             # integrity + drift checks (add --source-root PATH to point at the clone)
 python3 extraction/wrapper_gate.py           # the whole-page-wrapper gate alone
-python3 extraction/prove_drift.py            # scratch-copy proof that the gate / pins / provenance checks fail on injected defects (--scratch DIR needs an empty dir)
+python3 extraction/prove_drift.py            # scratch-copy proof that the gate / pins / registry / generated-mode checks fail on injected defects (--scratch DIR needs an empty dir)
 python3 extraction/selfcontain_test.py       # copies this folder alone into the OS temp dir and reruns everything
 python3 extraction/package.py                # LAST: rebuilds ../design-repo.zip, junk-free
 ```
@@ -146,6 +164,10 @@ python3 extraction/package.py                # LAST: rebuilds ../design-repo.zip
 - **Versions:** pageSpecVersion against the schema const.
 - **Schema parity:** the allowlist's settable properties, and every contract against its schema definition.
 - **Asset roles:** closure across schema, allowlist and registry, plus the pinned policies.
+- **Asset availability:** closed three-way availability pinned in code, substitutes, `generatedAssetRoles` on every asset slot, `mode` as a required closed enum.
+- **Source-brand registry:** every pattern compiles, matches its `mustMatch` examples and the literal it cites, controls stay clean, each id is pinned by a canary, review status stays `UNREVIEWED`.
+- **Generated mode:** every template has a reference and a generated example; canary leaks and normalisation evasions are rejected by the real validator in a generated page and stay legal in a reference page.
+- **Motion patterns:** `tokens/llm/motion-patterns.json` equals the contracts' const-locked patterns and the schema.
 - **Templates and routes:** structured nodes, 1:1 route coverage.
 - **Graph:** every rule is enforced by the layer it names.
 - **Counts:** the manifest counts, recomputed from disk, and this README's counts table.
@@ -154,7 +176,7 @@ python3 extraction/package.py                # LAST: rebuilds ../design-repo.zip
   - every quote is found verbatim in its cited lines, when the source is present;
   - every token, section, copy budget, asset role, template and route carries a citation.
 - **Copy budgets:** follow the evidence rule.
-- **Tokens:** references, catalog and policy keys, and theme resolution are consistent.
+- **Tokens:** references, catalog (two-way: nothing listed that does not exist, nothing missing for its categories) and policy keys, and theme resolution are consistent. The semantic validator adds `TOKEN_RAW_COLOR`, `TOKEN_RAW_LENGTH`, `TOKEN_STYLE_DECLARATION`, `TOKEN_UNKNOWN` and `TOKEN_NO_OVERRIDE_SLOT`: a PageSpec has no token or style slot, so no string may carry a raw colour or length, a CSS declaration or a token reference.
 - **Section contracts:** every contract satisfies the closed `schema/section-contract.schema.json`; the retrieval-ineligible set equals two independent code pins and the allowlist; at most one HERO-class section per template.
 - **Section provenance:** every `source` object resolves (ledger range, then the real file's function declaration and first rendered element) and each `semantic.category` agrees with the clone's `ia.json`.
 - **Wrapper gate:** measured section heights against the thresholds below.
@@ -226,11 +248,15 @@ Fixed chrome (header 77, scroll progress 2, cookie pane 57, cursor 74, preloader
 | `sections` | 16 |
 | `templates` | 2 |
 | `routes` | 2 |
-| `assetRoles` | 10 |
-| `graphRules` | 29 |
-| `exampleInstances` | 3 |
+| `assetRoles` | 19 |
+| `graphRules` | 45 |
+| `exampleInstances` | 4 |
 | `retrievalIneligibleSections` | 4 |
 | `measuredSections` | 21 |
+| `motionPatterns` | 12 |
+| `generationSafeAssetRoles` | 10 |
+| `sourceBrandPatterns` | 25 |
+| `generatedExampleInstances` | 2 |
 
 ## Copy budgets
 
@@ -266,7 +292,7 @@ The measured overlay geometry fix (content block at y 204.1, 1440×695.9 at 1440
 
 ## Versioning
 
-- `repositoryVersion` is `1.1.0`: a minor bump for the new section-contract schema, retrieval pin, provenance checks and wrapper gate, all additive (the PageSpec shape is unchanged, so `pageSpecVersion` stays `1.0.0`).
+- `repositoryVersion` is `1.2.0`: adds the required `mode` field (replacing `provenance`), asset availability and generation-safe roles, the sourceBrand registry with the GENERATED_MODE_* rules, generated examples for both templates, TOKEN_* rules and `motion-patterns.json`. The PageSpec shape changed, so `pageSpecVersion` goes `1.0.0` -> `1.1.0` and `allowlistVersion` `1.1.0` -> `1.2.0`.
 - `allowlistVersion` is machine-checked against `tokens/llm/component-allowlist.json`.
 - `pageSpecVersion` is machine-checked against the schema const.
 - `repositoryVersion` is documentation-only and hand-maintained; nothing checks it.

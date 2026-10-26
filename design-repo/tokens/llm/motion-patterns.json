@@ -1,0 +1,221 @@
+{
+  "$description": "Closed motion-pattern vocabulary, derived from the section contracts' `motion` objects (each pattern is const-locked per section in schema/pagespec.schema.json). Values and timings live in tokens/00-foundation/motion.json; this file lists which pattern each section runs, with its trigger and threshold. verify_all.py check `motion-patterns` keeps it equal to the contracts and the schema.",
+  "patterns": {
+    "cursor-follow": {
+      "sections": [
+        "chrome.cursor"
+      ],
+      "triggers": [
+        "pointer"
+      ],
+      "thresholds": [],
+      "reducedMotionFallback": "none-in-source",
+      "cite": [
+        {
+          "at": "src/components/layout/Cursor.jsx:30",
+          "quote": "const amt = 0.12"
+        },
+        {
+          "at": "src/components/layout/Cursor.jsx:52",
+          "quote": "duration: 0.4, '--mD': down ? 0.2 : 0"
+        }
+      ]
+    },
+    "fade": {
+      "sections": [
+        "chrome.cookie-pane"
+      ],
+      "triggers": [
+        "on-mount-and-close"
+      ],
+      "thresholds": [],
+      "reducedMotionFallback": "none-in-source",
+      "cite": [
+        {
+          "at": "src/components/layout/CookiePane.jsx:25-29",
+          "quote": "duration: 0.7, ease: 'circ.inOut'"
+        }
+      ]
+    },
+    "hero-entrance": {
+      "sections": [
+        "hero.video-title"
+      ],
+      "triggers": [
+        "page-visible"
+      ],
+      "thresholds": [],
+      "reducedMotionFallback": "none-in-source",
+      "cite": [
+        {
+          "at": "src/motion/reveal.js:102-106",
+          "quote": "s.groups.filter((g) => g.name === 'hero').forEach((g) => {"
+        }
+      ]
+    },
+    "label-swap": {
+      "sections": [
+        "chrome.header"
+      ],
+      "triggers": [
+        "on-toggle"
+      ],
+      "thresholds": [],
+      "reducedMotionFallback": "none-in-source",
+      "cite": [
+        {
+          "at": "src/motion/useSplitSwap.js:15-43",
+          "quote": "export function useSplitSwap(text, timeout = 0.4)"
+        }
+      ]
+    },
+    "marquee-drag": {
+      "sections": [
+        "ticker.marquee"
+      ],
+      "triggers": [
+        "in-view"
+      ],
+      "thresholds": [
+        0.1
+      ],
+      "reducedMotionFallback": "none-in-source",
+      "cite": [
+        {
+          "at": "src/motion/marquee.js:41-54",
+          "quote": "const tick = () => {"
+        },
+        {
+          "at": "src/motion/marquee.js:69-73",
+          "quote": "const gate = () => {"
+        }
+      ]
+    },
+    "none": {
+      "sections": [
+        "chrome.footer",
+        "error.not-found"
+      ],
+      "triggers": [
+        "none"
+      ],
+      "thresholds": [],
+      "reducedMotionFallback": "none-in-source",
+      "cite": [
+        {
+          "at": "src/components/layout/Footer.jsx:14-31",
+          "quote": "<footer"
+        }
+      ]
+    },
+    "overlay-fade": {
+      "sections": [
+        "overlay.contact"
+      ],
+      "triggers": [
+        "on-toggle"
+      ],
+      "thresholds": [],
+      "reducedMotionFallback": "none-in-source",
+      "cite": [
+        {
+          "at": "src/index.css:226-236",
+          "quote": "transition: opacity 0.5s var(--ttf), visibility 0.5s var(--ttf);"
+        }
+      ]
+    },
+    "preloader-progress": {
+      "sections": [
+        "chrome.preloader"
+      ],
+      "triggers": [
+        "on-load"
+      ],
+      "thresholds": [],
+      "reducedMotionFallback": "none-in-source",
+      "cite": [
+        {
+          "at": "src/components/layout/Preloader.jsx:47-77",
+          "quote": "gsap.to(rootRef.current, { duration: 4, '--p': progress, ease: 'sine.inOut', overwrite: 'auto' })"
+        }
+      ]
+    },
+    "reveal-on-scroll": {
+      "sections": [
+        "content.event-accordion",
+        "content.numbered-statement",
+        "content.title-description",
+        "stats.card-grid"
+      ],
+      "triggers": [
+        "scroll-threshold",
+        "scroll-threshold-per-row"
+      ],
+      "thresholds": [
+        0.1,
+        0.3
+      ],
+      "reducedMotionFallback": "none-in-source",
+      "cite": [
+        {
+          "at": "src/components/ui/Accordion.jsx:54",
+          "quote": "data-anim-group=\"accordion-row\" data-anim-threshold={threshold}"
+        }
+      ]
+    },
+    "scroll-linked-clip-zoom": {
+      "sections": [
+        "media.scroll-picture"
+      ],
+      "triggers": [
+        "every-scroll-frame-in-view"
+      ],
+      "thresholds": [],
+      "reducedMotionFallback": "none-in-source",
+      "cite": [
+        {
+          "at": "src/motion/scroll.js:40-59",
+          "quote": "export function useScrolledPicture(sectionRef, targetRef, lenis)"
+        }
+      ]
+    },
+    "scroll-linked-progress": {
+      "sections": [
+        "chrome.scroll-progress"
+      ],
+      "triggers": [
+        "every-scroll-frame"
+      ],
+      "thresholds": [],
+      "reducedMotionFallback": "none-in-source",
+      "cite": [
+        {
+          "at": "src/motion/scroll.js:22-30",
+          "quote": "el.style.setProperty('--p', 100 * (lenis.limit > 0 ? lenis.animatedScroll / lenis.limit : 0))"
+        }
+      ]
+    },
+    "text-reveal-with-shader": {
+      "sections": [
+        "media.text-image-shader"
+      ],
+      "triggers": [
+        "scroll-threshold"
+      ],
+      "thresholds": [
+        0.3
+      ],
+      "reducedMotionFallback": "none-in-source",
+      "cite": [
+        {
+          "at": "@home/TextImage.jsx:18-19",
+          "quote": "data-anim-threshold=\"0.3\""
+        },
+        {
+          "at": "src/components/ui/ShaderPicture.jsx:217",
+          "quote": "data-anim-threshold=\"0.7\""
+        }
+      ]
+    }
+  }
+}

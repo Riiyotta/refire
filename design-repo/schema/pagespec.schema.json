@@ -2,11 +2,11 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "refire-int/pagespec.schema.json",
   "title": "Refire /int PageSpec",
-  "description": "Machine contract for a page composed from this design-repo. Structure only: JSON Schema cannot cross-check a PageSpec against its template's real node list, word budgets, route/theme bindings, asset provenance or copy reuse; schema/semantic_validate.py does that.",
+  "description": "Machine contract for a page composed from this design-repo. Structure only: JSON Schema cannot cross-check a PageSpec against its template's real node list, word budgets, route/theme bindings, asset roles per mode or copy reuse; schema/semantic_validate.py does that.",
   "type": "object",
   "properties": {
     "pageSpecVersion": {
-      "const": "1.0.0"
+      "const": "1.1.0"
     },
     "id": {
       "type": "string",
@@ -31,13 +31,14 @@
         "theme.system-error"
       ]
     },
-    "provenance": {
+    "mode": {
+      "$comment": "rule:MODE_CLOSED_ENUM",
       "type": "string",
       "enum": [
         "reference",
         "generated"
       ],
-      "description": "'reference' = documented reproduction of the authorized clone (may use real assets); 'generated' = any new page (placeholders only)."
+      "description": "Required closed generation context. 'reference' = documented reproduction of the authorized clone (real brand, copy and assets allowed as evidence). 'generated' = a new page for someone else: it must contain nothing that identifies or reproduces the source, and schema/semantic_validate.py rejects it through the GENERATED_MODE_* rules."
     },
     "meta": {
       "type": "object",
@@ -71,7 +72,7 @@
     "template",
     "route",
     "theme",
-    "provenance",
+    "mode",
     "meta",
     "nodes"
   ],
@@ -104,7 +105,7 @@
   ],
   "definitions": {
     "assetRole": {
-      "$comment": "rule:ASSET_ROLE_CLOSED -- closed vocabulary, mirrors assets/asset-roles.json",
+      "$comment": "rule:ASSET_ROLE_CLOSED -- closed vocabulary, mirrors assets/asset-roles.json (reference-only and generation-safe roles alike; which are usable in which mode is decided by availability and the contracts' generatedAssetRoles, in the semantic layer)",
       "type": "string",
       "enum": [
         "brand.logo",
@@ -116,7 +117,16 @@
         "media.social-image",
         "document.brochure",
         "font.brand-typeface",
-        "ui.icon"
+        "ui.icon",
+        "brand.logo-placeholder",
+        "media.video-placeholder",
+        "media.image-generated",
+        "document.placeholder",
+        "font.system-stack",
+        "person.fictional",
+        "url.placeholder",
+        "copy.original",
+        "brand.fictional"
       ]
     },
     "assetRef": {
@@ -143,7 +153,7 @@
     "href.document": {
       "$comment": "rule:HREF_ALLOWED_KINDS -- no http(s)/external links exist or are allowed",
       "type": "string",
-      "pattern": "^(/int/files/[a-z0-9-]+\\.pdf|placeholder:document\\.brochure)$"
+      "pattern": "^(/int/files/[a-z0-9-]+\\.pdf|placeholder:document\\.[a-z-]+)$"
     },
     "href.mailto": {
       "$comment": "rule:HREF_ALLOWED_KINDS -- no http(s)/external links exist or are allowed",
@@ -218,7 +228,10 @@
             {
               "properties": {
                 "assetRole": {
-                  "const": "brand.logo"
+                  "enum": [
+                    "brand.logo",
+                    "brand.logo-placeholder"
+                  ]
                 }
               }
             }
@@ -563,7 +576,10 @@
             {
               "properties": {
                 "assetRole": {
-                  "const": "media.hero-video"
+                  "enum": [
+                    "media.hero-video",
+                    "media.video-placeholder"
+                  ]
                 }
               }
             }
@@ -577,7 +593,10 @@
             {
               "properties": {
                 "assetRole": {
-                  "const": "media.hero-poster"
+                  "enum": [
+                    "media.hero-poster",
+                    "media.image-generated"
+                  ]
                 }
               }
             }
@@ -779,7 +798,10 @@
             {
               "properties": {
                 "assetRole": {
-                  "const": "media.scroll-picture"
+                  "enum": [
+                    "media.scroll-picture",
+                    "media.image-generated"
+                  ]
                 }
               }
             }
@@ -990,7 +1012,10 @@
             {
               "properties": {
                 "assetRole": {
-                  "const": "media.shader-picture"
+                  "enum": [
+                    "media.shader-picture",
+                    "media.image-generated"
+                  ]
                 }
               }
             }

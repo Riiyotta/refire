@@ -1,10 +1,11 @@
 {
   "$description": "Closed asset-role vocabulary. Wired through schema/pagespec.schema.json (definitions.assetRole enum), tokens/llm/component-allowlist.json (assetRoles) and the example instances. Built from real usage sites only.",
-  "realCompanyNotice": "Refire is a real company and this repo documents an authorized rebuild of its live site. Its logo, product photography, hero film, brochure and proprietary copy belong to Refire. A generator may reuse the STRUCTURE (sections, tokens, motion) but must never fabricate or reproduce those assets or that copy for any new page: generated PageSpecs use neutral 'placeholder:<role>' sources and original copy. semantic_validate.py enforces this for every provenance:'generated' instance.",
+  "realCompanyNotice": "Refire is a real company and this repo documents an authorized rebuild of its live site. Its logo, product photography, hero film, brochure and proprietary copy belong to Refire. A generator may reuse the STRUCTURE (sections, tokens, motion) but must never fabricate or reproduce those assets or that copy for any new page: generated PageSpecs use neutral 'placeholder:<role>' sources and original copy. semantic_validate.py enforces this for every mode:'generated' instance: reference-only and blocked roles are rejected outright (GENERATED_MODE_REFERENCE_ASSET), only the generation-safe roles listed under each field's generatedAssetRoles are accepted, and sourceBrand.patterns blocks the brand, CTA text, marketing copy, URLs, protected asset files and third-party identities.",
   "generationPolicies": {
-    "placeholder-only": "A generated PageSpec must use src/href 'placeholder:<role>'. Reproducing, tracing, re-encoding or AI-fabricating a look-alike of the real asset is forbidden. Only provenance:'reference' instances (the documented reproduction of the authorized clone) may point at allowedReferenceSources.",
+    "placeholder-only": "A generated PageSpec must use src/href 'placeholder:<role>'. Reproducing, tracing, re-encoding or AI-fabricating a look-alike of the real asset is forbidden. Only mode:'reference' instances (the documented reproduction of the authorized clone) may point at allowedReferenceSources.",
     "must-reuse-exact": "Use exactly the declared asset through its token; never substitute or redistribute.",
-    "may-reuse-exact": "Reuse exactly as the section contract fixes it; inventing new variants is out of contract."
+    "may-reuse-exact": "Reuse exactly as the section contract fixes it; inventing new variants is out of contract.",
+    "may-generate-new": "Generate new original content for the generated page (copy, names, placeholder addresses). Nothing is copied from the source."
   },
   "pinnedPolicies": {
     "brand.logo": "placeholder-only",
@@ -36,7 +37,14 @@
           "at": "src/components/layout/Header.jsx:45",
           "quote": "<LogoRefire />"
         }
-      ]
+      ],
+      "availability": "reference-only",
+      "generationSafeSubstitutes": [
+        "brand.logo-placeholder"
+      ],
+      "generatedModeGuidance": "Refire's wordmark is the source brand. A generated page is a different brand: it carries its own placeholder or user-supplied mark, never this one or a look-alike.",
+      "origin": "source",
+      "kind": "media"
     },
     "brand.favicon": {
       "generationPolicy": "placeholder-only",
@@ -55,7 +63,14 @@
           "at": "index.html:17-21",
           "quote": "/int/favicon/apple-touch-icon.png"
         }
-      ]
+      ],
+      "availability": "reference-only",
+      "generationSafeSubstitutes": [
+        "brand.logo-placeholder"
+      ],
+      "generatedModeGuidance": "Refire's favicons and touch icons are the source brand. A generated page ships its own icon set made from the brand.logo-placeholder mark.",
+      "origin": "source",
+      "kind": "media"
     },
     "media.hero-video": {
       "generationPolicy": "placeholder-only",
@@ -74,7 +89,14 @@
           "at": "@home/Hero.jsx:62-73",
           "quote": "src={data.video.src}"
         }
-      ]
+      ],
+      "availability": "reference-only",
+      "generationSafeSubstitutes": [
+        "media.video-placeholder"
+      ],
+      "generatedModeGuidance": "The hero film is Refire's own product film. A generated page uses a labelled video placeholder, or a clip its owner supplies.",
+      "origin": "source",
+      "kind": "media"
     },
     "media.hero-poster": {
       "generationPolicy": "placeholder-only",
@@ -89,7 +111,14 @@
           "at": "src/data/home.js:14",
           "quote": "poster: '/int/images/poster.png'"
         }
-      ]
+      ],
+      "availability": "reference-only",
+      "generationSafeSubstitutes": [
+        "media.image-generated"
+      ],
+      "generatedModeGuidance": "The poster is a frame of Refire's hero film. A generated page uses a newly generated or owner-supplied still.",
+      "origin": "source",
+      "kind": "media"
     },
     "media.scroll-picture": {
       "generationPolicy": "placeholder-only",
@@ -104,7 +133,14 @@
           "at": "src/data/home.js:37",
           "quote": "src: '/int/images/prisma-1.jpg'"
         }
-      ]
+      ],
+      "availability": "reference-only",
+      "generationSafeSubstitutes": [
+        "media.image-generated"
+      ],
+      "generatedModeGuidance": "PRISMA product photography belongs to Refire. A generated page uses a newly generated or owner-supplied image of its own (fictional) product.",
+      "origin": "source",
+      "kind": "media"
     },
     "media.shader-picture": {
       "generationPolicy": "placeholder-only",
@@ -123,7 +159,14 @@
           "at": "src/components/ui/ShaderPicture.jsx:87",
           "quote": "texImg.crossOrigin = 'anonymous'"
         }
-      ]
+      ],
+      "availability": "reference-only",
+      "generationSafeSubstitutes": [
+        "media.image-generated"
+      ],
+      "generatedModeGuidance": "PRISMA product photography belongs to Refire. A generated page uses a newly generated or owner-supplied image; it must be same-origin to work as the WebGL texture.",
+      "origin": "source",
+      "kind": "media"
     },
     "media.social-image": {
       "generationPolicy": "placeholder-only",
@@ -138,7 +181,14 @@
           "at": "index.html:11",
           "quote": "<meta property=\"og:image\" content=\"/int/images/prisma-1.jpg\" />"
         }
-      ]
+      ],
+      "availability": "reference-only",
+      "generationSafeSubstitutes": [
+        "media.image-generated"
+      ],
+      "generatedModeGuidance": "The social preview image is Refire product photography. A generated page uses its own generated or owner-supplied preview.",
+      "origin": "source",
+      "kind": "media"
     },
     "document.brochure": {
       "generationPolicy": "placeholder-only",
@@ -153,7 +203,14 @@
           "at": "src/data/home.js:3",
           "quote": "export const BROCHURE_HREF = '/int/files/refire.pdf'"
         }
-      ]
+      ],
+      "availability": "reference-only",
+      "generationSafeSubstitutes": [
+        "document.placeholder"
+      ],
+      "generatedModeGuidance": "The brochure is Refire's own PDF. A generated page links an explicit placeholder document, never this PDF and never an external URL.",
+      "origin": "source",
+      "kind": "media"
     },
     "font.brand-typeface": {
       "generationPolicy": "must-reuse-exact",
@@ -175,7 +232,14 @@
           "at": "tailwind.config.cjs:57",
           "quote": "suisse: ['SuisseIntl'"
         }
-      ]
+      ],
+      "availability": "blocked-for-generation",
+      "generationSafeSubstitutes": [
+        "font.system-stack"
+      ],
+      "generatedModeGuidance": "SuisseIntl is a third-party commercially licensed typeface, not Refire's to sublicense. A generated page uses the declared system stack unless its owner holds a licence.",
+      "origin": "source",
+      "kind": "font"
     },
     "ui.icon": {
       "generationPolicy": "may-reuse-exact",
@@ -197,7 +261,787 @@
           "at": "src/components/ui/icons.jsx:1-3",
           "quote": "Inline SVGs"
         }
-      ]
+      ],
+      "availability": "generation-safe",
+      "generatedModeGuidance": "Generic geometric UI glyphs (arrows, chevrons, circles, plus) carry no brand identity and may be reused exactly as the section contracts fix them. The wordmark svg that shares the same file is a different role (brand.logo) and stays blocked.",
+      "origin": "source",
+      "kind": "ui"
+    },
+    "brand.logo-placeholder": {
+      "kind": "media",
+      "origin": "generation-safe-addition",
+      "generationPolicy": "placeholder-only",
+      "licensing": "None: original or supplied by the page owner.",
+      "pageSpecSlot": true,
+      "allowedReferenceSources": [],
+      "availability": "generation-safe",
+      "description": "A neutral mark for the generated page's own (fictional or user-supplied) brand: a plain geometric monogram or text wordmark.",
+      "guidance": "Use src 'placeholder:brand.logo-placeholder' and let a human supply the real mark of whoever owns the page. Make it clearly not Refire's: no rule-and-bar letterform wordmark, no slashed-stroke glyph cut, no logo animation lifted from the source.",
+      "generatedModeGuidance": "Use src 'placeholder:brand.logo-placeholder' and let a human supply the real mark of whoever owns the page. Make it clearly not Refire's: no rule-and-bar letterform wordmark, no slashed-stroke glyph cut, no logo animation lifted from the source."
+    },
+    "media.video-placeholder": {
+      "kind": "media",
+      "origin": "generation-safe-addition",
+      "generationPolicy": "placeholder-only",
+      "licensing": "None: a labelled empty slot, or footage the page owner supplies.",
+      "pageSpecSlot": true,
+      "allowedReferenceSources": [],
+      "availability": "generation-safe",
+      "description": "An explicit video slot for the generated brand's own hero film.",
+      "guidance": "Use src 'placeholder:media.video-placeholder'. Do not excerpt, re-encode or imitate Refire's hero film; a 16:9 clip supplied by the owner behaves identically.",
+      "generatedModeGuidance": "Use src 'placeholder:media.video-placeholder'. Do not excerpt, re-encode or imitate Refire's hero film; a 16:9 clip supplied by the owner behaves identically."
+    },
+    "media.image-generated": {
+      "kind": "media",
+      "origin": "generation-safe-addition",
+      "generationPolicy": "placeholder-only",
+      "licensing": "Original: newly generated for the page, or supplied by its owner.",
+      "pageSpecSlot": true,
+      "allowedReferenceSources": [],
+      "availability": "generation-safe",
+      "description": "A newly generated product, scene or poster visual for the fictional brand's own product.",
+      "guidance": "Use src 'placeholder:media.image-generated'. The visual must depict the fictional brand's own invented product. Never trace, recolour or prompt-copy Refire PRISMA photography or the hero poster; a neutral 16:9 placeholder of at least 3840x2160 behaves identically.",
+      "generatedModeGuidance": "Use src 'placeholder:media.image-generated'. The visual must depict the fictional brand's own invented product. Never trace, recolour or prompt-copy Refire PRISMA photography or the hero poster; a neutral 16:9 placeholder of at least 3840x2160 behaves identically."
+    },
+    "document.placeholder": {
+      "kind": "media",
+      "origin": "generation-safe-addition",
+      "generationPolicy": "placeholder-only",
+      "licensing": "None: a placeholder link target.",
+      "pageSpecSlot": true,
+      "allowedReferenceSources": [],
+      "availability": "generation-safe",
+      "description": "A placeholder for a downloadable document of the generated brand.",
+      "guidance": "Use href 'placeholder:document.placeholder'. Never link Refire's brochure PDF or any external URL; the page owner replaces the target with their own file.",
+      "generatedModeGuidance": "Use href 'placeholder:document.placeholder'. Never link Refire's brochure PDF or any external URL; the page owner replaces the target with their own file."
+    },
+    "font.system-stack": {
+      "kind": "font",
+      "origin": "generation-safe-addition",
+      "generationPolicy": "may-reuse-exact",
+      "licensing": "System fonts: Arial, Helvetica, sans-serif.",
+      "pageSpecSlot": false,
+      "allowedReferenceSources": [],
+      "availability": "generation-safe",
+      "description": "The declared system fallback stack, usable in any generated page.",
+      "guidance": "Use the declared fallback stack. Do not name SuisseIntl or ship look-alike files called SuisseIntl.",
+      "generatedModeGuidance": "Use the declared fallback stack. Do not name SuisseIntl or ship look-alike files called SuisseIntl."
+    },
+    "person.fictional": {
+      "kind": "people",
+      "origin": "generation-safe-addition",
+      "generationPolicy": "may-generate-new",
+      "licensing": "Original: invented names, no real likeness.",
+      "pageSpecSlot": false,
+      "allowedReferenceSources": [],
+      "availability": "generation-safe",
+      "description": "Invented people and avatars (names, roles, initials) for a generated page.",
+      "guidance": "Invent names that belong to no real person and never use a real person's photograph. The source site names no individual and shows no staff or customer photo, so there is nothing to copy; third-party organisation names it does mention (partners, a trade fair) are blocked through GENERATED_MODE_PERSON.",
+      "generatedModeGuidance": "Invent names that belong to no real person and never use a real person's photograph. The source site names no individual and shows no staff or customer photo, so there is nothing to copy; third-party organisation names it does mention (partners, a trade fair) are blocked through GENERATED_MODE_PERSON."
+    },
+    "url.placeholder": {
+      "kind": "url",
+      "origin": "generation-safe-addition",
+      "generationPolicy": "may-generate-new",
+      "licensing": "Reserved documentation domains only.",
+      "pageSpecSlot": false,
+      "allowedReferenceSources": [],
+      "availability": "generation-safe",
+      "description": "Placeholder addresses on reserved domains (example.com, example.org, example.net, *.example, *.invalid) and fictional +1 NXX-555-01XX numbers.",
+      "guidance": "Use only reserved domains and fictional numbers. A generated PageSpec carries no absolute URL at all (NO_EXTERNAL_HREF); mailto and tel values must be reserved data (GENERATED_CONTACT_DATA_RESERVED). Never use refire.com, its mailboxes or its phone numbers.",
+      "generatedModeGuidance": "Use only reserved domains and fictional numbers. A generated PageSpec carries no absolute URL at all (NO_EXTERNAL_HREF); mailto and tel values must be reserved data (GENERATED_CONTACT_DATA_RESERVED). Never use refire.com, its mailboxes or its phone numbers."
+    },
+    "copy.original": {
+      "kind": "copy",
+      "origin": "generation-safe-addition",
+      "generationPolicy": "may-generate-new",
+      "licensing": "Original text written for the generated page.",
+      "pageSpecSlot": false,
+      "allowedReferenceSources": [],
+      "availability": "generation-safe",
+      "description": "Original headings, descriptions, stats and microcopy written for the fictional brand.",
+      "guidance": "Write new copy for the new brand within each field's maxWords budget. Do not reuse, lightly reword or translate Refire's headings, statistics, event programme, cookie or form microcopy.",
+      "generatedModeGuidance": "Write new copy for the new brand within each field's maxWords budget. Do not reuse, lightly reword or translate Refire's headings, statistics, event programme, cookie or form microcopy."
+    },
+    "brand.fictional": {
+      "kind": "brand-name",
+      "origin": "generation-safe-addition",
+      "generationPolicy": "may-generate-new",
+      "licensing": "Original: an invented name that is not a real trademark.",
+      "pageSpecSlot": false,
+      "allowedReferenceSources": [],
+      "availability": "generation-safe",
+      "description": "An invented brand name, domain label and product names for the generated page.",
+      "guidance": "Pick a name that is not Refire, not PRISMA and not any real company; use it consistently in the footer brand, headings and contact data (on reserved domains).",
+      "generatedModeGuidance": "Pick a name that is not Refire, not PRISMA and not any real company; use it consistently in the footer brand, headings and contact data (on reserved domains)."
+    }
+  },
+  "availabilityValues": {
+    "reference-only": "Usable only in a mode 'reference' PageSpec (the documented reproduction of the authorized clone). A generated page must use a generationSafeSubstitutes role instead.",
+    "generation-safe": "Usable in a mode 'generated' PageSpec where a section contract lists it under generatedAssetRoles.",
+    "blocked-for-generation": "Never usable in a mode 'generated' PageSpec, and not reproducible outside the authorized rebuild (third-party licence)."
+  },
+  "modes": {
+    "reference": "Faithful reconstruction of the source (real brand, copy and assets allowed as evidence). Only the reference examples use it.",
+    "generated": "A new page built from this design-repo for someone else. It must contain nothing that identifies or reproduces the source: GENERATED_MODE_* rules in schema/semantic_validate.py reject it."
+  },
+  "pinnedAvailability": {
+    "brand.logo": "reference-only",
+    "brand.favicon": "reference-only",
+    "media.hero-video": "reference-only",
+    "media.hero-poster": "reference-only",
+    "media.scroll-picture": "reference-only",
+    "media.shader-picture": "reference-only",
+    "media.social-image": "reference-only",
+    "document.brochure": "reference-only",
+    "font.brand-typeface": "blocked-for-generation",
+    "ui.icon": "generation-safe",
+    "brand.logo-placeholder": "generation-safe",
+    "media.video-placeholder": "generation-safe",
+    "media.image-generated": "generation-safe",
+    "document.placeholder": "generation-safe",
+    "font.system-stack": "generation-safe",
+    "person.fictional": "generation-safe",
+    "url.placeholder": "generation-safe",
+    "copy.original": "generation-safe",
+    "brand.fictional": "generation-safe"
+  },
+  "pinNote": "pinnedAvailability documents the availability pins that also live in CODE (PINNED_AVAILABILITY in schema/semantic_validate.py and, independently, in extraction/verify_all.py). The code wins: editing this file alone cannot loosen a role. verify_all.py fails if the registry, either code copy or the contracts disagree.",
+  "sourceBrand": {
+    "names": [
+      "Refire",
+      "REFIRE",
+      "Refire Group",
+      "refire.com",
+      "en.refire.com",
+      "PRISMA",
+      "PRISMA XXII",
+      "LogoRefire"
+    ],
+    "legalEntity": "none found: the footer reads 'Refire ©<year>' with no registered company name anywhere in src/, CLONE_SPEC.md or specs/ (grep for Ltd, Limited, GmbH, Inc, Co., legal found nothing).",
+    "reservedUrlHosts": [
+      "*.example",
+      "*.invalid",
+      "example.com",
+      "example.org",
+      "example.net"
+    ],
+    "normalization": "Before matching, each string is NFKC-normalised (so full-width and compatibility forms fold), zero-width and soft-hyphen characters are removed, curly quotes become straight quotes, Unicode dashes become '-' and runs of whitespace collapse to one space. Patterns match case-insensitively with re.search. Section ids, the template id, the theme id, assetRole values, variants and motion pattern names are closed machine vocabulary and are not scanned; every other string in the PageSpec is.",
+    "reviewStatus": "UNREVIEWED. Every pattern was derived by a model from literals found in this project's own source (each carries `cite` entries that verify_all.py resolves against the real files and its `mustMatch` examples); no human has reviewed the set. It is exact-text and regex matching: a paraphrase, a translation, a homoglyph that NFKC does not fold, or text inside an image passes. The brand patterns are substring matches on purpose.",
+    "notApplicable": {
+      "rating": "The source has no review, rating, star or testimonial markup (grep of src/ and CLONE_SPEC.md for review, rating, stars, testimonial finds nothing), so no GENERATED_MODE_RATING rule exists. Add one if a rating block is ever extracted.",
+      "social-and-vendor-endpoints": "The source links no external domain (structural fact NO_OUTBOUND_LINKS) and has no social profile, cookie vendor or form endpoint (the contact form is non-submitting). NO_EXTERNAL_HREF rejects every absolute URL in every mode, which is stricter than a reserved-host rule.",
+      "named-individuals": "The source names no individual and shows no staff, customer or reviewer photograph. GENERATED_MODE_PERSON therefore covers the third-party organisations and the trade fair the source names."
+    },
+    "patterns": {
+      "brand": {
+        "code": "GENERATED_MODE_BRAND",
+        "patterns": [
+          {
+            "id": "brand-refire",
+            "pattern": "refire",
+            "kind": "literal",
+            "description": "The company name in any case or compound: Refire, REFIRE, Refire Group, refire.com, en.refire.com, mailbox domains, LogoRefire, logo-refire. Substring match on purpose: the word is the brand.",
+            "mustMatch": [
+              "Refire",
+              "REFIRE is an international hydrogen energy technology company",
+              "Refire Group",
+              "info@refire.com",
+              "https://refire.com/int/",
+              "logo-refire",
+              "Hello from REFIRE"
+            ],
+            "cite": [
+              {
+                "at": "index.html:6",
+                "quote": "<title>Refire</title>"
+              },
+              {
+                "at": "src/data/home.js:20",
+                "quote": "subtitle: 'Refire Group'"
+              },
+              {
+                "at": "src/data/home.js:62",
+                "quote": "info@refire.com"
+              },
+              {
+                "at": "src/data/site.js:48",
+                "quote": "brand: 'Refire'"
+              },
+              {
+                "at": "specs/ROUTES.md:1",
+                "quote": "Source: https://refire.com/int/"
+              }
+            ]
+          },
+          {
+            "id": "brand-refire-spaced",
+            "pattern": "\\br[\\W_]*e[\\W_]*f[\\W_]*i[\\W_]*r[\\W_]*e\\b",
+            "kind": "literal",
+            "description": "Separator-obfuscated spellings of the wordmark: R E F I R E, re-fire, R.E.F.I.R.E (the wordmark is set in separate letters in the logo svg). Word-boundary anchored so ordinary words are not caught.",
+            "mustMatch": [
+              "R E F I R E",
+              "re-fire",
+              "R.E.F.I.R.E",
+              "re_fire"
+            ],
+            "cite": [
+              {
+                "at": "index.html:6",
+                "quote": "<title>Refire</title>"
+              },
+              {
+                "at": "src/components/ui/icons.jsx:5",
+                "quote": "export function LogoRefire(props)"
+              }
+            ]
+          },
+          {
+            "id": "brand-product-prisma",
+            "pattern": "\\bprisma\\b",
+            "kind": "literal",
+            "description": "The product line name PRISMA (PRISMA XXII) and its photography filenames.",
+            "mustMatch": [
+              "PRISMA XXII",
+              "PRISMA product line",
+              "prisma-1.jpg"
+            ],
+            "cite": [
+              {
+                "at": "src/data/home.js:55",
+                "quote": "PRISMA XXII technical unveiling"
+              }
+            ]
+          }
+        ],
+        "mustNotMatch": [
+          "Brindle Valley Power",
+          "brindlevalley.example",
+          "reference design",
+          "fire safety",
+          "hydrogen refuelling",
+          "a prism of colour",
+          "refined air"
+        ]
+      },
+      "cta": {
+        "code": "GENERATED_MODE_CTA",
+        "patterns": [
+          {
+            "id": "cta-view-brochure",
+            "pattern": "view\\s+our\\s+brochure",
+            "kind": "literal",
+            "description": "The source's brochure CTA label (hero link and the closing pitch link).",
+            "mustMatch": [
+              "view our brochure",
+              "View Our Brochure"
+            ],
+            "cite": [
+              {
+                "at": "src/data/home.js:13",
+                "quote": "label: 'view our brochure'"
+              },
+              {
+                "at": "src/data/home.js:69",
+                "quote": "label: 'view our brochure'"
+              }
+            ]
+          },
+          {
+            "id": "cta-visit-us",
+            "pattern": "\\bvisit\\s+us\\b",
+            "kind": "literal",
+            "description": "The ticker line 'Visit Us' that repeats across the marquee.",
+            "mustMatch": [
+              "Visit Us — ",
+              "visit us"
+            ],
+            "cite": [
+              {
+                "at": "src/data/home.js:39",
+                "quote": "text: 'Visit Us — '"
+              }
+            ]
+          },
+          {
+            "id": "cta-brand-verb",
+            "pattern": "\\b(?:get|try|download|request|view|discover|explore|meet|join|visit|contact|choose|buy|see)\\s+refire\\b",
+            "kind": "generalisation",
+            "description": "Brand-verb CTA labels of the class 'Get <Brand>'. The source has no such label (grep of src/ finds none); this is the baseline R2 class instantiated with the real brand name, so it is a generalisation, not a source literal.",
+            "mustMatch": [
+              "Get Refire",
+              "Try Refire",
+              "Request Refire",
+              "Visit Refire"
+            ],
+            "cite": [
+              {
+                "at": "index.html:6",
+                "quote": "<title>Refire</title>"
+              }
+            ]
+          }
+        ],
+        "mustNotMatch": [
+          "read the overview",
+          "Request a pilot",
+          "Book a site visit",
+          "Meet the team",
+          "Contact us"
+        ]
+      },
+      "copy": {
+        "code": "GENERATED_MODE_COPY",
+        "patterns": [
+          {
+            "id": "copy-company-descriptor",
+            "pattern": "international\\s+hydrogen\\s+energy\\s+technology\\s+company|fuel\\s+cell\\s+systems\\s+for\\s+mobility\\s+and\\s+power|superchargers,?\\s+and\\s+grid\\s+support",
+            "kind": "literal",
+            "description": "The company descriptor used as the page description and the About paragraph.",
+            "mustMatch": [
+              "REFIRE is an international hydrogen energy technology company specializing in R&D",
+              "manufacturing of fuel cell systems for mobility and power products"
+            ],
+            "cite": [
+              {
+                "at": "src/data/home.js:28",
+                "quote": "REFIRE is an international hydrogen energy technology company"
+              },
+              {
+                "at": "index.html:7",
+                "quote": "REFIRE is an international hydrogen energy technology company"
+              }
+            ]
+          },
+          {
+            "id": "copy-founding-story",
+            "pattern": "founded\\s+in\\s+2015|propelling\\s+the\\s+development\\s+of\\s+hydrogen\\s+energy|dependence\\s+on\\s+fossil|most\\s+abundant\\s+element\\s+in\\s+the\\s+universe|harmonious\\s+coexistence",
+            "kind": "literal",
+            "description": "The founding story in the trade-fair content block.",
+            "mustMatch": [
+              "was founded in 2015 when a passionate group of engineers",
+              "the most abundant element in the universe",
+              "reduce mankind's dependence on fossil energy"
+            ],
+            "cite": [
+              {
+                "at": "src/data/home.js:46",
+                "quote": "REFIRE was founded in 2015"
+              }
+            ]
+          },
+          {
+            "id": "copy-expansion-pitch",
+            "pattern": "actively\\s+expanding\\s+its\\s+footprint|optimized\\s+policy\\s+choices|where\\s+policy\\s+is\\s+driving\\s+industry\\s+strategy",
+            "kind": "literal",
+            "description": "The closing pitch heading and body.",
+            "mustMatch": [
+              "is actively expanding its footprint domestic and internationally",
+              "help your region develop optimized policy choices"
+            ],
+            "cite": [
+              {
+                "at": "src/data/home.js:67",
+                "quote": "is actively expanding its footprint domestic and internationally"
+              },
+              {
+                "at": "src/data/home.js:68",
+                "quote": "In regions where policy is driving industry strategy"
+              }
+            ]
+          },
+          {
+            "id": "copy-hero-tagline",
+            "pattern": "creating\\s+a\\s+sustainable\\s+future|of\\s+fuel\\s+cell\\s+systems|a\\s+new\\s+generation\\s+of",
+            "kind": "literal",
+            "description": "The preloader tagline and the hero centre text (the hero title lines 'A New' / 'generation' are caught when joined with the centre text).",
+            "mustMatch": [
+              "Creating a Sustainable Future",
+              "of fuel cell systems",
+              "A new generation of fuel cell systems"
+            ],
+            "cite": [
+              {
+                "at": "src/data/site.js:7",
+                "quote": "tagline: 'Creating a Sustainable Future'"
+              },
+              {
+                "at": "src/data/home.js:12",
+                "quote": "centerText: 'of fuel cell systems'"
+              }
+            ]
+          },
+          {
+            "id": "copy-key-stats",
+            "pattern": "\\b(?:4|83)k\\+|tonnes\\s+of\\s+co2\\s+saved",
+            "kind": "literal",
+            "description": "The three source statistics: 4K+ vehicles, 83K+ tonnes of CO2, 4K+ systems.",
+            "mustMatch": [
+              "4K+",
+              "83K+",
+              "Tonnes Of CO2 Saved"
+            ],
+            "cite": [
+              {
+                "at": "src/data/home.js:33",
+                "quote": "title: 'Tonnes Of CO2 Saved', value: '83K+'"
+              },
+              {
+                "at": "src/data/home.js:32",
+                "quote": "value: '4K+'"
+              }
+            ]
+          },
+          {
+            "id": "copy-event-programme",
+            "pattern": "holistic\\s+by\\s+design|heavy\\s+duty\\s+trucks:?\\s+is\\s+hydrogen\\s+the\\s+future|technical\\s+unveiling|product\\s+presentation\\s*@|stay\\s+tuned\\s+for\\s+updates\\s+and\\s+plan\\s+your\\s+visit|we\\s+are\\s+excited\\s+to\\s+be\\s+part\\s+of|save\\s+the\\s+date",
+            "kind": "literal",
+            "description": "The trade-fair announcement and its five-line programme.",
+            "mustMatch": [
+              "Save the date",
+              "FC Development: Holistic by Design - presentation",
+              "Panel Discussion - Heavy Duty Trucks: is Hydrogen the Future?",
+              "technical unveiling@Technical Stage",
+              "We are excited to be part of"
+            ],
+            "cite": [
+              {
+                "at": "src/data/home.js:19",
+                "quote": "title: 'Save the date'"
+              },
+              {
+                "at": "src/data/home.js:57",
+                "quote": "FC Development: Holistic by Design"
+              },
+              {
+                "at": "src/data/home.js:50",
+                "quote": "Heavy Duty Trucks: is Hydrogen the Future?"
+              },
+              {
+                "at": "src/data/home.js:55",
+                "quote": "technical unveiling@Technical Stage"
+              },
+              {
+                "at": "src/data/home.js:22",
+                "quote": "We are excited to be part of Hannover"
+              }
+            ]
+          },
+          {
+            "id": "copy-event-booth",
+            "pattern": "booth\\s+c45|hall\\s*13|stand\\s+(?:d25|b51)",
+            "kind": "literal",
+            "description": "The booth, hall and stand identifiers.",
+            "mustMatch": [
+              "BOOTH C45 | HALL 13 17-21 April 2023",
+              "STAND D25 | HALL13",
+              "STAND B51 | HALL 13"
+            ],
+            "cite": [
+              {
+                "at": "src/data/home.js:43",
+                "quote": "BOOTH C45 | HALL 13 17-21 April 2023"
+              },
+              {
+                "at": "src/data/home.js:50",
+                "quote": "STAND D25 | HALL13"
+              }
+            ]
+          },
+          {
+            "id": "copy-chrome-microcopy",
+            "pattern": "we\\s+use\\s+cookies\\s+to\\s+make\\s+things\\s+better|data\\s+provided\\s+will\\s+be\\s+used\\s+to\\s+perform\\s+your\\s+request|select\\s+a\\s+department\\s+you['’]?d\\s+like\\s+to\\s+reach|get\\s+back\\s+to\\s+you\\s+as\\s+soon\\s+as\\s+possible",
+            "kind": "literal",
+            "description": "The cookie banner line, the form consent note, the department-select placeholder and the form intro: sentence-length microcopy, not generic one-word labels (Contact, Close, submit stay free).",
+            "mustMatch": [
+              "We use cookies to make things better",
+              "*By submitting, the data provided will be used to perform your request according to the Privacy Policy",
+              "Select a department you’d like to reach*",
+              "Send us a message and we’ll get back to you as soon as possible."
+            ],
+            "cite": [
+              {
+                "at": "src/data/site.js:12",
+                "quote": "We use cookies to make things better"
+              },
+              {
+                "at": "src/data/site.js:43",
+                "quote": "the data provided will be used to perform your request"
+              },
+              {
+                "at": "src/data/site.js:29",
+                "quote": "Select a department you’d like to reach*"
+              },
+              {
+                "at": "src/data/site.js:19",
+                "quote": "get back to you as soon as possible"
+              }
+            ]
+          }
+        ],
+        "mustNotMatch": [
+          "Our test yard runs three units around the clock",
+          "Brindle Valley designs modular hydrogen power units for depots",
+          "sites powered",
+          "Hours In Service"
+        ]
+      },
+      "url": {
+        "code": "GENERATED_MODE_URL",
+        "patterns": [
+          {
+            "id": "url-source-domain",
+            "pattern": "refire\\.(?:com|cn|en)\\b",
+            "kind": "literal",
+            "description": "The source domain and its sibling host (en.refire.com), in links, mailboxes and meta tags.",
+            "mustMatch": [
+              "https://refire.com/int/",
+              "https://en.refire.com/",
+              "media@refire.com",
+              "refire.com"
+            ],
+            "cite": [
+              {
+                "at": "index.html:13",
+                "quote": "content=\"refire.com\""
+              },
+              {
+                "at": "src/data/home.js:61",
+                "quote": "media@refire.com"
+              },
+              {
+                "at": "specs/ROUTES.md:37",
+                "quote": "https://refire.com/int/"
+              }
+            ]
+          },
+          {
+            "id": "url-source-placeholder-mailto",
+            "pattern": "test@test\\.en",
+            "kind": "literal",
+            "description": "The contact title's placeholder mailto copied from the live site (a source endpoint, not reserved data).",
+            "mustMatch": [
+              "mailto:test@test.en",
+              "test@test.en"
+            ],
+            "cite": [
+              {
+                "at": "src/data/site.js:16",
+                "quote": "mailto:test@test.en"
+              }
+            ]
+          },
+          {
+            "id": "url-source-phone",
+            "pattern": "\\+?1[\\s().-]*790[\\s().-]*790[\\s().-]*9238|\\+?1[\\s().-]*893[\\s().-]*233[\\s().-]*2030",
+            "kind": "literal",
+            "description": "The two source phone numbers (Germany and France lines), in any separator style.",
+            "mustMatch": [
+              "+1 790 790 9238",
+              "tel:+17907909238",
+              "+1 893 233 2030",
+              "(1) 893-233-2030"
+            ],
+            "cite": [
+              {
+                "at": "src/data/site.js:23",
+                "quote": "text: '+1 790 790 9238'"
+              },
+              {
+                "at": "src/data/site.js:24",
+                "quote": "text: '+1 893 233 2030'"
+              }
+            ]
+          }
+        ],
+        "mustNotMatch": [
+          "hello@brindlevalley.example",
+          "mailto:press@example.com",
+          "tel:+12025550143",
+          "+1 202 555 0143"
+        ]
+      },
+      "asset": {
+        "code": "GENERATED_MODE_ASSET",
+        "patterns": [
+          {
+            "id": "asset-logo",
+            "pattern": "logo[-_\\s]?refire",
+            "kind": "literal",
+            "description": "The wordmark component and svg id.",
+            "mustMatch": [
+              "logo-refire",
+              "inline-svg:logo-refire",
+              "LogoRefire"
+            ],
+            "cite": [
+              {
+                "at": "src/components/ui/icons.jsx:5",
+                "quote": "export function LogoRefire(props)"
+              },
+              {
+                "at": "ASSET_MANIFEST.json:38",
+                "quote": "\"id\": \"logo-refire\""
+              }
+            ]
+          },
+          {
+            "id": "asset-media-files",
+            "pattern": "prisma-[12]\\.jpg|poster\\.png|main-new\\.mp4|refire\\.pdf|main-image\\.jpg",
+            "kind": "literal",
+            "description": "The product photos, hero poster, hero film and brochure by file name.",
+            "mustMatch": [
+              "prisma-1.jpg",
+              "prisma-2.jpg",
+              "poster.png",
+              "main-new.mp4",
+              "refire.pdf"
+            ],
+            "cite": [
+              {
+                "at": "src/data/home.js:37",
+                "quote": "src: '/int/images/prisma-1.jpg'"
+              },
+              {
+                "at": "src/data/home.js:14",
+                "quote": "video: { src: '/int/videos/main-new.mp4', poster: '/int/images/poster.png' }"
+              },
+              {
+                "at": "src/data/home.js:3",
+                "quote": "BROCHURE_HREF = '/int/files/refire.pdf'"
+              }
+            ]
+          },
+          {
+            "id": "asset-public-path",
+            "pattern": "(?<![A-Za-z0-9])/int/(?:images|videos|files|fonts|favicon|_next)/",
+            "kind": "literal",
+            "description": "Any path under the source's public asset tree.",
+            "mustMatch": [
+              "/int/images/other.jpg",
+              "/int/files/anything.pdf",
+              "/int/fonts/Suisse/x.woff2"
+            ],
+            "cite": [
+              {
+                "at": "src/data/home.js:70",
+                "quote": "image: '/int/images/prisma-2.jpg'"
+              },
+              {
+                "at": "src/index.css:7",
+                "quote": "url(/int/fonts/Suisse/SuisseIntl-Thin.woff2)"
+              }
+            ]
+          },
+          {
+            "id": "asset-favicon",
+            "pattern": "favicon-(?:16x16|32x32)|apple-touch-icon|android-chrome-(?:192x192|512x512)",
+            "kind": "literal",
+            "description": "The favicon and touch-icon files.",
+            "mustMatch": [
+              "favicon-32x32.png",
+              "apple-touch-icon.png",
+              "android-chrome-512x512.png"
+            ],
+            "cite": [
+              {
+                "at": "index.html:17",
+                "quote": "/int/favicon/apple-touch-icon.png"
+              },
+              {
+                "at": "index.html:18",
+                "quote": "/int/favicon/favicon-32x32.png"
+              }
+            ]
+          },
+          {
+            "id": "asset-typeface",
+            "pattern": "suisse[\\s_-]*intl",
+            "kind": "literal",
+            "description": "The licensed typeface name (SuisseIntl, SuisseIntl Mono) and its font paths.",
+            "mustMatch": [
+              "SuisseIntl",
+              "Suisse Intl",
+              "SuisseIntlMono.woff2"
+            ],
+            "cite": [
+              {
+                "at": "src/index.css:6",
+                "quote": "font-family: SuisseIntl;"
+              }
+            ]
+          }
+        ],
+        "mustNotMatch": [
+          "placeholder:brand.logo-placeholder",
+          "placeholder:media.image-generated",
+          "placeholder:document.placeholder",
+          "inline-svg:placeholder-mark"
+        ]
+      },
+      "people": {
+        "code": "GENERATED_MODE_PERSON",
+        "patterns": [
+          {
+            "id": "person-partner-greengt",
+            "pattern": "green[\\s-]*gt",
+            "kind": "literal",
+            "description": "A named partner organisation in the event programme ('GreenGT x REFIRE').",
+            "mustMatch": [
+              "GreenGT x REFIRE - product presentation",
+              "Green GT"
+            ],
+            "cite": [
+              {
+                "at": "src/data/home.js:52",
+                "quote": "GreenGT x REFIRE"
+              }
+            ]
+          },
+          {
+            "id": "person-partner-apas",
+            "pattern": "\\bapas\\b",
+            "kind": "literal",
+            "description": "A named partner organisation in the event programme ('APAS x REFIRE').",
+            "mustMatch": [
+              "APAS x REFIRE - product presentation",
+              "apas"
+            ],
+            "cite": [
+              {
+                "at": "src/data/home.js:58",
+                "quote": "APAS x REFIRE"
+              }
+            ]
+          },
+          {
+            "id": "person-event-hannover",
+            "pattern": "\\bhannover\\b",
+            "kind": "literal",
+            "description": "The named third-party trade fair and its host city (Hannover Messe, Hannover, Germany).",
+            "mustMatch": [
+              "Hannover Messe",
+              "HANNOVER MESSE Exhibition Grounds, Hannover, Germany"
+            ],
+            "cite": [
+              {
+                "at": "src/data/home.js:42",
+                "quote": "title: 'Hannover Messe'"
+              },
+              {
+                "at": "src/data/home.js:44",
+                "quote": "HANNOVER MESSE Exhibition Grounds, Hannover, Germany"
+              }
+            ]
+          }
+        ],
+        "mustNotMatch": [
+          "Ada Placeholder",
+          "Jordan Example",
+          "Springfield",
+          "the Brindle Valley open house"
+        ]
+      }
     }
   }
 }

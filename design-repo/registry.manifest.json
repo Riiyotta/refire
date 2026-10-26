@@ -1,9 +1,9 @@
 {
   "repositoryId": "refire-int-design-repo",
-  "repositoryVersion": "1.1.0",
-  "pageSpecVersion": "1.0.0",
-  "allowlistVersion": "1.1.0",
-  "versionFieldNote": "allowlistVersion is machine-checked (verify_all.py fails if it differs from tokens/llm/component-allowlist.json version). pageSpecVersion is machine-checked against the schema's pageSpecVersion const (the PageSpec shape did not change in 1.1.0, so it stays 1.0.0). repositoryVersion is documentation-only and hand-maintained; nothing checks it.",
+  "repositoryVersion": "1.2.0",
+  "pageSpecVersion": "1.1.0",
+  "allowlistVersion": "1.2.0",
+  "versionFieldNote": "allowlistVersion is machine-checked (verify_all.py fails if it differs from tokens/llm/component-allowlist.json version). pageSpecVersion is machine-checked against the schema's pageSpecVersion const (1.1.0 adds the required closed `mode` field, which replaces the earlier `provenance` field). repositoryVersion is documentation-only and hand-maintained; nothing checks it.",
   "status": "design-review-pending",
   "productionApproved": false,
   "source": {
@@ -28,11 +28,15 @@
     "sections": 16,
     "templates": 2,
     "routes": 2,
-    "assetRoles": 10,
-    "graphRules": 29,
-    "exampleInstances": 3,
+    "assetRoles": 19,
+    "graphRules": 45,
+    "exampleInstances": 4,
     "retrievalIneligibleSections": 4,
-    "measuredSections": 21
+    "measuredSections": 21,
+    "generationSafeAssetRoles": 10,
+    "sourceBrandPatterns": 25,
+    "generatedExampleInstances": 2,
+    "motionPatterns": 12
   },
   "countsNote": "Recomputed from disk by extraction/verify_all.py on every run; a mismatch fails.",
   "entryPoints": {
@@ -43,7 +47,8 @@
     "examples": [
       "schema/example.pagespec.json",
       "schema/example.not-found.pagespec.json",
-      "schema/example.generated.pagespec.json"
+      "schema/example.generated.pagespec.json",
+      "schema/example.generated-not-found.pagespec.json"
     ],
     "adversarialTests": "schema/tests/adversarial_test.py",
     "templates": "templates/templates.json",
@@ -52,6 +57,7 @@
     "componentAllowlist": "tokens/llm/component-allowlist.json",
     "tokenCatalog": "tokens/llm/token-catalog.json",
     "tokenPolicy": "tokens/llm/token-policy.json",
+    "motionPatterns": "tokens/llm/motion-patterns.json",
     "themes": [
       "tokens/themes/refire-dark.json",
       "tokens/themes/system-error.json"

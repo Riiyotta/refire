@@ -1,6 +1,6 @@
 {
-  "version": "1.1.0",
-  "$description": "Closed set a generator may instantiate. verify_all.py enforces parity with sections/, primitives/, components/, the schema's settable properties, schema/section-contract.schema.json, the retrieval-ineligible pin and assets/asset-roles.json.",
+  "version": "1.2.0",
+  "$description": "Closed set a generator may instantiate. verify_all.py enforces parity with sections/, primitives/, components/, the schema's settable properties, schema/section-contract.schema.json, the retrieval-ineligible pin and assets/asset-roles.json (availability, generation-safe roles, sourceBrand patterns) and the generated-mode rules.",
   "templates": [
     "template.home",
     "template.not-found"
@@ -48,9 +48,9 @@
   "pageSpecProperties": [
     "id",
     "meta",
+    "mode",
     "nodes",
     "pageSpecVersion",
-    "provenance",
     "route",
     "template",
     "theme"
@@ -68,15 +68,24 @@
   ],
   "assetRoles": [
     "brand.favicon",
+    "brand.fictional",
     "brand.logo",
+    "brand.logo-placeholder",
+    "copy.original",
     "document.brochure",
+    "document.placeholder",
     "font.brand-typeface",
+    "font.system-stack",
     "media.hero-poster",
     "media.hero-video",
+    "media.image-generated",
     "media.scroll-picture",
     "media.shader-picture",
     "media.social-image",
-    "ui.icon"
+    "media.video-placeholder",
+    "person.fictional",
+    "ui.icon",
+    "url.placeholder"
   ],
   "overridable": {
     "content": "only the fields of the chosen section's contract (sections/<id>.json content.fields), within maxWords/maxChars/min/maxItems",
@@ -95,6 +104,7 @@
     "contextCite",
     "correction",
     "correctionCite",
+    "generatedAssetRoles",
     "id",
     "motion",
     "purpose",
@@ -123,5 +133,21 @@
     "chrome.cursor",
     "chrome.preloader",
     "overlay.contact"
+  ],
+  "modes": [
+    "reference",
+    "generated"
+  ],
+  "generationSafeAssetRoles": [
+    "brand.fictional",
+    "brand.logo-placeholder",
+    "copy.original",
+    "document.placeholder",
+    "font.system-stack",
+    "media.image-generated",
+    "media.video-placeholder",
+    "person.fictional",
+    "ui.icon",
+    "url.placeholder"
   ]
 }

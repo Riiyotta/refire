@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "section-contract.schema.json",
   "title": "Section contract",
-  "description": "Closed shape of every sections/*.json. Two distinct closed objects: `source` (provenance: where the section is implemented in the real source) and `semantic` (taxonomy: what the section is for). retrievalEligible is a closed boolean; false (utility/runtime UI) requires a reason of 30+ characters. Content/motion/responsive internals are validated against pagespec.schema.json by verify_all.py (contract-schema-parity); this schema closes the contract's own top level.",
+  "description": "Closed shape of every sections/*.json. Two distinct closed objects: `source` (provenance: where the section is implemented in the real source) and `semantic` (taxonomy: what the section is for). generatedAssetRoles lists what a generated page may use there; retrievalEligible is a closed boolean; false (utility/runtime UI) requires a reason of 30+ characters. Content/motion/responsive internals are validated against pagespec.schema.json by verify_all.py (contract-schema-parity); this schema closes the contract's own top level.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -11,6 +11,7 @@
     "source",
     "retrievalEligible",
     "purpose",
+    "generatedAssetRoles",
     "cite",
     "usedInTemplates",
     "constraints",
@@ -98,6 +99,15 @@
     "purpose": {
       "type": "string",
       "minLength": 1
+    },
+    "generatedAssetRoles": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z]+\\.[a-z-]+$"
+      },
+      "description": "Generation-safe asset roles a mode 'generated' PageSpec may use in this section (the union of the per-field generatedAssetRoles in content.fields; empty when the section has no asset slot). Every role must be generation-safe in assets/asset-roles.json and in the availability pins held in code."
     },
     "cite": {
       "type": "array",

@@ -12,6 +12,7 @@
   },
   "retrievalEligible": true,
   "purpose": "Single copyright row under a grey rule: brand + year, rights text, and a Back to Top button that smooth-scrolls to the top.",
+  "generatedAssetRoles": [],
   "cite": [
     {
       "at": "src/components/layout/Footer.jsx:10-33",

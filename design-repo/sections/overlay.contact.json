@@ -13,6 +13,7 @@
   "retrievalEligible": false,
   "retrievalEligibleReason": "Modal contact dialog opened from the header pill, with a page scroll lock and a non-submitting form: dialog-style utility UI, not a retrievable in-page section.",
   "purpose": "Full-screen dark contact sheet opened from the header pill: large mailto title, phone and hours lists, and a department-select contact form. Page scroll is locked while it is open. The form never submits.",
+  "generatedAssetRoles": [],
   "cite": [
     {
       "at": "src/components/layout/ContactOverlay.jsx:110-200",

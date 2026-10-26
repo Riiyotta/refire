@@ -12,6 +12,7 @@
   },
   "retrievalEligible": true,
   "purpose": "Two-column intro: a dim uppercase parenthetical title on the left, a regular-weight description on the right.",
+  "generatedAssetRoles": [],
   "cite": [
     {
       "at": "@home/AboutRefire.jsx:8-28",

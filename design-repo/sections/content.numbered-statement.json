@@ -12,6 +12,7 @@
   },
   "retrievalEligible": true,
   "purpose": "Numbered chapter opener: section-title rule, a small muted kicker and one very large light statement paragraph.",
+  "generatedAssetRoles": [],
   "cite": [
     {
       "at": "@home/SaveTheDate.jsx:9-35",

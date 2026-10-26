@@ -1,13 +1,13 @@
 {
-  "pageSpecVersion": "1.0.0",
+  "pageSpecVersion": "1.1.0",
   "id": "page.generated-home",
   "template": "template.home",
   "route": "/",
   "theme": "theme.refire-dark",
-  "provenance": "generated",
+  "mode": "generated",
   "meta": {
-    "title": "Example Energy",
-    "description": "Example Energy Co. designs modular hydrogen power units for depots, ports and remote sites, from first feasibility study to long-term service."
+    "title": "Brindle Valley",
+    "description": "Brindle Valley designs modular hydrogen power units for depots, ports and remote sites, from first feasibility study to long-term service."
   },
   "nodes": [
     {
@@ -30,8 +30,8 @@
       "section": "chrome.header",
       "content": {
         "logo": {
-          "assetRole": "brand.logo",
-          "src": "placeholder:brand.logo"
+          "assetRole": "brand.logo-placeholder",
+          "src": "placeholder:brand.logo-placeholder"
         },
         "openLabel": "Contact",
         "closeLabel": "Close"
@@ -52,7 +52,7 @@
     {
       "section": "overlay.contact",
       "content": {
-        "titleHref": "mailto:hello@example.com",
+        "titleHref": "mailto:hello@brindlevalley.example",
         "titleLines": [
           "get",
           "in touch"
@@ -76,9 +76,9 @@
           ]
         },
         "departmentSelect": {
-          "placeholder": "Select a department you’d like to reach*",
+          "placeholder": "Choose the team you want to reach*",
           "options": [
-            "Media",
+            "Press",
             "Sales",
             "General"
           ]
@@ -90,7 +90,7 @@
           "Subject*"
         ],
         "messagePlaceholder": "Message*",
-        "consentNote": "*By submitting, the data provided will be used to perform your request according to the Privacy Policy",
+        "consentNote": "*We use the details you send only to reply to your enquiry",
         "submitLabel": "submit",
         "formSubmission": "non-submitting"
       },
@@ -102,7 +102,7 @@
     {
       "section": "chrome.cookie-pane",
       "content": {
-        "message": "We use cookies to make things better",
+        "message": "This site stores one cookie for your choices",
         "closeLabel": "Close"
       },
       "motion": {
@@ -131,15 +131,15 @@
         "descriptor": "for depots and ports",
         "link": {
           "label": "read the overview",
-          "href": "placeholder:document.brochure"
+          "href": "placeholder:document.placeholder"
         },
         "video": {
-          "assetRole": "media.hero-video",
-          "src": "placeholder:media.hero-video"
+          "assetRole": "media.video-placeholder",
+          "src": "placeholder:media.video-placeholder"
         },
         "poster": {
-          "assetRole": "media.hero-poster",
-          "src": "placeholder:media.hero-poster"
+          "assetRole": "media.image-generated",
+          "src": "placeholder:media.image-generated"
         }
       },
       "motion": {
@@ -153,7 +153,7 @@
       "content": {
         "number": "01",
         "label": "Open house",
-        "kicker": "Example Energy",
+        "kicker": "Brindle Valley",
         "statement": "Join our engineers at the spring open house to see a working unit, ask hard questions and plan a pilot for your own site."
       },
       "motion": {
@@ -167,7 +167,7 @@
       "variant": "size-md",
       "content": {
         "title": "(About Us)",
-        "description": "Example Energy Co. designs modular hydrogen power units for depots, ports and remote sites, from first feasibility study to long-term service."
+        "description": "Brindle Valley designs modular hydrogen power units for depots, ports and remote sites, from first feasibility study to long-term service."
       },
       "motion": {
         "pattern": "reveal-on-scroll",
@@ -209,8 +209,8 @@
       "section": "media.scroll-picture",
       "content": {
         "image": {
-          "assetRole": "media.scroll-picture",
-          "src": "placeholder:media.scroll-picture"
+          "assetRole": "media.image-generated",
+          "src": "placeholder:media.image-generated"
         },
         "alt": ""
       },
@@ -236,7 +236,7 @@
       "content": {
         "title": "Open House",
         "heading": "BAY 4 | NORTH YARD 12-14 May",
-        "address": "Example Energy Test Yard, Springfield",
+        "address": "Brindle Valley Test Yard, Springfield",
         "body": "Our test yard runs three units around the clock so visitors can see real duty cycles. Each session covers installation, refuelling and maintenance, with time for your own questions.",
         "schedule": [
           {
@@ -251,11 +251,11 @@
         "contacts": [
           {
             "label": "Press: ",
-            "email": "press@example.com"
+            "email": "press@brindlevalley.example"
           },
           {
             "label": "General: ",
-            "email": "hello@example.com"
+            "email": "hello@brindlevalley.example"
           }
         ]
       },
@@ -274,12 +274,12 @@
         "links": [
           {
             "label": "read the overview",
-            "href": "placeholder:document.brochure"
+            "href": "placeholder:document.placeholder"
           }
         ],
         "image": {
-          "assetRole": "media.shader-picture",
-          "src": "placeholder:media.shader-picture"
+          "assetRole": "media.image-generated",
+          "src": "placeholder:media.image-generated"
         }
       },
       "motion": {
@@ -291,7 +291,7 @@
     {
       "section": "chrome.footer",
       "content": {
-        "brand": "Example Energy",
+        "brand": "Brindle Valley",
         "rightsText": " all rights reserved",
         "backToTopLabel": "Back to Top"
       },

@@ -13,6 +13,7 @@
   "retrievalEligible": false,
   "retrievalEligibleReason": "Pointer-follower overlay layer for hover-capable devices: a runtime effect with no content or layout role, so it is not a retrievable page section.",
   "purpose": "Soft translucent follower circle (32px visible) that lags the pointer; shrinks on press; fades when the pointer leaves the window. Hover-capable devices only; the native cursor stays visible.",
+  "generatedAssetRoles": [],
   "cite": [
     {
       "at": "src/components/layout/Cursor.jsx:14-86",

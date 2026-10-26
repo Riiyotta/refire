@@ -17,7 +17,10 @@ range, citation quote, unledgered citation path, pinned asset policies, graph <-
 validator agreement, absolute paths, entryPoints, citation coverage, contract <->
 schema parity, theme resolution, stack-neutral ids.
 
-Also: section contracts (closed schema, source vs semantic objects, retrieval-ineligible pin),
+Also: asset availability (closed three-way enum pinned in code), the sourceBrand pattern registry
+(every pattern compiles, matches its own mustMatch examples and the literal it cites, and is pinned by an
+independent canary string in this file) and live generated-mode enforcement (canary leaks must be rejected
+by the real validator), section contracts (closed schema, source vs semantic objects, retrieval-ineligible pin),
 section provenance (every `source` resolved against the real file and the IA), one HERO per
 template, and the whole-page-wrapper gate (extraction/wrapper_gate.py over the measured heights).
 Those are proven by schema/tests/adversarial_test.py and extraction/prove_drift.py.
@@ -49,6 +52,68 @@ PINNED_POLICIES = {
     "document.brochure": "placeholder-only",
     "font.brand-typeface": "must-reuse-exact",
 }
+# Availability of every asset role by PageSpec mode, held here independently of schema/semantic_validate.py (which keeps
+# its own copy) and of assets/asset-roles.json: a registry edit alone cannot loosen a role, and all three must agree.
+PINNED_AVAILABILITY = {
+    "brand.logo": "reference-only",
+    "brand.favicon": "reference-only",
+    "media.hero-video": "reference-only",
+    "media.hero-poster": "reference-only",
+    "media.scroll-picture": "reference-only",
+    "media.shader-picture": "reference-only",
+    "media.social-image": "reference-only",
+    "document.brochure": "reference-only",
+    "font.brand-typeface": "blocked-for-generation",
+    "ui.icon": "generation-safe",
+    "brand.logo-placeholder": "generation-safe",
+    "media.video-placeholder": "generation-safe",
+    "media.image-generated": "generation-safe",
+    "document.placeholder": "generation-safe",
+    "font.system-stack": "generation-safe",
+    "person.fictional": "generation-safe",
+    "url.placeholder": "generation-safe",
+    "copy.original": "generation-safe",
+    "brand.fictional": "generation-safe",
+}
+AVAILABILITY_VALUES = ("reference-only", "generation-safe", "blocked-for-generation")
+# One canary string per sourceBrand pattern id, held here in code: a pattern that is removed or loosened until the canary
+# slips through makes verify_all fail, because the real validator must still reject it in a generated PageSpec.
+CANARIES = {
+    "brand-refire": ("GENERATED_MODE_BRAND", "Refire"),
+    "brand-refire-spaced": ("GENERATED_MODE_BRAND", "R E F I R E"),
+    "brand-product-prisma": ("GENERATED_MODE_BRAND", "PRISMA XXII"),
+    "cta-view-brochure": ("GENERATED_MODE_CTA", "view our brochure"),
+    "cta-visit-us": ("GENERATED_MODE_CTA", "Visit Us"),
+    "cta-brand-verb": ("GENERATED_MODE_CTA", "Get Refire"),
+    "copy-company-descriptor": ("GENERATED_MODE_COPY", "an international hydrogen energy technology company"),
+    "copy-founding-story": ("GENERATED_MODE_COPY", "the most abundant element in the universe"),
+    "copy-expansion-pitch": ("GENERATED_MODE_COPY", "is actively expanding its footprint"),
+    "copy-hero-tagline": ("GENERATED_MODE_COPY", "Creating a Sustainable Future"),
+    "copy-key-stats": ("GENERATED_MODE_COPY", "83K+"),
+    "copy-event-programme": ("GENERATED_MODE_COPY", "Save the date"),
+    "copy-event-booth": ("GENERATED_MODE_COPY", "BOOTH C45"),
+    "copy-chrome-microcopy": ("GENERATED_MODE_COPY", "We use cookies to make things better"),
+    "url-source-domain": ("GENERATED_MODE_URL", "https://refire.com/int/"),
+    "url-source-placeholder-mailto": ("GENERATED_MODE_URL", "test@test.en"),
+    "url-source-phone": ("GENERATED_MODE_URL", "+1 790 790 9238"),
+    "asset-logo": ("GENERATED_MODE_ASSET", "inline-svg:logo-refire"),
+    "asset-media-files": ("GENERATED_MODE_ASSET", "main-new.mp4"),
+    "asset-public-path": ("GENERATED_MODE_ASSET", "/int/images/other.jpg"),
+    "asset-favicon": ("GENERATED_MODE_ASSET", "apple-touch-icon.png"),
+    "asset-typeface": ("GENERATED_MODE_ASSET", "SuisseIntl"),
+    "person-partner-greengt": ("GENERATED_MODE_PERSON", "GreenGT"),
+    "person-partner-apas": ("GENERATED_MODE_PERSON", "APAS"),
+    "person-event-hannover": ("GENERATED_MODE_PERSON", "Hannover Messe"),
+}
+# Evasion canaries: the real validator must still reject these after normalisation (NFKC, zero-width, soft hyphen, curly quotes).
+NORMALISATION_CANARIES = (
+    ("GENERATED_MODE_BRAND", "Re\u200bfire"),
+    ("GENERATED_MODE_BRAND", "Re\u00adfire"),
+    ("GENERATED_MODE_BRAND", "\uff32\uff45\uff46\uff49\uff52\uff45"),
+    ("GENERATED_MODE_COPY", "Select a department you\u2019d like to reach"),
+    ("GENERATED_MODE_COPY", "We use cookies\u200b to make things better"),
+    ("GENERATED_MODE_URL", "\uff0b\uff11 \uff17\uff19\uff10 \uff17\uff19\uff10 \uff19\uff12\uff13\uff18"),
+)
 # Utility/runtime UI that must stay retrievalEligible:false. Held here independently of
 # schema/semantic_validate.py, which keeps its own copy; the contracts and the allowlist must
 # equal both (editing contract + allowlist together cannot move the pin).
@@ -132,6 +197,7 @@ def main():
     tf = docs["templates/templates.json"]
     graph = docs["compatibility/graph.json"]
     ledger = docs["extraction/measured-values.json"]
+    mp_doc = docs["tokens/llm/motion-patterns.json"]["patterns"]
     sections = {d["id"]: (rel, d) for rel, d in docs.items() if rel.startswith("sections/")}
     comps = {d["id"]: (rel, d) for rel, d in docs.items() if rel.startswith("components/")}
     prims = {d["id"]: (rel, d) for rel, d in docs.items() if rel.startswith("primitives/")}
@@ -229,6 +295,186 @@ def main():
                     probs.append("%s reference source %s missing from public/" % (rid, s))
     record("FAIL" if probs else "PASS", "asset-roles", "; ".join(probs) or "%d roles closed across schema/allowlist/registry; %d compliance pins hold" % (len(roles), len(PINNED_POLICIES)))
 
+    # ---------------------------------------------------------------- 7b asset availability (R3), pinned in code
+    probs = []
+    for rid, info in roles.items():
+        av = info.get("availability")
+        if av not in AVAILABILITY_VALUES:
+            probs.append("%s availability %r is not one of %s" % (rid, av, list(AVAILABILITY_VALUES)))
+        if not info.get("generatedModeGuidance"):
+            probs.append("%s has no generatedModeGuidance" % rid)
+        subs = info.get("generationSafeSubstitutes", [])
+        if av in ("reference-only", "blocked-for-generation"):
+            if not subs:
+                probs.append("%s (%s) has no generationSafeSubstitutes" % (rid, av))
+            for s in subs:
+                if s not in roles or roles[s].get("availability") != "generation-safe":
+                    probs.append("%s substitute %r is not a generation-safe role" % (rid, s))
+        elif subs:
+            probs.append("generation-safe role %s must not list substitutes" % rid)
+    if set(PINNED_AVAILABILITY) != set(roles):
+        probs.append("availability pin covers %s but the registry has %s" % (sorted(PINNED_AVAILABILITY), sorted(roles)))
+    for rid, want in PINNED_AVAILABILITY.items():
+        if roles.get(rid, {}).get("availability") != want:
+            probs.append("pinned availability of %s is %r, registry says %r" % (rid, want, roles.get(rid, {}).get("availability")))
+        if roles_doc.get("pinnedAvailability", {}).get(rid) != want:
+            probs.append("registry pinnedAvailability[%s] must be %r" % (rid, want))
+    if dict(sv.PINNED_AVAILABILITY) != PINNED_AVAILABILITY:
+        probs.append("semantic_validate.PINNED_AVAILABILITY differs from the verify_all pin: %s" % sorted(set(sv.PINNED_AVAILABILITY.items()) ^ set(PINNED_AVAILABILITY.items())))
+    if set(roles_doc.get("availabilityValues", {})) != set(AVAILABILITY_VALUES) or set(roles_doc.get("modes", {})) != {"reference", "generated"}:
+        probs.append("registry availabilityValues / modes are not the closed sets")
+    for need in ("brand.logo-placeholder", "media.image-generated", "media.video-placeholder", "person.fictional", "url.placeholder", "copy.original"):
+        if PINNED_AVAILABILITY.get(need) != "generation-safe":
+            probs.append("generation-safe role %s is required" % need)
+    for rid in ("brand.logo", "brand.favicon"):
+        if roles[rid]["generationPolicy"] == "must-reuse-exact" or PINNED_AVAILABILITY.get(rid) != "reference-only":
+            probs.append("a real wordmark/logo (%s) can never be must-reuse-exact or generation-safe" % rid)
+    safe = {rid for rid, w in PINNED_AVAILABILITY.items() if w == "generation-safe"}
+    for sid, (_rel, c) in sections.items():
+        union = []
+        slots = []
+
+        def slot(desc, sid=sid):
+            if desc.get("assetRole"):
+                slots.append(desc)
+                for g in desc.get("generatedAssetRoles", []):
+                    if g not in union:
+                        union.append(g)
+                if not desc.get("generatedAssetRoles"):
+                    probs.append("%s: asset field for %s lists no generatedAssetRoles" % (sid, desc["assetRole"]))
+                for g in desc.get("generatedAssetRoles", []):
+                    if g not in safe:
+                        probs.append("%s: generatedAssetRoles lists %s, which is not generation-safe" % (sid, g))
+                    elif not roles.get(g, {}).get("pageSpecSlot"):
+                        probs.append("%s: generated role %s is not a pageSpecSlot role" % (sid, g))
+        sv._walk_desc(c["content"]["fields"], slot)
+        if sorted(c.get("generatedAssetRoles", [])) != sorted(union) or len(c.get("generatedAssetRoles", [])) != len(set(c.get("generatedAssetRoles", []))):
+            probs.append("%s: section generatedAssetRoles %s != union of its fields %s" % (sid, c.get("generatedAssetRoles"), union))
+    if sorted(allow.get("generationSafeAssetRoles", [])) != sorted(safe):
+        probs.append("allowlist generationSafeAssetRoles != the generation-safe roles")
+    if allow.get("modes") != ["reference", "generated"]:
+        probs.append("allowlist modes != ['reference', 'generated']")
+    if schema["properties"].get("mode", {}).get("enum") != ["reference", "generated"] or "mode" not in schema["required"]:
+        probs.append("schema mode must be a required closed enum ['reference', 'generated']")
+    record("FAIL" if probs else "PASS", "asset-availability", "; ".join(probs[:6]) + (" (+%d more)" % (len(probs) - 6) if len(probs) > 6 else "") if probs else "%d roles: closed three-way availability pinned in code (semantic_validate.py and verify_all.py agree with the registry), %d generation-safe, every reference-only/blocked role has generation-safe substitutes, every asset slot lists generatedAssetRoles" % (len(roles), len(safe)))
+
+    # ---------------------------------------------------------------- 7c sourceBrand registry (R2): derived, evidenced, pinned
+    probs = []
+    sb = roles_doc.get("sourceBrand", {})
+    spats = sb.get("patterns", {})
+    if set(spats) != set(sv.SOURCE_CODES):
+        probs.append("sourceBrand.patterns categories %s != validator SOURCE_CODES %s" % (sorted(spats), sorted(sv.SOURCE_CODES)))
+    seen_ids = set()
+    n_pat = 0
+    for cat, block in spats.items():
+        if block.get("code") != sv.SOURCE_CODES.get(cat):
+            probs.append("%s: registry code %r != validator code %r" % (cat, block.get("code"), sv.SOURCE_CODES.get(cat)))
+        if not block.get("patterns"):
+            probs.append("%s has no patterns (the validator would fail closed)" % cat)
+        compiled = []
+        for pt in block.get("patterns", []):
+            n_pat += 1
+            pid = pt.get("id", "?")
+            if pid in seen_ids:
+                probs.append("duplicate pattern id %s" % pid)
+            seen_ids.add(pid)
+            if pt.get("kind") not in ("literal", "generalisation") or not pt.get("description") or not pt.get("mustMatch") or not pt.get("cite"):
+                probs.append("%s: needs kind (literal|generalisation), description, mustMatch and cite" % pid)
+                continue
+            try:
+                rx = re.compile(sv.norm_scan(pt["pattern"]), re.I)
+            except re.error as e:
+                probs.append("%s: pattern does not compile: %s" % (pid, e))
+                continue
+            compiled.append((pid, rx))
+            for m in pt["mustMatch"]:
+                if not rx.search(sv.norm_scan(m)):
+                    probs.append("%s does not match its own mustMatch example %r" % (pid, m))
+            if pt["kind"] == "literal" and not any(rx.search(sv.norm_scan(c.get("quote", ""))) for c in pt["cite"]):
+                probs.append("%s is a literal pattern but matches none of its cited source quotes" % pid)
+        for neg in block.get("mustNotMatch", []):
+            for pid, rx in compiled:
+                if rx.search(sv.norm_scan(neg)):
+                    probs.append("%s: control %r must not match but %s does" % (cat, neg, pid))
+        if not block.get("mustNotMatch"):
+            probs.append("%s has no mustNotMatch controls" % cat)
+    for pid in CANARIES:
+        if pid not in seen_ids:
+            probs.append("pinned pattern %s was removed from the registry" % pid)
+    for pid in seen_ids - set(CANARIES):
+        probs.append("pattern %s has no canary pin in verify_all.py" % pid)
+    if not str(sb.get("reviewStatus", "")).startswith("UNREVIEWED"):
+        probs.append("sourceBrand.reviewStatus must say UNREVIEWED unless a human review is recorded (it is not)")
+    for k in ("names", "normalization", "notApplicable", "reservedUrlHosts"):
+        if not sb.get(k):
+            probs.append("sourceBrand.%s missing" % k)
+    record("FAIL" if probs else "PASS", "source-brand-registry", "; ".join(probs[:6]) + (" (+%d more)" % (len(probs) - 6) if len(probs) > 6 else "") if probs else "%d patterns in %d categories: compile, match their mustMatch examples and cited literals, controls stay clean, every id pinned by a canary (UNREVIEWED by a human)" % (n_pat, len(spats)))
+
+    # ---------------------------------------------------------------- 7d generated mode is really enforced (R1/R2/R4)
+    probs = []
+    import copy as _copy
+    by_tpl = {}
+    for pth in examples:
+        with open(pth, encoding="utf-8") as fh:
+            ex = json.load(fh)
+        if ex.get("mode") not in ("reference", "generated"):
+            probs.append("%s has no valid mode" % os.path.basename(pth))
+        by_tpl.setdefault(ex.get("template"), {}).setdefault(ex.get("mode"), []).append((os.path.basename(pth), ex))
+    for tid in tf["templates"]:
+        for md in ("reference", "generated"):
+            if not by_tpl.get(tid, {}).get(md):
+                probs.append("template %s has no mode:%s example" % (tid, md))
+    gen_home = next((ex for n_, ex in by_tpl.get("template.home", {}).get("generated", [])), None)
+    ref_home = next((ex for n_, ex in by_tpl.get("template.home", {}).get("reference", [])), None)
+
+    def host(spec, text):
+        s = _copy.deepcopy(spec)
+        nd = next(x for x in s["nodes"] if x["section"] == "content.title-description")
+        nd["content"]["description"] = text
+        return s
+
+    def rejected(spec, code):
+        errs, _w = sv.validate(spec, repo_model)
+        return any(e[0] == code for e in errs)
+    if gen_home and ref_home:
+        for pid, (code, text) in CANARIES.items():
+            if not rejected(host(gen_home, "A line with " + text + " in it"), code):
+                probs.append("canary %s (%r) is not rejected as %s in a generated page" % (pid, text, code))
+        for code, text in NORMALISATION_CANARIES:
+            if not rejected(host(gen_home, "A line with " + text + " in it"), code):
+                probs.append("normalisation canary %r is not rejected as %s" % (text, code))
+        # reference mode must keep validating real content: the same canary text stays legal there
+        errs, _w = sv.validate(host(ref_home, "A line with Refire and PRISMA XXII and view our brochure in it"), repo_model)
+        if any(e[0].startswith("GENERATED_MODE") for e in errs):
+            probs.append("generated-mode rules fire on a reference page: %s" % [e[0] for e in errs if e[0].startswith("GENERATED_MODE")])
+        # asset rules
+        def setrole(spec, role, src):
+            s = _copy.deepcopy(spec)
+            nd = next(x for x in s["nodes"] if x["section"] == "chrome.header")
+            nd["content"]["logo"] = {"assetRole": role, "src": src}
+            return s
+        for role, src, code in (("brand.logo", "placeholder:brand.logo", "GENERATED_MODE_REFERENCE_ASSET"), ("brand.logo", "inline-svg:logo-refire", "GENERATED_MODE_REFERENCE_ASSET"),
+                                ("media.video-placeholder", "placeholder:media.video-placeholder", "GENERATED_MODE_ROLE"), ("font.brand-typeface", "placeholder:font.brand-typeface", "GENERATED_MODE_REFERENCE_ASSET")):
+            if not rejected(setrole(gen_home, role, src), code):
+                probs.append("generated page with role %s (%s) is not rejected as %s" % (role, src, code))
+        loose = _copy.deepcopy(gen_home)
+        nd = next(x for x in loose["nodes"] if x["section"] == "hero.video-title")
+        nd["content"]["link"]["href"] = "placeholder:document.brochure"
+        if not rejected(loose, "GENERATED_MODE_REFERENCE_ASSET"):
+            probs.append("generated page linking placeholder:document.brochure is not rejected")
+        flipped = _copy.deepcopy(repo_model)
+        flipped.roles["brand.logo"]["availability"] = "generation-safe"
+        errs, _w = sv.validate(setrole(gen_home, "brand.logo", "placeholder:brand.logo"), flipped)
+        if not any(e[0] in ("ASSET_AVAILABILITY_DRIFT", "GENERATED_MODE_REFERENCE_ASSET") for e in errs):
+            probs.append("a registry-only availability edit is not caught by the code pin")
+        empty = _copy.deepcopy(repo_model)
+        empty.patterns["brand"] = []
+        if not rejected(gen_home, "GENERATED_MODE_PATTERNS_MISSING") and not any(e[0] == "GENERATED_MODE_PATTERNS_MISSING" for e in sv.validate(gen_home, empty)[0]):
+            probs.append("an empty pattern category does not fail closed")
+    else:
+        probs.append("need both a reference and a generated template.home example")
+    record("FAIL" if probs else "PASS", "generated-mode", "; ".join(probs[:6]) + (" (+%d more)" % (len(probs) - 6) if len(probs) > 6 else "") if probs else "every template has a reference and a generated example; %d canary leaks (plus %d normalisation evasions) are rejected by the real validator in a generated page and stay legal in a reference page; reference-only/blocked roles, wrong-slot roles, registry-only availability edits and an emptied pattern category are all rejected" % (len(CANARIES), len(NORMALISATION_CANARIES)))
+
     # ---------------------------------------------------------------- 8 contract <-> schema parity
     probs = []
 
@@ -253,8 +499,8 @@ def main():
             if sch.get("const") != desc["value"]:
                 probs.append("%s: const drift" % path)
         elif t == "asset":
-            if sch.get("allOf", [{}, {}])[1].get("properties", {}).get("assetRole", {}).get("const") != desc["assetRole"]:
-                probs.append("%s: asset role pin drift" % path)
+            if sch.get("allOf", [{}, {}])[1].get("properties", {}).get("assetRole", {}).get("enum") != [desc["assetRole"]] + list(desc.get("generatedAssetRoles", [])):
+                probs.append("%s: asset role pin drift (schema enum must be the slot role plus its generatedAssetRoles)" % path)
         elif t == "link":
             if sch.get("$ref") != "#/definitions/href." + desc["hrefKind"]:
                 probs.append("%s: link kind drift" % path)
@@ -453,6 +699,10 @@ def main():
         "assetRoles": len(roles), "graphRules": len(graph["rules"]), "exampleInstances": len(examples),
         "retrievalIneligibleSections": len([1 for _r, c in sections.values() if c.get("retrievalEligible") is False]),
         "measuredSections": len(ledger.get("sectionHeights", {}).get("sections", [])),
+        "motionPatterns": len(mp_doc),
+        "generationSafeAssetRoles": len(safe),
+        "sourceBrandPatterns": n_pat,
+        "generatedExampleInstances": len([1 for _t, md in by_tpl.items() for k, v in md.items() if k == "generated" for _x in v]),
     }
     diff = {k: (manifest.get("counts", {}).get(k), v) for k, v in actual.items() if manifest.get("counts", {}).get(k) != v}
     extra = set(manifest.get("counts", {})) - set(actual)
@@ -548,7 +798,10 @@ def main():
         if not f.get("cite"):
             probs.append("pageMeta field without citation")
     for rid, info in roles.items():
-        if not info.get("cite"):
+        if info.get("origin") == "generation-safe-addition":
+            if not info.get("description"):
+                probs.append("generation-safe role %s has no description" % rid)
+        elif not info.get("cite"):
             probs.append("asset role %s has no citation" % rid)
     for tid, t in tf["templates"].items():
         if not t.get("cite"):
@@ -607,6 +860,10 @@ def main():
                 probs.append("catalog %s lists missing token %s" % (c, t))
             if t.split(".")[0] != c:
                 probs.append("catalog key %s does not match token prefix of %s" % (c, t))
+    listed_ids = {x for lst in cat.values() for x in lst}
+    for k in tokens:
+        if k.split(".")[0] in cat and k not in listed_ids:
+            probs.append("token %s has a catalog category (%s) but is missing from tokens/llm/token-catalog.json" % (k, k.split(".")[0]))
     pol = docs["tokens/llm/token-policy.json"]["rawValueRestrictions"]
     if set(pol) != set(cat):
         probs.append("token-policy keys %s != catalog keys %s" % (sorted(pol), sorted(cat)))
@@ -627,6 +884,24 @@ def main():
     if manifest.get("defaultTheme") not in [docs[r]["id"] for r in docs if r.startswith("tokens/themes/")]:
         probs.append("defaultTheme does not exist")
     record("FAIL" if probs else "PASS", "token-integrity", "; ".join(probs[:8]) or "%d tokens: references, catalog, policy keys and theme resolution all consistent" % len(tokens))
+
+    # ---------------------------------------------------------------- 15b motion-pattern vocabulary equals the contracts and the schema
+    probs = []
+    mp = docs["tokens/llm/motion-patterns.json"]["patterns"]
+    from_contracts = {}
+    for sid, (_r, c) in sections.items():
+        from_contracts.setdefault(c["motion"]["pattern"], []).append(sid)
+    if set(mp) != set(from_contracts):
+        probs.append("motion-patterns.json patterns %s != contracts %s" % (sorted(mp), sorted(from_contracts)))
+    for pid, e in mp.items():
+        if sorted(e.get("sections", [])) != sorted(from_contracts.get(pid, [])):
+            probs.append("motion pattern %s lists sections %s, contracts use it in %s" % (pid, e.get("sections"), sorted(from_contracts.get(pid, []))))
+        if not e.get("cite"):
+            probs.append("motion pattern %s has no citation" % pid)
+    for sid in sections:
+        if schema["definitions"]["motion." + sid]["properties"]["pattern"].get("const") not in mp:
+            probs.append("%s: schema motion pattern is not in motion-patterns.json" % sid)
+    record("FAIL" if probs else "PASS", "motion-patterns", "; ".join(probs[:6]) or "%d motion patterns equal the contracts' const-locked patterns and the schema" % len(mp))
 
     # ---------------------------------------------------------------- 16 absolute paths + junk files
     probs = []

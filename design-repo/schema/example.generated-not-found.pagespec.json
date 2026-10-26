@@ -1,0 +1,125 @@
+{
+  "pageSpecVersion": "1.1.0",
+  "id": "page.generated-not-found",
+  "template": "template.not-found",
+  "route": "*",
+  "theme": "theme.system-error",
+  "mode": "generated",
+  "meta": {
+    "title": "404: This page could not be found",
+    "description": "Brindle Valley designs modular hydrogen power units for depots, ports and remote sites."
+  },
+  "nodes": [
+    {
+      "section": "chrome.preloader",
+      "content": {
+        "decorMark": "++",
+        "decorReadings": [
+          "1.00784",
+          "1.00811"
+        ],
+        "statusLabel": "initializing",
+        "tagline": "Engineering Cleaner Power"
+      },
+      "motion": {
+        "pattern": "preloader-progress",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "chrome.header",
+      "content": {
+        "logo": {
+          "assetRole": "brand.logo-placeholder",
+          "src": "placeholder:brand.logo-placeholder"
+        },
+        "openLabel": "Contact",
+        "closeLabel": "Close"
+      },
+      "motion": {
+        "pattern": "label-swap",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "overlay.contact",
+      "content": {
+        "titleHref": "mailto:hello@brindlevalley.example",
+        "titleLines": [
+          "get",
+          "in touch"
+        ],
+        "formTitle": "Contact form",
+        "formText": "Tell us about your project and our team will reply within two working days.",
+        "phoneList": {
+          "title": "Phone us",
+          "lines": [
+            {
+              "prefix": "Main line",
+              "text": "+1 202 555 0143",
+              "href": "tel:+12025550143"
+            }
+          ]
+        },
+        "hoursList": {
+          "title": "Hours",
+          "lines": [
+            "Weekdays 9:00AM - 5:00PM"
+          ]
+        },
+        "departmentSelect": {
+          "placeholder": "Choose the team you want to reach*",
+          "options": [
+            "Press",
+            "Sales",
+            "General"
+          ]
+        },
+        "fieldPlaceholders": [
+          "First Name*",
+          "Last Name*",
+          "Email*",
+          "Subject*"
+        ],
+        "messagePlaceholder": "Message*",
+        "consentNote": "*We use the details you send only to reply to your enquiry",
+        "submitLabel": "submit",
+        "formSubmission": "non-submitting"
+      },
+      "motion": {
+        "pattern": "overlay-fade",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "chrome.cookie-pane",
+      "content": {
+        "message": "This site stores one cookie for your choices",
+        "closeLabel": "Close"
+      },
+      "motion": {
+        "pattern": "fade",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "chrome.cursor",
+      "content": {},
+      "motion": {
+        "pattern": "cursor-follow",
+        "reducedMotionFallback": "none-in-source"
+      }
+    },
+    {
+      "section": "error.not-found",
+      "content": {
+        "statusCode": "404",
+        "message": "This page could not be found."
+      },
+      "motion": {
+        "pattern": "none",
+        "reducedMotionFallback": "none-in-source"
+      }
+    }
+  ]
+}

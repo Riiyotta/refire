@@ -12,6 +12,7 @@
   },
   "retrievalEligible": true,
   "purpose": "2px reading-progress bar along the top edge, blended difference.",
+  "generatedAssetRoles": [],
   "cite": [
     {
       "at": "src/components/layout/ScrollProgress.jsx:9-23",

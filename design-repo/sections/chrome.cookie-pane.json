@@ -13,6 +13,7 @@
   "retrievalEligible": false,
   "retrievalEligibleReason": "First-visit cookie consent banner: a fixed utility notice that carries no page content and disappears once consent is stored, so it must never be retrieved as a composable page section.",
   "purpose": "First-visit cookie notice pinned bottom-right on a paper panel; Close stores consent for one day and fades it out.",
+  "generatedAssetRoles": [],
   "cite": [
     {
       "at": "src/components/layout/CookiePane.jsx:12-58",

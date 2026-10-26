@@ -11,6 +11,23 @@ Two layers, both run on every call:
 Every semantic rule id below is also declared in compatibility/graph.json with the
 same id and severity; extraction/verify_all.py fails if the two ever diverge.
 
+PageSpec `mode` ("reference" | "generated", required, closed enum in the schema) decides which
+semantic rules apply. mode "reference" is the documented reproduction of the authorized clone and
+must still validate real content, real assets and real copy. mode "generated" is a new page for
+someone else and additionally runs the GENERATED_MODE_* rules: no reference-only or
+blocked-for-generation asset role (GENERATED_MODE_REFERENCE_ASSET), only the generation-safe roles
+a field lists under generatedAssetRoles (GENERATED_MODE_ROLE), and no string matching the
+patterns derived from the real source (assets/asset-roles.json `sourceBrand.patterns`): brand
+(GENERATED_MODE_BRAND), CTA text (_CTA), marketing copy (_COPY), source URLs, mailboxes and phone
+numbers (_URL), protected asset files (_ASSET) and real third-party identities (_PERSON). Strings
+are normalised (NFKC, zero-width removal, curly quotes) before matching. Role availability is
+pinned in CODE (PINNED_AVAILABILITY) so editing the registry alone cannot make a protected role
+usable; an empty pattern category fails closed (GENERATED_MODE_PATTERNS_MISSING). Detection is
+string/regex based and the patterns have had no human review (see the registry's reviewStatus).
+
+TOKEN_* rules: a PageSpec has no token or style slot, so no string may carry a raw colour, a raw
+length, a CSS declaration or a token reference (tokens/llm/token-catalog.json + token-policy.json).
+
 It also lints the section contracts themselves (lint_contracts): every contract
 must satisfy the closed schema/section-contract.schema.json (distinct `source`
 provenance vs `semantic` taxonomy objects, closed boolean `retrievalEligible`
@@ -29,6 +46,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -50,9 +68,24 @@ SEMANTIC_RULES = [
     "ASSET_SOURCE_POLICY",
     "GENERATED_NO_PROPRIETARY_COPY",
     "GENERATED_CONTACT_DATA_RESERVED",
+    "GENERATED_MODE_REFERENCE_ASSET",
+    "GENERATED_MODE_ROLE",
+    "ASSET_AVAILABILITY_DRIFT",
+    "GENERATED_MODE_PATTERNS_MISSING",
+    "GENERATED_MODE_BRAND",
+    "GENERATED_MODE_CTA",
+    "GENERATED_MODE_COPY",
+    "GENERATED_MODE_URL",
+    "GENERATED_MODE_ASSET",
+    "GENERATED_MODE_PERSON",
     "NO_MARKUP_IN_TEXT",
     "META_DESCRIPTION_MIRRORS_ABOUT",
     "STAT_INDEXES_SEQUENTIAL",
+    "TOKEN_RAW_COLOR",
+    "TOKEN_RAW_LENGTH",
+    "TOKEN_STYLE_DECLARATION",
+    "TOKEN_UNKNOWN",
+    "TOKEN_NO_OVERRIDE_SLOT",
 ]
 
 # Rules enforced on the section contracts themselves (graph.json enforcedBy "contract").
@@ -73,6 +106,52 @@ PINNED_RETRIEVAL_INELIGIBLE = frozenset({
 })
 RETRIEVAL_REASON_MIN_CHARS = 30
 
+MODES = ("reference", "generated")
+
+# Availability of every asset role by PageSpec mode (assets/asset-roles.json `availability`), pinned in CODE
+# (MASTER-GUIDE 3.23) so editing the registry alone cannot make a protected role usable in generated mode.
+# extraction/verify_all.py keeps its own independent copy and fails if the registry, this table or that copy disagree.
+PINNED_AVAILABILITY = {
+    "brand.logo": "reference-only",
+    "brand.favicon": "reference-only",
+    "media.hero-video": "reference-only",
+    "media.hero-poster": "reference-only",
+    "media.scroll-picture": "reference-only",
+    "media.shader-picture": "reference-only",
+    "media.social-image": "reference-only",
+    "document.brochure": "reference-only",
+    "font.brand-typeface": "blocked-for-generation",
+    "ui.icon": "generation-safe",
+    "brand.logo-placeholder": "generation-safe",
+    "media.video-placeholder": "generation-safe",
+    "media.image-generated": "generation-safe",
+    "document.placeholder": "generation-safe",
+    "font.system-stack": "generation-safe",
+    "person.fictional": "generation-safe",
+    "url.placeholder": "generation-safe",
+    "copy.original": "generation-safe",
+    "brand.fictional": "generation-safe",
+}
+
+# Error code per sourceBrand.patterns category (verify_all.py checks the registry documents the same codes).
+SOURCE_CODES = {
+    "brand": "GENERATED_MODE_BRAND",
+    "cta": "GENERATED_MODE_CTA",
+    "copy": "GENERATED_MODE_COPY",
+    "url": "GENERATED_MODE_URL",
+    "asset": "GENERATED_MODE_ASSET",
+    "people": "GENERATED_MODE_PERSON",
+}
+
+# Closed machine vocabulary: not scanned by the source-brand patterns (schema enums and bindings own them).
+NON_TEXT_KEYS = frozenset({"section", "template", "theme", "assetRole", "mode", "pageSpecVersion", "variant", "pattern", "reducedMotionFallback", "formSubmission"})
+
+# Token rules: a PageSpec has no token/style slot, so these shapes never belong in a string.
+RAW_COLOR = re.compile(r"(?i)(?<![A-Za-z0-9&])#(?:[0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{4}|[0-9a-f]{3})\b|\b(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color-mix|color)\s*\(")
+RAW_LENGTH = re.compile(r"(?i)(?<![A-Za-z0-9.])[0-9]+(?:\.[0-9]+)?(?:px|rem|em|vw|vh|vmin|vmax|pt)\b")
+STYLE_DECL = re.compile(r"(?i)\b(?:font-family|font-size|font-weight|line-height|letter-spacing|padding(?:-[a-z]+)?|margin(?:-[a-z]+)?|gap|border(?:-[a-z]+)?|background(?:-color)?|color|fill|stroke)\s*:\s*[^\s]")
+TOKEN_REF = re.compile(r"\{([a-z][a-z0-9-]*(?:\.[a-z0-9-]+)+)\}")
+
 EXTERNAL_URL = re.compile(r"(?i)(\b[a-z][a-z0-9+.-]*://|(^|[\s\"'(=])//[a-z0-9]|\bwww\.)")
 SHINGLE = 6  # a shared run of this many consecutive words counts as copy reuse
 RESERVED_EMAIL_DOMAINS = ("example.com", "example.org", "example.net")
@@ -82,6 +161,39 @@ FICTIONAL_TEL = re.compile(r"^tel:\+1[0-9]{3}55501[0-9]{2}$")
 def _load(rel):
     with open(os.path.join(REPO, rel), encoding="utf-8") as f:
         return json.load(f)
+
+
+def norm_scan(text):
+    """Normalisation applied before the sourceBrand patterns: NFKC, zero-width / soft-hyphen removal,
+    curly quotes to straight quotes, Unicode dashes to '-', collapsed whitespace."""
+    t = unicodedata.normalize("NFKC", str(text))
+    t = re.sub("[\u00ad\u200b-\u200f\u202a-\u202e\u2060-\u2064\ufeff]", "", t)
+    t = t.replace("\u2018", "'").replace("\u2019", "'").replace("\u201a", "'").replace("\u201b", "'").replace("\u201c", '"').replace("\u201d", '"')
+    t = re.sub("[\u2010-\u2015\u2212]", "-", t)
+    return re.sub(r"\s+", " ", t)
+
+
+def _compile_patterns(assets):
+    """{category: [(pattern id, compiled regex)]} from assets/asset-roles.json sourceBrand.patterns."""
+    pats = assets.get("sourceBrand", {}).get("patterns", {})
+    out = {}
+    for cat in SOURCE_CODES:
+        out[cat] = [(p["id"], re.compile(norm_scan(p["pattern"]), re.I)) for p in pats.get(cat, {}).get("patterns", [])]
+    return out
+
+
+def scan_strings(obj, path=""):
+    """Every string of a PageSpec except closed machine vocabulary (NON_TEXT_KEYS)."""
+    if isinstance(obj, str):
+        yield path, obj
+    elif isinstance(obj, dict):
+        for k, v in obj.items():
+            if k in NON_TEXT_KEYS:
+                continue
+            yield from scan_strings(v, path + "." + k)
+    elif isinstance(obj, list):
+        for i, v in enumerate(obj):
+            yield from scan_strings(v, "%s[%d]" % (path, i))
 
 
 def word_count(text):
@@ -111,7 +223,11 @@ class Repo:
             with open(path, encoding="utf-8") as f:
                 c = json.load(f)
             self.sections[c["id"]] = c
-        self.roles = _load("assets/asset-roles.json")["roles"]
+        self.assets = _load("assets/asset-roles.json")
+        self.roles = self.assets["roles"]
+        self.patterns = _compile_patterns(self.assets)
+        cat = _load("tokens/llm/token-catalog.json")
+        self.catalog_tokens = {t for ids in cat["categories"].values() for t in ids}
         self.contract_schema = _load("schema/section-contract.schema.json")
         self.allowlist = _load("tokens/llm/component-allowlist.json")
         graph = _load("compatibility/graph.json")
@@ -121,7 +237,7 @@ class Repo:
 
     def proprietary_corpus(self):
         """Proprietary copy of the real site: contract 'observed' values + every
-        provenance:'reference' example instance, walked through its contracts."""
+        mode:'reference' example instance, walked through its contracts."""
         if self._corpus is not None:
             return self._corpus
         corpus = set()
@@ -134,9 +250,11 @@ class Repo:
         for path in glob.glob(os.path.join(self.root, "schema", "example*.json")):
             with open(path, encoding="utf-8") as fh:
                 spec = json.load(fh)
-            if spec.get("provenance") != "reference":
+            if spec.get("mode") != "reference":
                 continue
             for k in ("title", "description"):
+                if k == "title" and self.templates.get(spec.get("template"), {}).get("documentTitle"):
+                    continue  # const-locked framework error-page title, not Refire copy
                 if self.page_meta.get(k, {}).get("copyClass") == "proprietary" and isinstance(spec.get("meta", {}).get(k), str):
                     corpus.add(_norm(spec["meta"][k]))
             for node in spec.get("nodes", []):
@@ -260,7 +378,7 @@ def validate(spec, repo=None):
     if not isinstance(spec, dict):
         return errors, warnings
     nodes = [n for n in spec.get("nodes", []) if isinstance(n, dict)] if isinstance(spec.get("nodes"), list) else []
-    provenance = spec.get("provenance")
+    mode = spec.get("mode")
     tid = spec.get("template")
     tpl = r.templates.get(tid)
 
@@ -323,7 +441,7 @@ def validate(spec, repo=None):
             continue  # const-locked by the schema (NOT_FOUND_COPY_LOCKED); no budget applies
         if isinstance(v, str) and word_count(v) > desc["maxWords"]:
             emit("MAX_WORDS", "$.meta." + k, "%d words > maxWords %d" % (word_count(v), desc["maxWords"]))
-    corpus = r.proprietary_corpus() if provenance == "generated" else set()
+    corpus = r.proprietary_corpus() if mode == "generated" else set()
 
     shingles = set()
     for ref in corpus:
@@ -339,8 +457,10 @@ def validate(spec, repo=None):
         w = nv.split()
         return any(" ".join(w[i:i + SHINGLE]) in shingles for i in range(len(w) - SHINGLE + 1))
 
-    if provenance == "generated":
+    if mode == "generated":
         for k in ("title", "description"):
+            if k == "title" and tpl and tpl.get("documentTitle"):
+                continue  # const-locked by the schema (NOT_FOUND_COPY_LOCKED): the framework's stock error title
             if r.page_meta.get(k, {}).get("copyClass") == "proprietary" and isinstance(meta.get(k), str) and copy_reused(meta[k]):
                 emit("GENERATED_NO_PROPRIETARY_COPY", "$.meta." + k, "reuses Refire proprietary copy")
 
@@ -358,43 +478,103 @@ def validate(spec, repo=None):
                     emit("MAX_WORDS", path, "%d words > maxWords %d" % (word_count(v), desc["maxWords"]))
                 if "<" in v or ">" in v:
                     emit("NO_MARKUP_IN_TEXT", path, "markup is not allowed in text fields")
-                if provenance == "generated" and desc.get("copyClass") == "proprietary" and copy_reused(v):
+                if mode == "generated" and desc.get("copyClass") == "proprietary" and copy_reused(v):
                     emit("GENERATED_NO_PROPRIETARY_COPY", path, "reuses Refire proprietary copy: %r" % v[:60])
             elif t == "asset" and isinstance(v, dict):
                 role = v.get("assetRole")
                 if role not in r.roles:
                     emit("ASSET_ROLE_SLOT", path + ".assetRole", "unknown assetRole %r" % role)
                     return
+                if mode == "generated":
+                    if _generated_role(role, desc, path + ".assetRole"):
+                        _source_policy(role, v.get("src"), path + ".src")
+                    return
                 if role != desc["assetRole"]:
-                    emit("ASSET_ROLE_SLOT", path + ".assetRole", "slot requires %r, got %r" % (desc["assetRole"], role))
+                    extra = " (a generation-safe role: only valid in mode 'generated')" if role in desc.get("generatedAssetRoles", []) else ""
+                    emit("ASSET_ROLE_SLOT", path + ".assetRole", "slot requires %r, got %r%s" % (desc["assetRole"], role, extra))
                     return
                 _source_policy(role, v.get("src"), path + ".src")
             elif t == "link" and isinstance(v, str):
                 if desc.get("assetRole"):
-                    _source_policy(desc["assetRole"], v, path)
-                if provenance == "generated":
+                    if mode == "generated":
+                        _generated_link(v, desc, path)
+                    else:
+                        _source_policy(desc["assetRole"], v, path)
+                if mode == "generated":
                     _contact(v, path)
-            elif t == "email" and isinstance(v, str) and provenance == "generated":
+            elif t == "email" and isinstance(v, str) and mode == "generated":
                 _contact("mailto:" + v, path)
 
         def _source_policy(role, src, path):
             info = r.roles[role]
-            if provenance == "reference":
+            if mode == "reference":
                 if src not in info["allowedReferenceSources"]:
                     emit("ASSET_SOURCE_POLICY", path, "%r is not an allowed reference source for %s" % (src, role))
-            elif provenance == "generated" and info["generationPolicy"] == "placeholder-only":
+            elif mode == "generated" and info["generationPolicy"] == "placeholder-only":
                 if src != "placeholder:" + role:
                     emit("ASSET_SOURCE_POLICY", path, "generated pages must use 'placeholder:%s' (policy placeholder-only), got %r" % (role, src))
+
+        def _generated_role(role, desc, path):
+            """mode 'generated': the role must be generation-safe (pinned in code) and listed by the field. True if usable."""
+            av = PINNED_AVAILABILITY.get(role) or r.roles.get(role, {}).get("availability")
+            if av != "generation-safe":
+                subs = ", ".join(r.roles.get(role, {}).get("generationSafeSubstitutes", [])) or "none: omit it"
+                emit("GENERATED_MODE_REFERENCE_ASSET", path, "role %r is %s and cannot appear in a generated page (use: %s)" % (role, av, subs))
+                return False
+            if role not in desc.get("generatedAssetRoles", []):
+                emit("GENERATED_MODE_ROLE", path, "role %r is not one of this field's generation-safe roles %s" % (role, desc.get("generatedAssetRoles", [])))
+                return False
+            return True
+
+        def _generated_link(href, desc, path):
+            """A document link slot in mode 'generated' must be placeholder:<generation-safe role of the field>."""
+            if href.startswith("placeholder:"):
+                _generated_role(href[len("placeholder:"):], desc, path)
+            else:
+                emit("ASSET_SOURCE_POLICY", path, "generated pages must link 'placeholder:<role>' for %s, got %r" % (desc["assetRole"], href))
 
         def _contact(href, path):
             if href.startswith("mailto:"):
                 domain = href.split("@")[-1].lower()
-                if domain not in RESERVED_EMAIL_DOMAINS:
-                    emit("GENERATED_CONTACT_DATA_RESERVED", path, "generated pages must use example.com/.org/.net addresses, got %r" % href)
+                if domain not in RESERVED_EMAIL_DOMAINS and not domain.endswith((".example", ".invalid")):
+                    emit("GENERATED_CONTACT_DATA_RESERVED", path, "generated pages must use example.com/.org/.net or *.example/*.invalid addresses, got %r" % href)
             elif href.startswith("tel:") and not FICTIONAL_TEL.match(href):
                 emit("GENERATED_CONTACT_DATA_RESERVED", path, "generated pages must use fictional +1 NXX-555-01XX numbers, got %r" % href)
 
         _walk(contract["content"]["fields"], n.get("content", {}), "", visit)
+
+    # ---- 4b. mode 'generated': availability pins, then the source-brand patterns over every string
+    if mode == "generated":
+        for role, pin in PINNED_AVAILABILITY.items():
+            have = r.roles.get(role, {}).get("availability")
+            if have != pin:
+                emit("ASSET_AVAILABILITY_DRIFT", "$", "assets/asset-roles.json says %s=%r but the pin in code is %r" % (role, have, pin))
+        for cat, code in SOURCE_CODES.items():
+            if not r.patterns.get(cat):
+                emit("GENERATED_MODE_PATTERNS_MISSING", "$", "sourceBrand.patterns.%s is empty, so %s cannot be enforced (failing closed)" % (cat, code))
+        for p, s in scan_strings(spec):
+            ns = norm_scan(s)
+            for cat, code in SOURCE_CODES.items():
+                for pid, rx in r.patterns.get(cat, []):
+                    hit = rx.search(ns)
+                    if hit:
+                        emit(code, "$" + p, "matches source pattern %r (%r): a generated page must be new content for another brand" % (pid, hit.group(0)[:40]))
+                        break
+
+    # ---- 4c. token rules (a PageSpec has no token or style slot; mode-independent)
+    for p, s in _strings(spec):
+        ns = norm_scan(s)
+        if RAW_COLOR.search(ns):
+            emit("TOKEN_RAW_COLOR", "$" + p, "raw colour in %r: colour comes from token roles through the contracts" % s[:60])
+        if RAW_LENGTH.search(ns):
+            emit("TOKEN_RAW_LENGTH", "$" + p, "raw length in %r: spacing and sizing come from layout/component tokens through the contracts" % s[:60])
+        if STYLE_DECL.search(ns):
+            emit("TOKEN_STYLE_DECLARATION", "$" + p, "CSS declaration in %r: a PageSpec carries no style" % s[:60])
+        for ref in TOKEN_REF.findall(ns):
+            if ref not in r.catalog_tokens:
+                emit("TOKEN_UNKNOWN", "$" + p, "%r is not a token of tokens/llm/token-catalog.json" % ref)
+            else:
+                emit("TOKEN_NO_OVERRIDE_SLOT", "$" + p, "token %r named in a string: a PageSpec has no token slot (token-policy 'overrides')" % ref)
 
     # ---- 5. observed conventions (warn)
     for n in nodes:

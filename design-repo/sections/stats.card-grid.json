@@ -12,6 +12,7 @@
   },
   "retrievalEligible": true,
   "purpose": "Three tall dark cards, each a single headline metric with a ruled caption.",
+  "generatedAssetRoles": [],
   "cite": [
     {
       "at": "@home/KeyStats.jsx:51-65",

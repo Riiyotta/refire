@@ -1,10 +1,10 @@
 {
-  "pageSpecVersion": "1.0.0",
+  "pageSpecVersion": "1.1.0",
   "id": "page.not-found",
   "template": "template.not-found",
   "route": "*",
   "theme": "theme.system-error",
-  "provenance": "reference",
+  "mode": "reference",
   "meta": {
     "title": "404: This page could not be found",
     "description": "REFIRE is an international hydrogen energy technology company specializing in R&D, design, prototyping, testing, application engineering, and manufacturing of fuel cell systems for mobility and power products, superchargers, and grid support products."

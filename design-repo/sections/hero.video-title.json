@@ -12,6 +12,11 @@
   },
   "retrievalEligible": true,
   "purpose": "Full-viewport opener: muted looping background film, oversized two-line light title with an arrow, a blended descriptor, and a frosted corner link to the brochure.",
+  "generatedAssetRoles": [
+    "document.placeholder",
+    "media.video-placeholder",
+    "media.image-generated"
+  ],
   "cite": [
     {
       "at": "@home/Hero.jsx:36-149",
@@ -135,13 +140,19 @@
                 "quote": "href: BROCHURE_HREF"
               }
             ],
-            "assetRole": "document.brochure"
+            "assetRole": "document.brochure",
+            "generatedAssetRoles": [
+              "document.placeholder"
+            ]
           }
         }
       },
       "video": {
         "type": "asset",
         "assetRole": "media.hero-video",
+        "generatedAssetRoles": [
+          "media.video-placeholder"
+        ],
         "cite": [
           {
             "at": "src/data/home.js:14",
@@ -152,6 +163,9 @@
       "poster": {
         "type": "asset",
         "assetRole": "media.hero-poster",
+        "generatedAssetRoles": [
+          "media.image-generated"
+        ],
         "cite": [
           {
             "at": "src/data/home.js:14",

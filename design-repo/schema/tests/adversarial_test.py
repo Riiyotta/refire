@@ -2,8 +2,11 @@
 """Adversarial suite: proves every rule rejects bad input and every control passes.
 
 Part A  PageSpec mutations, validated in-process with schema/semantic_validate.py
-        (schema layer + semantic layer). Each must be REJECTED with the expected rule.
-Part B  Controls: the three example instances, plus one control synthesized
+        (schema layer + semantic layer). Each must be REJECTED with the expected rule. This includes
+        the mode:"generated" leakage mutations (brand/logo, store-less asset files, copy, CTA, URL and
+        contact data, proprietary media, third-party identities, normalisation evasions) and the TOKEN_*
+        rules; reference-mode controls prove real content still validates.
+Part B  Controls: the four example instances (two reference, two generated), plus one control synthesized
         generically per template from that template's own node list (so a new
         template is covered with no new control code). Each must PASS with 0 errors.
 Part A2 Section-contract mutations (in-process, sv.lint_contracts on a modified copy of the
@@ -47,6 +50,7 @@ def load(rel):
 HOME = load("schema/example.pagespec.json")
 NF = load("schema/example.not-found.pagespec.json")
 GEN = load("schema/example.generated.pagespec.json")
+GEN_NF = load("schema/example.generated-not-found.pagespec.json")
 
 
 def idx(spec, section):
@@ -74,6 +78,18 @@ def insert_before(spec, before, n):
 
 def remove(spec, section):
     spec["nodes"].pop(idx(spec, section))
+
+
+def put(spec, section, path, value):
+    """Set content[path...] = value on the first node of `section`."""
+    o = node(spec, section)["content"]
+    for k in path[:-1]:
+        o = o[k]
+    o[path[-1]] = value
+
+
+def setmeta(spec, key, value):
+    spec["meta"][key] = value
 
 
 FOOTER = node(HOME, "chrome.footer")
@@ -124,16 +140,103 @@ MUTATIONS = [
     ("markup injected into an accordion body", HOME, lambda s: node(s, "content.event-accordion")["content"]["schedule"][0].__setitem__("body", "<img src=x onerror=alert(1)>"), ["NO_MARKUP_IN_TEXT"]),
     ("asset role valid but wrong for the slot", HOME, lambda s: node(s, "hero.video-title")["content"]["video"].__setitem__("assetRole", "media.scroll-picture"), ["SCHEMA", "ASSET_ROLE_SLOT"]),
     ("reference instance points at an unlisted asset", HOME, lambda s: node(s, "media.scroll-picture")["content"]["image"].__setitem__("src", "/int/images/other.jpg"), ["ASSET_SOURCE_POLICY"]),
-    # --- real-company protections (generated provenance)
-    ("generated page reuses the real Refire logo", GEN, lambda s: node(s, "chrome.header")["content"]["logo"].__setitem__("src", "inline-svg:logo-refire"), ["ASSET_SOURCE_POLICY"]),
-    ("generated page reuses the hero film", GEN, lambda s: node(s, "hero.video-title")["content"]["video"].__setitem__("src", "/int/videos/main-new.mp4"), ["ASSET_SOURCE_POLICY"]),
-    ("generated page reuses product photography", GEN, lambda s: node(s, "media.text-image-shader")["content"]["image"].__setitem__("src", "/int/images/prisma-2.jpg"), ["ASSET_SOURCE_POLICY"]),
-    ("generated page links the real brochure", GEN, lambda s: node(s, "hero.video-title")["content"]["link"].__setitem__("href", "/int/files/refire.pdf"), ["ASSET_SOURCE_POLICY"]),
-    ("generated page copies proprietary copy verbatim", GEN, lambda s: node(s, "content.title-description")["content"].__setitem__("description", load("schema/example.pagespec.json")["meta"]["description"]), ["GENERATED_NO_PROPRIETARY_COPY"]),
-    ("generated page embeds a proprietary sentence", GEN, lambda s: node(s, "content.numbered-statement")["content"].__setitem__("statement", "Hello. We look forward to meeting you there."), ["GENERATED_NO_PROPRIETARY_COPY"]),
-    ("generated page reuses the Refire brand name", GEN, lambda s: node(s, "chrome.footer")["content"].__setitem__("brand", "Refire"), ["GENERATED_NO_PROPRIETARY_COPY"]),
-    ("generated page uses a real refire.com email", GEN, lambda s: node(s, "content.event-accordion")["content"]["contacts"][0].__setitem__("email", "media@refire.com"), ["GENERATED_CONTACT_DATA_RESERVED"]),
-    ("generated page uses a real phone number", GEN, lambda s: node(s, "overlay.contact")["content"]["phoneList"]["lines"][0].__setitem__("href", "tel:+17907909238"), ["GENERATED_CONTACT_DATA_RESERVED"]),
+    # --- mode: required, closed
+    ("mode missing", HOME, lambda s: s.pop("mode"), ["SCHEMA"]),
+    ("mode outside the closed enum", HOME, lambda s: s.__setitem__("mode", "demo"), ["SCHEMA"]),
+    ("mode in the wrong case", GEN, lambda s: s.__setitem__("mode", "Generated"), ["SCHEMA"]),
+    ("old field name 'provenance' instead of mode", HOME, lambda s: (s.pop("mode"), s.__setitem__("provenance", "reference")), ["SCHEMA"]),
+    ("pageSpecVersion not bumped (1.0.0)", HOME, lambda s: s.__setitem__("pageSpecVersion", "1.0.0"), ["SCHEMA"]),
+    ("real reference content relabelled mode:generated is rejected", HOME, lambda s: s.__setitem__("mode", "generated"), ["GENERATED_MODE_BRAND", "GENERATED_MODE_REFERENCE_ASSET"]),
+    ("generation-safe role used in a reference page", GEN, lambda s: s.__setitem__("mode", "reference"), ["ASSET_ROLE_SLOT", "ASSET_SOURCE_POLICY"]),
+    # --- generated mode: brand / logo leakage
+    ("generated: real logo role with a placeholder src", GEN, lambda s: node(s, "chrome.header")["content"]["logo"].update({"assetRole": "brand.logo", "src": "placeholder:brand.logo"}), ["GENERATED_MODE_REFERENCE_ASSET"]),
+    ("generated: real logo role and the real svg id", GEN, lambda s: node(s, "chrome.header")["content"]["logo"].update({"assetRole": "brand.logo", "src": "inline-svg:logo-refire"}), ["GENERATED_MODE_REFERENCE_ASSET", "GENERATED_MODE_ASSET"]),
+    ("generated: placeholder logo role carrying the real svg id", GEN, lambda s: node(s, "chrome.header")["content"]["logo"].__setitem__("src", "inline-svg:logo-refire"), ["ASSET_SOURCE_POLICY", "GENERATED_MODE_ASSET"]),
+    ("generated: favicon role is reference-only", GEN, lambda s: node(s, "chrome.header")["content"]["logo"].update({"assetRole": "brand.favicon", "src": "placeholder:brand.favicon"}), ["SCHEMA", "GENERATED_MODE_REFERENCE_ASSET"]),
+    ("generated: footer names the source brand", GEN, lambda s: put(s, "chrome.footer", ["brand"], "Refire"), ["GENERATED_MODE_BRAND"]),
+    ("generated: footer names the source brand in capitals", GEN, lambda s: put(s, "chrome.footer", ["brand"], "REFIRE"), ["GENERATED_MODE_BRAND"]),
+    ("generated: brand with separators (R E F I R E)", GEN, lambda s: put(s, "chrome.footer", ["brand"], "R E F I R E"), ["GENERATED_MODE_BRAND"]),
+    ("generated: brand with hyphen (re-fire)", GEN, lambda s: put(s, "chrome.footer", ["brand"], "re-fire"), ["GENERATED_MODE_BRAND"]),
+    ("generated: brand split by a zero-width space", GEN, lambda s: put(s, "chrome.footer", ["brand"], "Re\u200bfire"), ["GENERATED_MODE_BRAND"]),
+    ("generated: brand in full-width letters (NFKC)", GEN, lambda s: put(s, "chrome.footer", ["brand"], "\uff32\uff45\uff46\uff49\uff52\uff45"), ["GENERATED_MODE_BRAND"]),
+    ("generated: brand with a soft hyphen", GEN, lambda s: put(s, "chrome.footer", ["brand"], "Re\u00adfire"), ["GENERATED_MODE_BRAND"]),
+    ("generated: product line name PRISMA in a heading", GEN, lambda s: put(s, "media.text-image-shader", ["title"], "Meet PRISMA"), ["GENERATED_MODE_BRAND"]),
+    ("generated: brand in the page title", GEN, lambda s: setmeta(s, "title", "Refire"), ["GENERATED_MODE_BRAND"]),
+    ("generated: brand in the page description", GEN, lambda s: setmeta(s, "description", "Refire makes power units."), ["GENERATED_MODE_BRAND"]),
+    ("generated: brand in the 404 description", GEN_NF, lambda s: setmeta(s, "description", "Refire makes power units."), ["GENERATED_MODE_BRAND"]),
+    ("generated: brand in the page id", GEN, lambda s: s.__setitem__("id", "page.refire-home"), ["GENERATED_MODE_BRAND"]),
+    ("generated: brand in alt text", GEN, lambda s: put(s, "media.scroll-picture", ["alt"], "Refire fuel cell"), ["GENERATED_MODE_BRAND"]),
+    # --- generated mode: copy leakage
+    ("generated: the real company descriptor", GEN, lambda s: put(s, "content.title-description", ["description"], load("schema/example.pagespec.json")["meta"]["description"]), ["GENERATED_MODE_COPY", "GENERATED_NO_PROPRIETARY_COPY"]),
+    ("generated: a distinctive phrase from the descriptor", GEN, lambda s: put(s, "content.title-description", ["description"], "We are an international hydrogen energy technology company."), ["GENERATED_MODE_COPY"]),
+    ("generated: a proprietary sentence (shingle rule)", GEN, lambda s: put(s, "content.numbered-statement", ["statement"], "Hello. We look forward to meeting you there."), ["GENERATED_NO_PROPRIETARY_COPY"]),
+    ("generated: the preloader tagline", GEN, lambda s: put(s, "chrome.preloader", ["tagline"], "Creating a Sustainable Future"), ["GENERATED_MODE_COPY"]),
+    ("generated: the founding story", GEN, lambda s: put(s, "content.event-accordion", ["body"], "Made from the most abundant element in the universe."), ["GENERATED_MODE_COPY"]),
+    ("generated: the expansion pitch", GEN, lambda s: put(s, "media.text-image-shader", ["title"], "Actively expanding its footprint"), ["GENERATED_MODE_COPY"]),
+    ("generated: a source statistic (83K+)", GEN, lambda s: node(s, "stats.card-grid")["content"]["cards"][0].__setitem__("value", "83K+"), ["GENERATED_MODE_COPY"]),
+    ("generated: a source stat caption", GEN, lambda s: node(s, "stats.card-grid")["content"]["cards"][0].__setitem__("caption", "Tonnes Of CO2 Saved"), ["GENERATED_MODE_COPY"]),
+    ("generated: the event programme", GEN, lambda s: node(s, "content.event-accordion")["content"]["schedule"][0].__setitem__("body", "FC Development: Holistic by Design"), ["GENERATED_MODE_COPY"]),
+    ("generated: the booth identifier", GEN, lambda s: put(s, "content.event-accordion", ["heading"], "BOOTH C45 | HALL 13"), ["GENERATED_MODE_COPY"]),
+    ("generated: the cookie banner line", GEN, lambda s: put(s, "chrome.cookie-pane", ["message"], "We use cookies to make things better"), ["GENERATED_MODE_COPY"]),
+    ("generated: the cookie line with a zero-width space", GEN, lambda s: put(s, "chrome.cookie-pane", ["message"], "We use cookies\u200b to make things better"), ["GENERATED_MODE_COPY"]),
+    ("generated: the cookie line with a non-breaking space", GEN, lambda s: put(s, "chrome.cookie-pane", ["message"], "We use\u00a0cookies to make things better"), ["GENERATED_MODE_COPY"]),
+    ("generated: the form consent note", GEN, lambda s: put(s, "overlay.contact", ["consentNote"], "*By submitting, the data provided will be used to perform your request"), ["GENERATED_MODE_COPY"]),
+    ("generated: the department placeholder with a curly apostrophe", GEN, lambda s: put(s, "overlay.contact", ["departmentSelect", "placeholder"], "Select a department you\u2019d like to reach*"), ["GENERATED_MODE_COPY"]),
+    ("generated: the form intro", GEN, lambda s: put(s, "overlay.contact", ["formText"], "Send us a message and we\u2019ll get back to you as soon as possible."), ["GENERATED_MODE_COPY"]),
+    # --- generated mode: CTA leakage
+    ("generated: the source CTA 'view our brochure'", GEN, lambda s: node(s, "hero.video-title")["content"]["link"].__setitem__("label", "view our brochure"), ["GENERATED_MODE_CTA"]),
+    ("generated: the CTA with a zero-width space", GEN, lambda s: node(s, "hero.video-title")["content"]["link"].__setitem__("label", "view our bro\u200bchure"), ["GENERATED_MODE_CTA"]),
+    ("generated: the CTA in the closing link", GEN, lambda s: node(s, "media.text-image-shader")["content"]["links"][0].__setitem__("label", "View Our Brochure"), ["GENERATED_MODE_CTA"]),
+    ("generated: the ticker CTA 'Visit Us'", GEN, lambda s: put(s, "ticker.marquee", ["text"], "Visit Us — "), ["GENERATED_MODE_CTA"]),
+    ("generated: a brand-verb CTA 'Get Refire'", GEN, lambda s: node(s, "hero.video-title")["content"]["link"].__setitem__("label", "Get Refire"), ["GENERATED_MODE_CTA", "GENERATED_MODE_BRAND"]),
+    # --- generated mode: URL / contact endpoint leakage
+    ("generated: source mailbox on the contact title", GEN, lambda s: put(s, "overlay.contact", ["titleHref"], "mailto:info@refire.com"), ["GENERATED_MODE_URL", "GENERATED_MODE_BRAND", "GENERATED_CONTACT_DATA_RESERVED"]),
+    ("generated: source placeholder mailto (test@test.en)", GEN, lambda s: put(s, "overlay.contact", ["titleHref"], "mailto:test@test.en"), ["GENERATED_MODE_URL", "GENERATED_CONTACT_DATA_RESERVED"]),
+    ("generated: source mailbox in an accordion contact", GEN, lambda s: node(s, "content.event-accordion")["content"]["contacts"][0].__setitem__("email", "media@refire.com"), ["GENERATED_CONTACT_DATA_RESERVED", "GENERATED_MODE_URL"]),
+    ("generated: source phone in the tel href", GEN, lambda s: node(s, "overlay.contact")["content"]["phoneList"]["lines"][0].__setitem__("href", "tel:+17907909238"), ["GENERATED_CONTACT_DATA_RESERVED", "GENERATED_MODE_URL"]),
+    ("generated: source phone in the visible text only", GEN, lambda s: node(s, "overlay.contact")["content"]["phoneList"]["lines"][0].__setitem__("text", "+1 790 790 9238"), ["GENERATED_MODE_URL"]),
+    ("generated: source phone in full-width digits (NFKC)", GEN, lambda s: node(s, "overlay.contact")["content"]["phoneList"]["lines"][0].__setitem__("text", "\uff0b\uff11 \uff17\uff19\uff10 \uff17\uff19\uff10 \uff19\uff12\uff13\uff18"), ["GENERATED_MODE_URL"]),
+    ("generated: a non-reserved mailbox domain", GEN, lambda s: node(s, "content.event-accordion")["content"]["contacts"][0].__setitem__("email", "press@acme.com"), ["GENERATED_CONTACT_DATA_RESERVED"]),
+    ("generated: an absolute source URL", GEN, lambda s: put(s, "content.event-accordion", ["body"], "See https://refire.com/int/ for details"), ["NO_EXTERNAL_HREF", "GENERATED_MODE_URL"]),
+    ("generated: the sibling host en.refire.com", GEN, lambda s: put(s, "content.event-accordion", ["body"], "Visit en.refire.com"), ["GENERATED_MODE_URL", "GENERATED_MODE_BRAND"]),
+    # --- generated mode: proprietary media / assets
+    ("generated: hero film role is reference-only", GEN, lambda s: node(s, "hero.video-title")["content"]["video"].update({"assetRole": "media.hero-video", "src": "placeholder:media.hero-video"}), ["GENERATED_MODE_REFERENCE_ASSET"]),
+    ("generated: hero film file with the generation-safe role", GEN, lambda s: node(s, "hero.video-title")["content"]["video"].__setitem__("src", "/int/videos/main-new.mp4"), ["ASSET_SOURCE_POLICY", "GENERATED_MODE_ASSET"]),
+    ("generated: hero poster role is reference-only", GEN, lambda s: node(s, "hero.video-title")["content"]["poster"].update({"assetRole": "media.hero-poster", "src": "placeholder:media.hero-poster"}), ["GENERATED_MODE_REFERENCE_ASSET"]),
+    ("generated: PRISMA photo as the scroll picture (file)", GEN, lambda s: node(s, "media.scroll-picture")["content"]["image"].__setitem__("src", "/int/images/prisma-1.jpg"), ["ASSET_SOURCE_POLICY", "GENERATED_MODE_ASSET"]),
+    ("generated: shader texture role is reference-only", GEN, lambda s: node(s, "media.text-image-shader")["content"]["image"].update({"assetRole": "media.shader-picture", "src": "placeholder:media.shader-picture"}), ["GENERATED_MODE_REFERENCE_ASSET"]),
+    ("generated: PRISMA photo as the shader texture (file)", GEN, lambda s: node(s, "media.text-image-shader")["content"]["image"].__setitem__("src", "/int/images/prisma-2.jpg"), ["ASSET_SOURCE_POLICY", "GENERATED_MODE_ASSET"]),
+    ("generated: video role in an image slot", GEN, lambda s: node(s, "hero.video-title")["content"]["poster"].update({"assetRole": "media.video-placeholder", "src": "placeholder:media.video-placeholder"}), ["SCHEMA", "GENERATED_MODE_ROLE"]),
+    ("generated: image role in the video slot", GEN, lambda s: node(s, "hero.video-title")["content"]["video"].update({"assetRole": "media.image-generated", "src": "placeholder:media.image-generated"}), ["SCHEMA", "GENERATED_MODE_ROLE"]),
+    ("generated: document role in the logo slot", GEN, lambda s: node(s, "chrome.header")["content"]["logo"].update({"assetRole": "document.placeholder", "src": "placeholder:document.placeholder"}), ["SCHEMA", "GENERATED_MODE_ROLE"]),
+    ("generated: placeholder src of another role", GEN, lambda s: node(s, "chrome.header")["content"]["logo"].__setitem__("src", "placeholder:media.image-generated"), ["ASSET_SOURCE_POLICY"]),
+    ("generated: links the real brochure", GEN, lambda s: node(s, "hero.video-title")["content"]["link"].__setitem__("href", "/int/files/refire.pdf"), ["ASSET_SOURCE_POLICY", "GENERATED_MODE_ASSET"]),
+    ("generated: links the brochure role (reference-only)", GEN, lambda s: node(s, "hero.video-title")["content"]["link"].__setitem__("href", "placeholder:document.brochure"), ["GENERATED_MODE_REFERENCE_ASSET"]),
+    ("generated: links a document role of the wrong kind", GEN, lambda s: node(s, "media.text-image-shader")["content"]["links"][0].__setitem__("href", "placeholder:document.nothing"), ["GENERATED_MODE_REFERENCE_ASSET", "GENERATED_MODE_ROLE"]),
+    ("generated: favicon file name in text", GEN, lambda s: put(s, "content.event-accordion", ["body"], "Icon at apple-touch-icon.png"), ["GENERATED_MODE_ASSET"]),
+    ("generated: the licensed typeface named in text", GEN, lambda s: put(s, "content.event-accordion", ["body"], "Set in SuisseIntl Light"), ["GENERATED_MODE_ASSET"]),
+    ("generated: a path under the source asset tree", GEN, lambda s: put(s, "content.event-accordion", ["body"], "Poster at /int/images/other.jpg"), ["GENERATED_MODE_ASSET"]),
+    # --- generated mode: third-party / person identities
+    ("generated: partner organisation GreenGT", GEN, lambda s: node(s, "content.event-accordion")["content"]["schedule"][0].__setitem__("body", "GreenGT product presentation"), ["GENERATED_MODE_PERSON"]),
+    ("generated: partner organisation APAS", GEN, lambda s: node(s, "content.event-accordion")["content"]["schedule"][1].__setitem__("body", "APAS x our team"), ["GENERATED_MODE_PERSON"]),
+    ("generated: the Hannover Messe trade fair", GEN, lambda s: put(s, "content.event-accordion", ["title"], "Hannover Messe"), ["GENERATED_MODE_PERSON"]),
+    ("generated: the trade fair address", GEN, lambda s: put(s, "content.event-accordion", ["address"], "HANNOVER MESSE Exhibition Grounds, Hannover, Germany"), ["GENERATED_MODE_PERSON"]),
+    # --- tokens: a PageSpec has no token or style slot (R10)
+    ("token: raw hex colour in a text field", HOME, lambda s: put(s, "ticker.marquee", ["text"], "Go #ff0000 now"), ["TOKEN_RAW_COLOR"]),
+    ("token: raw 3-digit hex colour", HOME, lambda s: put(s, "ticker.marquee", ["text"], "Go #f00 now"), ["TOKEN_RAW_COLOR"]),
+    ("token: raw rgb() colour", HOME, lambda s: put(s, "ticker.marquee", ["text"], "rgb(12, 12, 12)"), ["TOKEN_RAW_COLOR"]),
+    ("token: raw oklch() colour", HOME, lambda s: put(s, "ticker.marquee", ["text"], "oklch(0.9 0.05 340)"), ["TOKEN_RAW_COLOR"]),
+    ("token: raw hex colour in generated mode", GEN, lambda s: put(s, "ticker.marquee", ["text"], "Meet Us #123456"), ["TOKEN_RAW_COLOR"]),
+    ("token: arbitrary spacing (24px)", HOME, lambda s: put(s, "ticker.marquee", ["text"], "gap 24px"), ["TOKEN_RAW_LENGTH"]),
+    ("token: arbitrary spacing (1.5rem)", HOME, lambda s: put(s, "ticker.marquee", ["text"], "1.5rem"), ["TOKEN_RAW_LENGTH"]),
+    ("token: unsupported font declaration", HOME, lambda s: put(s, "ticker.marquee", ["text"], "font-family: Comic Sans"), ["TOKEN_STYLE_DECLARATION"]),
+    ("token: inline colour declaration", HOME, lambda s: put(s, "ticker.marquee", ["text"], "color: red"), ["TOKEN_STYLE_DECLARATION"]),
+    ("token: unknown token reference", HOME, lambda s: put(s, "ticker.marquee", ["text"], "{text.neon}"), ["TOKEN_UNKNOWN"]),
+    ("token: catalog token written into a string (no token slot exists)", HOME, lambda s: put(s, "ticker.marquee", ["text"], "{text.primary}"), ["TOKEN_NO_OVERRIDE_SLOT"]),
+    ("token: invented token slot on the PageSpec", HOME, lambda s: s.__setitem__("tokens", {"surface": "surface.root"}), ["SCHEMA"]),
+    ("token: invented style slot on a node", HOME, lambda s: node(s, "ticker.marquee").__setitem__("style", {"color": "#fff"}), ["SCHEMA"]),
+    ("token: theme invented", HOME, lambda s: s.__setitem__("theme", "theme.neon"), ["SCHEMA"]),
+    ("token: theme not valid for the template", NF, lambda s: s.__setitem__("theme", "theme.refire-dark"), ["THEME_TEMPLATE_BINDING"]),
 ]
 
 WARN_MUTATIONS = [
@@ -151,8 +254,8 @@ def synthesized_controls():
     out = []
     for tid, t in MODEL.templates.items():
         ref = HOME if tid == HOME["template"] else NF if tid == NF["template"] else None
-        spec = {"pageSpecVersion": "1.0.0", "id": "page.control-" + tid.split(".")[1], "template": tid, "route": t["routes"][0], "theme": t["theme"],
-                "provenance": "reference", "meta": copy.deepcopy(ref["meta"]) if ref else {"title": "x", "description": "x"},
+        spec = {"pageSpecVersion": "1.1.0", "id": "page.control-" + tid.split(".")[1], "template": tid, "route": t["routes"][0], "theme": t["theme"],
+                "mode": "reference", "meta": copy.deepcopy(ref["meta"]) if ref else {"title": "x", "description": "x"},
                 "nodes": [copy.deepcopy(pool[n["section"]]) for n in t["nodes"] if n["required"]]}
         out.append(("synthesized control for " + tid, spec))
     return out
@@ -171,7 +274,8 @@ def part_a_b():
         hit = not errs and any(w[0] == rule for w in warns)
         ok &= hit
         rows.append(("WARNED" if hit else "MISSED", name + " (warn-severity rule)", rule if hit else str([e[0] for e in errs])))
-    controls = [("example.pagespec.json", HOME), ("example.not-found.pagespec.json", NF), ("example.generated.pagespec.json", GEN)] + synthesized_controls()
+    controls = [("example.pagespec.json (mode reference, real content)", HOME), ("example.not-found.pagespec.json (mode reference)", NF),
+                ("example.generated.pagespec.json (mode generated, fictional brand)", GEN), ("example.generated-not-found.pagespec.json (mode generated)", GEN_NF)] + synthesized_controls()
     for name, spec in controls:
         errs, warns = sv.validate(spec, MODEL)
         ok &= not errs
@@ -362,6 +466,58 @@ REPO_MUTATIONS = [
     ("a section measurement goes missing", "wrapper-gate", lambda r: edit_json(r, "extraction/measured-values.json", lambda d: d["sectionHeights"]["sections"].remove(next(x for x in d["sectionHeights"]["sections"] if x["section"] == "ticker.marquee")))),
     ("wrapper gate dropped from the graph", "graph-enforcement", lambda r: edit_json(r, "compatibility/graph.json", lambda d: d.__setitem__("rules", [x for x in d["rules"] if x["id"] != "WRAPPER_HEIGHT_GATE"]))),
     ("motion object reopened (additionalProperties true)", "allowlist-properties", lambda r: edit_json(r, "schema/pagespec.schema.json", lambda d: d["definitions"]["motion.ticker.marquee"].__setitem__("additionalProperties", True))),
+    # --- asset availability (R3): registry, contracts and the two code pins must agree
+    ("availability loosened in the registry only (brand.logo -> generation-safe)", "asset-availability", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["roles"]["brand.logo"].__setitem__("availability", "generation-safe"))),
+    ("availability loosened in the registry AND its documented pin together (code pins hold)", "asset-availability", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: (d["roles"]["media.hero-video"].__setitem__("availability", "generation-safe"), d["pinnedAvailability"].__setitem__("media.hero-video", "generation-safe"), d["roles"]["media.hero-video"].pop("generationSafeSubstitutes")))),
+    ("blocked role made reference-only in the registry (font typeface)", "asset-availability", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["roles"]["font.brand-typeface"].__setitem__("availability", "reference-only"))),
+    ("availability outside the closed enum", "asset-availability", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["roles"]["brand.logo"].__setitem__("availability", "public"))),
+    ("availability missing on a role", "asset-availability", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["roles"]["brand.logo"].pop("availability"))),
+    ("reference-only role without generationSafeSubstitutes", "asset-availability", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["roles"]["brand.logo"].pop("generationSafeSubstitutes"))),
+    ("substitute points at a reference-only role", "asset-availability", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["roles"]["brand.logo"].__setitem__("generationSafeSubstitutes", ["brand.favicon"]))),
+    ("role without generatedModeGuidance", "asset-availability", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["roles"]["media.hero-video"].pop("generatedModeGuidance"))),
+    ("pin removed from verify_all.py (independent code pin)", "asset-availability", lambda r: edit_text(r, "extraction/verify_all.py", lambda s: s.replace('    "brand.logo": "reference-only",\n', "", 1))),
+    ("pin removed from semantic_validate.py (second independent pin)", "asset-availability", lambda r: edit_text(r, "schema/semantic_validate.py", lambda s: s.replace('    "brand.logo": "reference-only",\n', "", 1))),
+    ("pin loosened to a different VALID value in semantic_validate.py only", "asset-availability", lambda r: edit_text(r, "schema/semantic_validate.py", lambda s: s.replace('"brand.logo": "reference-only"', '"brand.logo": "generation-safe"', 1))),
+    ("contract lists a reference-only role under generatedAssetRoles", "asset-availability", lambda r: edit_json(r, "sections/chrome.header.json", lambda d: (d["content"]["fields"]["logo"].__setitem__("generatedAssetRoles", ["brand.logo", "brand.logo-placeholder"]), d.__setitem__("generatedAssetRoles", ["brand.logo", "brand.logo-placeholder"])))),
+    ("section generatedAssetRoles disagrees with its fields", "asset-availability", lambda r: edit_json(r, "sections/hero.video-title.json", lambda d: d.__setitem__("generatedAssetRoles", ["media.video-placeholder"]))),
+    ("asset field loses its generatedAssetRoles", "asset-availability", lambda r: edit_json(r, "sections/media.scroll-picture.json", lambda d: d["content"]["fields"]["image"].__setitem__("generatedAssetRoles", []))),
+    ("contract and registry loosened together (logo made generation-safe everywhere but not in the code pins)", "asset-availability", lambda r: (edit_json(r, "assets/asset-roles.json", lambda d: (d["roles"]["brand.logo"].__setitem__("availability", "generation-safe"), d["roles"]["brand.logo"].pop("generationSafeSubstitutes"), d["pinnedAvailability"].__setitem__("brand.logo", "generation-safe"))), edit_json(r, "sections/chrome.header.json", lambda d: (d["content"]["fields"]["logo"].__setitem__("generatedAssetRoles", ["brand.logo"]), d.__setitem__("generatedAssetRoles", ["brand.logo"]))))),
+    ("allowlist generationSafeAssetRoles drifts", "asset-availability", lambda r: edit_json(r, "tokens/llm/component-allowlist.json", lambda d: d["generationSafeAssetRoles"].remove("person.fictional"))),
+    ("schema mode no longer required", "asset-availability", lambda r: edit_json(r, "schema/pagespec.schema.json", lambda d: d["required"].remove("mode"))),
+    ("schema mode enum gains a third value", "asset-availability", lambda r: edit_json(r, "schema/pagespec.schema.json", lambda d: d["properties"]["mode"]["enum"].append("demo"))),
+    # --- sourceBrand registry (R2): patterns come from the source, are evidenced and cannot be silently weakened
+    ("sourceBrand pattern removed (PRISMA product name)", "source-brand-registry", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["sourceBrand"]["patterns"]["brand"]["patterns"].pop(2))),
+    ("sourceBrand pattern removed (source phone numbers)", "source-brand-registry", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["sourceBrand"]["patterns"]["url"]["patterns"].pop(2))),
+    ("sourceBrand pattern loosened to a regex that misses its examples", "source-brand-registry", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["sourceBrand"]["patterns"]["brand"]["patterns"][0].__setitem__("pattern", "refirx"))),
+    ("sourceBrand pattern loosened to match nothing", "source-brand-registry", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["sourceBrand"]["patterns"]["cta"]["patterns"][0].__setitem__("pattern", "(?!)"))),
+    ("sourceBrand brand category emptied", "source-brand-registry", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["sourceBrand"]["patterns"]["brand"].__setitem__("patterns", []))),
+    ("sourceBrand copy category emptied", "generated-mode", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["sourceBrand"]["patterns"]["copy"].__setitem__("patterns", []))),
+    ("sourceBrand pattern widened so a clean control matches", "source-brand-registry", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["sourceBrand"]["patterns"]["cta"]["patterns"][0].__setitem__("pattern", "view|read the overview"))),
+    ("sourceBrand pattern without evidence", "source-brand-registry", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["sourceBrand"]["patterns"]["brand"]["patterns"][0].__setitem__("cite", []))),
+    ("sourceBrand category code differs from the validator", "source-brand-registry", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["sourceBrand"]["patterns"]["brand"].__setitem__("code", "GENERATED_MODE_NAME"))),
+    ("sourceBrand reviewStatus claims a human review", "source-brand-registry", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["sourceBrand"].__setitem__("reviewStatus", "REVIEWED by a human"))),
+    ("sourceBrand pattern cites a quote that is not in the file", "citations", lambda r: edit_json(r, "assets/asset-roles.json", lambda d: d["sourceBrand"]["patterns"]["brand"]["patterns"][0]["cite"][0].__setitem__("quote", "Invented quote")), "needs-source"),
+    # --- generated mode must really be enforced by the validator
+    ("validator stops enforcing generated mode (mode comparison switched off)", "generated-mode", lambda r: edit_text(r, "schema/semantic_validate.py", lambda s: s.replace('mode == "generated"', 'mode == "generated-off"'))),
+    ("validator stops scanning strings against the patterns", "generated-mode", lambda r: edit_text(r, "schema/semantic_validate.py", lambda s: s.replace("for p, s in scan_strings(spec):", "for p, s in []:", 1))),
+    ("validator stops checking asset availability", "generated-mode", lambda r: edit_text(r, "schema/semantic_validate.py", lambda s: s.replace('if av != "generation-safe":', "if False:", 1))),
+    ("validator no longer fails closed on an empty pattern category", "generated-mode", lambda r: edit_text(r, "schema/semantic_validate.py", lambda s: s.replace("if not r.patterns.get(cat):", "if False:", 1))),
+    ("validator stops applying normalisation (NFKC and zero-width removal off)", "generated-mode", lambda r: edit_text(r, "schema/semantic_validate.py", lambda s: s.replace('t = unicodedata.normalize("NFKC", str(text))', 't = str(text)', 1))),
+    ("validator applies generated rules to reference pages too", "generated-mode", lambda r: edit_text(r, "schema/semantic_validate.py", lambda s: s.replace('    if mode == "generated":\n        for role, pin in', '    if mode in MODES:\n        for role, pin in', 1))),
+    ("generated example removed", "generated-mode", lambda r: os.remove(os.path.join(r, "schema", "example.generated.pagespec.json"))),
+    ("generated 404 example removed", "generated-mode", lambda r: os.remove(os.path.join(r, "schema", "example.generated-not-found.pagespec.json"))),
+    ("generated example leaks the real brand", "examples-validate", lambda r: edit_json(r, "schema/example.generated.pagespec.json", lambda d: next(n for n in d["nodes"] if n["section"] == "chrome.footer")["content"].__setitem__("brand", "Refire"))),
+    ("generated 404 example leaks a source phone number", "examples-validate", lambda r: edit_json(r, "schema/example.generated-not-found.pagespec.json", lambda d: next(n for n in d["nodes"] if n["section"] == "overlay.contact")["content"]["phoneList"]["lines"][0].__setitem__("href", "tel:+17907909238"))),
+    ("example without mode", "examples-validate", lambda r: edit_json(r, "schema/example.pagespec.json", lambda d: d.pop("mode"))),
+    ("reference example relabelled generated", "examples-validate", lambda r: edit_json(r, "schema/example.pagespec.json", lambda d: d.__setitem__("mode", "generated"))),
+    ("pageSpecVersion drift between manifest and schema", "version-parity", lambda r: edit_json(r, "registry.manifest.json", lambda d: d.__setitem__("pageSpecVersion", "1.0.0"))),
+    # --- token catalog and policy (R10)
+    ("token catalog lists a token that does not exist", "token-integrity", lambda r: edit_json(r, "tokens/llm/token-catalog.json", lambda d: d["categories"]["text"].append("text.neon"))),
+    ("a real token is missing from the catalog", "token-integrity", lambda r: edit_json(r, "tokens/llm/token-catalog.json", lambda d: d["categories"]["surface"].remove("surface.card"))),
+    ("a new real token the catalog does not list", "token-integrity", lambda r: edit_json(r, "tokens/10-semantic/color.json", lambda d: d["tokens"].__setitem__("text.fresh", copy.deepcopy(d["tokens"]["text.primary"])))),
+    ("token policy loses a category key", "token-integrity", lambda r: edit_json(r, "tokens/llm/token-policy.json", lambda d: d["rawValueRestrictions"].pop("border"))),
+    ("token catalog category no longer matches the real token prefixes", "token-integrity", lambda r: edit_json(r, "tokens/llm/token-catalog.json", lambda d: d["categories"]["layer"].append("effect.glow"))),
+    ("motion-patterns.json invents a pattern no contract uses", "motion-patterns", lambda r: edit_json(r, "tokens/llm/motion-patterns.json", lambda d: d["patterns"].__setitem__("spin", copy.deepcopy(d["patterns"]["fade"])))),
 ]
 
 
@@ -431,7 +587,7 @@ def main():
             print("  %-8s %-78s %s" % r)
         total_ok &= ok
     n_mut = len(MUTATIONS) + len(WARN_MUTATIONS) + len(CONTRACT_MUTATIONS) + len(GATE_CASES) + (0 if args.skip_repo else len(REPO_MUTATIONS))
-    print("\nadversarial: %s (%d mutations, %d PageSpec + 2 contract + 1 gate + %d repo controls)" % ("ALL REJECTED, ALL CONTROLS PASS" if total_ok else "FAILURES PRESENT", n_mut, 3 + len(MODEL.templates), 0 if args.skip_repo else 1))
+    print("\nadversarial: %s (%d mutations, %d PageSpec + 2 contract + 1 gate + %d repo controls)" % ("ALL REJECTED, ALL CONTROLS PASS" if total_ok else "FAILURES PRESENT", n_mut, 4 + len(MODEL.templates), 0 if args.skip_repo else 1))
     return 0 if total_ok else 1
 
 

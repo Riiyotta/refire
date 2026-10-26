@@ -12,6 +12,10 @@
   },
   "retrievalEligible": true,
   "purpose": "Half-and-half closer: WebGL product picture on the left, capitalized title, paragraph and an arrow link to the brochure on the right.",
+  "generatedAssetRoles": [
+    "document.placeholder",
+    "media.image-generated"
+  ],
   "cite": [
     {
       "at": "@home/TextImage.jsx:10-52",
@@ -81,7 +85,10 @@
                   "quote": "href: BROCHURE_HREF"
                 }
               ],
-              "assetRole": "document.brochure"
+              "assetRole": "document.brochure",
+              "generatedAssetRoles": [
+                "document.placeholder"
+              ]
             }
           }
         },
@@ -98,6 +105,9 @@
       "image": {
         "type": "asset",
         "assetRole": "media.shader-picture",
+        "generatedAssetRoles": [
+          "media.image-generated"
+        ],
         "cite": [
           {
             "at": "src/data/home.js:70",

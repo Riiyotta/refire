@@ -12,6 +12,9 @@
   },
   "retrievalEligible": true,
   "purpose": "Full-bleed photograph that starts inset 2% on both sides and opens to edge-to-edge while zooming 10% as it scrolls into view. No pinning.",
+  "generatedAssetRoles": [
+    "media.image-generated"
+  ],
   "cite": [
     {
       "at": "@home/ScrolledPicture.jsx:10-34",
@@ -30,6 +33,9 @@
       "image": {
         "type": "asset",
         "assetRole": "media.scroll-picture",
+        "generatedAssetRoles": [
+          "media.image-generated"
+        ],
         "cite": [
           {
             "at": "src/data/home.js:37",

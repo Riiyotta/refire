@@ -12,6 +12,7 @@
   },
   "retrievalEligible": true,
   "purpose": "Huge single-line phrase scrolling left forever; draggable with inertia; pauses off-screen.",
+  "generatedAssetRoles": [],
   "cite": [
     {
       "at": "@home/Ticker.jsx:7-20",

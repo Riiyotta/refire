@@ -1,5 +1,32 @@
 # Changelog
 
+## 1.2.0 — explicit generation mode, asset availability, generated examples
+
+A minor release that changes the PageSpec shape, so `pageSpecVersion` goes 1.0.0 -> 1.1.0 and `allowlistVersion` 1.1.0 -> 1.2.0. Found by running the baseline audit first (6 FAIL: no `mode`, no generated-mode rules, no asset availability, no pins, no substitutes) and fixing all of them.
+
+### Added
+
+- **`mode`**: a required, closed `"reference" | "generated"` enum on every PageSpec (graph rule `MODE_CLOSED_ENUM`). It replaces the earlier `provenance` field of the same two values. The two existing examples are `reference`.
+- **Generated-mode rules** in `schema/semantic_validate.py`: `GENERATED_MODE_REFERENCE_ASSET`, `_ROLE`, `_BRAND`, `_CTA`, `_COPY`, `_URL`, `_ASSET`, `_PERSON`, plus `ASSET_AVAILABILITY_DRIFT` and `GENERATED_MODE_PATTERNS_MISSING` (an empty pattern category fails closed). Strings are normalised (NFKC, zero-width and soft-hyphen removal, curly quotes, Unicode dashes) before matching. `GENERATED_NO_PROPRIETARY_COPY` and `GENERATED_CONTACT_DATA_RESERVED` are kept; the latter now also accepts `*.example` / `*.invalid` mailbox hosts.
+- **`assets/asset-roles.json#sourceBrand`**: 25 patterns in 6 categories (brand, cta, copy, url, asset, people), derived from literals in this project's source, each with `cite` evidence (resolved by `verify_all.py`), `mustMatch` examples and per-category `mustNotMatch` controls, a recorded normalisation, and `notApplicable` notes (no ratings, no outbound links, no legal entity, no named individuals).
+- **Asset availability**: every role has a closed `availability` (`reference-only` | `generation-safe` | `blocked-for-generation`), `generatedModeGuidance` and, for reference-only and blocked roles, `generationSafeSubstitutes`. Nine generation-safe roles were added (19 roles in total): `brand.logo-placeholder`, `media.video-placeholder`, `media.image-generated`, `document.placeholder`, `font.system-stack`, `person.fictional`, `url.placeholder`, `copy.original`, `brand.fictional`. `font.brand-typeface` is `blocked-for-generation`.
+- **`generatedAssetRoles`** on every section contract (and on each asset or link field inside it), wired through `schema/section-contract.schema.json`, the allowlist and the PageSpec schema (each asset slot's role is now an enum of the source role plus its generation-safe roles; `href.document` accepts `placeholder:document.<role>`).
+- **Availability pinned in code**: `PINNED_AVAILABILITY` in `schema/semantic_validate.py` and, independently, in `extraction/verify_all.py`. `verify_all.py` also holds one canary string per pattern id and six normalisation canaries, so removing or loosening a pattern, or switching generated mode off in the validator, fails verification.
+- **Generated examples for both templates**: `schema/example.generated.pagespec.json` (rewritten with the new roles and original copy; the previous version reused the source's cookie, consent and department-select sentences, which the new rules reject) and the new `schema/example.generated-not-found.pagespec.json`. Fictional brand "Brindle Valley", reserved addresses, fictional phone numbers.
+- **Token rules (R10)**: the token catalog and policy already existed and were verified. Added the semantic rules `TOKEN_RAW_COLOR`, `TOKEN_RAW_LENGTH`, `TOKEN_STYLE_DECLARATION`, `TOKEN_UNKNOWN`, `TOKEN_NO_OVERRIDE_SLOT` (a PageSpec has no token or style slot, so any such shape in a string is rejected), a two-way catalog check in `verify_all.py` (a real token with a catalog category must be listed), and `tokens/llm/motion-patterns.json` (12 patterns derived from the contracts, with a parity check).
+- `verify_all.py` checks `asset-availability`, `source-brand-registry`, `generated-mode` and `motion-patterns`. Graph rules 29 -> 45.
+- Adversarial suite: 125 -> 253 cases (126 PageSpec mutations, 2 warn-severity, 22 contract, 24 gate and 79 repo-drift cases), covering mode, brand/logo, copy, CTA, URL and contact data, proprietary media, third-party identity, normalisation evasions and tokens, with reference and generated controls. `extraction/prove_drift.py`: 41 -> 84 cases (pins, registry edits, validator stops enforcing generated mode, pattern removal and loosening, token catalog drift).
+
+### Changed
+
+- Counts: `assetRoles` 10 -> 19, `graphRules` 29 -> 45, `exampleInstances` 3 -> 4; new `motionPatterns` 12, `generationSafeAssetRoles` 10, `sourceBrandPatterns` 25, `generatedExampleInstances` 2.
+- `asset-roles.json` gained `generationPolicies["may-generate-new"]`; roles with `origin: "generation-safe-addition"` carry a `description` instead of a source citation (there is no source usage to cite).
+
+### Honest limits
+
+- **No human has reviewed the pinned patterns.** `sourceBrand.reviewStatus` is `UNREVIEWED` and `verify_all.py` fails if it ever claims otherwise.
+- Detection is string and regex based: a paraphrase, a translation, an unfolded homoglyph or text inside an image passes. The theme id `theme.refire-dark` stays in generated PageSpecs because the schema binds the home template to it.
+
 ## 1.1.0 — contract taxonomy, retrieval pin, wrapper gate
 
 A minor, additive release. The PageSpec schema is unchanged.

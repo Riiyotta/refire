@@ -12,6 +12,7 @@
   },
   "retrievalEligible": true,
   "purpose": "Event detail block: dim title left; on the right a booth/date heading, address, paragraph, a single-open schedule accordion and contact email links.",
+  "generatedAssetRoles": [],
   "cite": [
     {
       "at": "@home/Hannover.jsx:9-50",

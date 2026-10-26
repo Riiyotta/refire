@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Drift proof for the whole-page-wrapper gate, the retrieval-eligibility pin and the
-source/semantic provenance checks.
+"""Drift proof for the whole-page-wrapper gate, the retrieval-eligibility pin, the
+source/semantic provenance checks, the asset-availability pins, the sourceBrand pattern
+registry and the enforcement of PageSpec mode "generated".
 
 Each case copies this design-repo into a scratch directory, injects ONE defect, runs
 extraction/verify_all.py on the copy and asserts the expected outcome: a FAIL on a named
@@ -71,6 +72,30 @@ HERO = ("/", "hero.video-title")
 BIG = ("/", "content.event-accordion")  # page height 6598.9px
 
 
+def text_edit(rel, fn):
+    def go(root):
+        p = os.path.join(root, rel)
+        with open(p, encoding="utf-8") as f:
+            s = f.read()
+        new = fn(s)
+        assert new != s, "text edit did not change %s" % rel
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(new)
+    return go
+
+
+def roles(fn):
+    return lambda r: edit_json(r, "assets/asset-roles.json", fn)
+
+
+def example(name, fn):
+    return lambda r: edit_json(r, "schema/%s.pagespec.json" % name, fn)
+
+
+def footer_brand(value):
+    return lambda d: next(n for n in d["nodes"] if n["section"] == "chrome.footer")["content"].__setitem__("brand", value)
+
+
 def contract(sid, fn):
     return lambda r: edit_json(r, "sections/%s.json" % sid, fn)
 
@@ -129,6 +154,54 @@ CASES = [
     ("source.tag wrong for the rendered element (real file)", contract("chrome.footer", lambda d: d["source"].__setitem__("tag", "section")), ("FAIL", "section-provenance"), True),
     ("source.id names a different component (real file)", contract("chrome.footer", lambda d: d["source"].__setitem__("id", "Header")), ("FAIL", "section-provenance"), True),
     ("semantic.category valid but disagrees with ia.json (real source)", contract("content.title-description", lambda d: d["semantic"].__setitem__("category", "MEDIA")), ("FAIL", "section-provenance"), True),
+    # ---- mode: required closed enum, version bump, examples per template
+    ("schema: mode no longer required", lambda r: edit_json(r, "schema/pagespec.schema.json", lambda d: d["required"].remove("mode")), ("FAIL", "asset-availability"), False),
+    ("schema: mode enum widened", lambda r: edit_json(r, "schema/pagespec.schema.json", lambda d: d["properties"]["mode"]["enum"].append("demo")), ("FAIL", "asset-availability"), False),
+    ("pageSpecVersion in the manifest drifts from the schema const", lambda r: edit_json(r, "registry.manifest.json", lambda d: d.__setitem__("pageSpecVersion", "1.0.0")), ("FAIL", "version-parity"), False),
+    ("an example loses its mode", example("example", lambda d: d.pop("mode")), ("FAIL", "examples-validate"), False),
+    ("the generated home example is deleted", lambda r: os.remove(os.path.join(r, "schema", "example.generated.pagespec.json")), ("FAIL", "generated-mode"), False),
+    ("the generated 404 example is deleted", lambda r: os.remove(os.path.join(r, "schema", "example.generated-not-found.pagespec.json")), ("FAIL", "generated-mode"), False),
+    ("the shipped generated example leaks the source brand", example("example.generated", footer_brand("Refire")), ("FAIL", "examples-validate"), False),
+    ("the shipped generated 404 example leaks a source phone number", example("example.generated-not-found", lambda d: next(n for n in d["nodes"] if n["section"] == "overlay.contact")["content"]["phoneList"]["lines"][0].__setitem__("href", "tel:+17907909238")), ("FAIL", "examples-validate"), False),
+    # ---- asset availability pins (registry edits, removed pins, contract flips)
+    ("registry loosens brand.logo to generation-safe (code pins hold)", roles(lambda d: d["roles"]["brand.logo"].__setitem__("availability", "generation-safe")), ("FAIL", "asset-availability"), False),
+    ("registry and its documented pin loosened together (code pins hold)", roles(lambda d: (d["roles"]["media.hero-video"].__setitem__("availability", "generation-safe"), d["pinnedAvailability"].__setitem__("media.hero-video", "generation-safe"))), ("FAIL", "asset-availability"), False),
+    ("availability set outside the closed enum", roles(lambda d: d["roles"]["media.hero-poster"].__setitem__("availability", "free")), ("FAIL", "asset-availability"), False),
+    ("a substitute is removed from a reference-only role", roles(lambda d: d["roles"]["media.hero-video"].pop("generationSafeSubstitutes")), ("FAIL", "asset-availability"), False),
+    ("pin removed from verify_all.py", text_edit("extraction/verify_all.py", lambda s: s.replace('    "brand.logo": "reference-only",\n', "", 1)), ("FAIL", "asset-availability"), False),
+    ("pin removed from semantic_validate.py", text_edit("schema/semantic_validate.py", lambda s: s.replace('    "brand.logo": "reference-only",\n', "", 1)), ("FAIL", "asset-availability"), False),
+    ("pin loosened in semantic_validate.py to another valid value", text_edit("schema/semantic_validate.py", lambda s: s.replace('"font.brand-typeface": "blocked-for-generation"', '"font.brand-typeface": "reference-only"', 1)), ("FAIL", "asset-availability"), False),
+    ("a contract lists the reference-only logo role for generated pages", contract("chrome.header", lambda d: (d["content"]["fields"]["logo"].__setitem__("generatedAssetRoles", ["brand.logo"]), d.__setitem__("generatedAssetRoles", ["brand.logo"]))), ("FAIL", "asset-availability"), False),
+    ("registry, pins in the registry and a contract flipped together (code pins hold)", both(roles(lambda d: (d["roles"]["brand.logo"].__setitem__("availability", "generation-safe"), d["roles"]["brand.logo"].pop("generationSafeSubstitutes"), d["pinnedAvailability"].__setitem__("brand.logo", "generation-safe"))), contract("chrome.header", lambda d: (d["content"]["fields"]["logo"].__setitem__("generatedAssetRoles", ["brand.logo"]), d.__setitem__("generatedAssetRoles", ["brand.logo"])))), ("FAIL", "asset-availability"), False),
+    ("allowlist generationSafeAssetRoles drifts from the registry", allowlist(lambda d: d["generationSafeAssetRoles"].remove("brand.logo-placeholder")), ("FAIL", "asset-availability"), False),
+    # ---- sourceBrand registry: removal and loosening of patterns
+    ("pattern removed: PRISMA product name", roles(lambda d: d["sourceBrand"]["patterns"]["brand"]["patterns"].pop(2)), ("FAIL", "source-brand-registry"), False),
+    ("pattern removed: source phone numbers", roles(lambda d: d["sourceBrand"]["patterns"]["url"]["patterns"].pop(2)), ("FAIL", "source-brand-registry"), False),
+    ("pattern removed: cookie / form microcopy", roles(lambda d: d["sourceBrand"]["patterns"]["copy"]["patterns"].pop()), ("FAIL", "source-brand-registry"), False),
+    ("pattern loosened so it misses its own examples (brand name)", roles(lambda d: d["sourceBrand"]["patterns"]["brand"]["patterns"][0].__setitem__("pattern", "refirx")), ("FAIL", "source-brand-registry"), False),
+    ("pattern loosened to match nothing (CTA)", roles(lambda d: d["sourceBrand"]["patterns"]["cta"]["patterns"][0].__setitem__("pattern", "(?!)")), ("FAIL", "source-brand-registry"), False),
+    ("pattern AND its mustMatch examples loosened together (no longer matches the cited source literal)", roles(lambda d: d["sourceBrand"]["patterns"]["people"]["patterns"][0].update({"pattern": "greengtx", "mustMatch": ["greengtx"]})), ("FAIL", "source-brand-registry"), False),
+    ("pattern AND its mustMatch loosened together: the code canary still rejects", roles(lambda d: d["sourceBrand"]["patterns"]["people"]["patterns"][0].update({"pattern": "greengtx", "mustMatch": ["greengtx"]})), ("FAIL", "generated-mode"), False),
+    ("pattern widened until a clean control matches", roles(lambda d: d["sourceBrand"]["patterns"]["cta"]["patterns"][0].__setitem__("pattern", "view|read the overview")), ("FAIL", "source-brand-registry"), False),
+    ("a whole category emptied (people)", roles(lambda d: d["sourceBrand"]["patterns"]["people"].__setitem__("patterns", [])), ("FAIL", "source-brand-registry"), False),
+    ("a whole category emptied (copy): the validator must fail closed", roles(lambda d: d["sourceBrand"]["patterns"]["copy"].__setitem__("patterns", [])), ("FAIL", "generated-mode"), False),
+    ("pattern evidence removed", roles(lambda d: d["sourceBrand"]["patterns"]["asset"]["patterns"][0].__setitem__("cite", [])), ("FAIL", "source-brand-registry"), False),
+    ("registry claims a human review that never happened", roles(lambda d: d["sourceBrand"].__setitem__("reviewStatus", "REVIEWED by the design team")), ("FAIL", "source-brand-registry"), False),
+    ("pattern evidence quote not in the real source file", roles(lambda d: d["sourceBrand"]["patterns"]["brand"]["patterns"][0]["cite"][0].__setitem__("quote", "Invented quote")), ("FAIL", "citations"), True),
+    # ---- the validator stops enforcing generated mode
+    ("validator no longer compares mode with generated", text_edit("schema/semantic_validate.py", lambda s: s.replace('mode == "generated"', 'mode == "generated-off"')), ("FAIL", "generated-mode"), False),
+    ("validator stops scanning strings against the patterns", text_edit("schema/semantic_validate.py", lambda s: s.replace("for p, s in scan_strings(spec):", "for p, s in []:", 1)), ("FAIL", "generated-mode"), False),
+    ("validator stops checking asset availability", text_edit("schema/semantic_validate.py", lambda s: s.replace('if av != "generation-safe":', "if False:", 1)), ("FAIL", "generated-mode"), False),
+    ("validator stops normalising (NFKC) before matching", text_edit("schema/semantic_validate.py", lambda s: s.replace('t = unicodedata.normalize("NFKC", str(text))', "t = str(text)", 1)), ("FAIL", "generated-mode"), False),
+    ("validator stops failing closed on an empty category", text_edit("schema/semantic_validate.py", lambda s: s.replace("if not r.patterns.get(cat):", "if False:", 1)), ("FAIL", "generated-mode"), False),
+    ("validator applies generated rules to reference pages", text_edit("schema/semantic_validate.py", lambda s: s.replace('    if mode == "generated":\n        for role, pin in', '    if mode in MODES:\n        for role, pin in', 1)), ("FAIL", "generated-mode"), False),
+    ("a GENERATED_MODE rule dropped from the graph", lambda r: edit_json(r, "compatibility/graph.json", lambda d: d.__setitem__("rules", [x for x in d["rules"] if x["id"] != "GENERATED_MODE_PERSON"])), ("FAIL", "graph-enforcement"), False),
+    # ---- token catalog / policy cannot drift from the real token files
+    ("catalog lists a token that does not exist", lambda r: edit_json(r, "tokens/llm/token-catalog.json", lambda d: d["categories"]["text"].append("text.neon")), ("FAIL", "token-integrity"), False),
+    ("catalog loses a real token", lambda r: edit_json(r, "tokens/llm/token-catalog.json", lambda d: d["categories"]["surface"].remove("surface.card")), ("FAIL", "token-integrity"), False),
+    ("a real token appears that the catalog does not list", lambda r: edit_json(r, "tokens/10-semantic/color.json", lambda d: d["tokens"].__setitem__("text.fresh", dict(d["tokens"]["text.primary"]))), ("FAIL", "token-integrity"), False),
+    ("policy loses a category key", lambda r: edit_json(r, "tokens/llm/token-policy.json", lambda d: d["rawValueRestrictions"].pop("border")), ("FAIL", "token-integrity"), False),
+    ("motion-patterns.json loses a pattern a contract uses", lambda r: edit_json(r, "tokens/llm/motion-patterns.json", lambda d: d["patterns"].pop("marquee-drag")), ("FAIL", "motion-patterns"), False),
 ]
 
 

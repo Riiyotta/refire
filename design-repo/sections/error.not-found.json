@@ -12,6 +12,7 @@
   },
   "retrievalEligible": true,
   "purpose": "Stock 'page not found' body, centered, system font, following the OS colour scheme.",
+  "generatedAssetRoles": [],
   "cite": [
     {
       "at": "src/pages/NotFound.jsx:6-32",

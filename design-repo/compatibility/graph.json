@@ -77,31 +77,127 @@
       "id": "ASSET_ROLE_SLOT",
       "severity": "error",
       "enforcedBy": "semantic",
-      "description": "Each asset/link slot must carry exactly the assetRole its section contract pins, and the role must exist in assets/asset-roles.json."
+      "description": "mode 'reference': each asset/link slot must carry exactly the assetRole its section contract pins. Every mode: the role must exist in assets/asset-roles.json."
     },
     {
       "id": "ASSET_SOURCE_POLICY",
       "severity": "error",
       "enforcedBy": "semantic",
-      "description": "provenance 'reference' may only use a role's allowedReferenceSources; provenance 'generated' must use 'placeholder:<role>' for every placeholder-only role."
+      "description": "mode 'reference' may only use a role's allowedReferenceSources; mode 'generated' must use 'placeholder:<role>' for every placeholder-only role."
     },
     {
       "id": "GENERATED_NO_PROPRIETARY_COPY",
       "severity": "error",
       "enforcedBy": "semantic",
-      "description": "provenance 'generated' instances may not reuse Refire's proprietary copy: an exact (normalized) match of any proprietary field, or any shared run of 6 or more consecutive words with it."
+      "description": "mode 'generated' instances may not reuse Refire's proprietary copy: an exact (normalized) match of any proprietary field, or any shared run of 6 or more consecutive words with it."
     },
     {
       "id": "GENERATED_CONTACT_DATA_RESERVED",
       "severity": "error",
       "enforcedBy": "semantic",
-      "description": "provenance 'generated' instances must use reserved example contact data: emails at example.com/.org/.net and fictional +1 NXX-555-01XX phone numbers."
+      "description": "mode 'generated' instances must use reserved example contact data: emails at example.com/.org/.net or a *.example/*.invalid host, and fictional +1 NXX-555-01XX phone numbers."
     },
     {
       "id": "NO_MARKUP_IN_TEXT",
       "severity": "error",
       "enforcedBy": "semantic",
       "description": "Text fields must not contain '<' or '>' (the accordion body is injected as raw HTML by the source)."
+    },
+    {
+      "id": "MODE_CLOSED_ENUM",
+      "severity": "error",
+      "enforcedBy": "schema",
+      "description": "Every PageSpec carries a required closed mode: 'reference' or 'generated' (schema enum). The semantic layer applies the consequences below."
+    },
+    {
+      "id": "GENERATED_MODE_REFERENCE_ASSET",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "mode 'generated': a reference-only or blocked-for-generation asset role may not appear anywhere; availability is pinned in code (PINNED_AVAILABILITY)."
+    },
+    {
+      "id": "GENERATED_MODE_ROLE",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "mode 'generated': an asset or placeholder link must use one of the generation-safe roles its field lists under generatedAssetRoles."
+    },
+    {
+      "id": "ASSET_AVAILABILITY_DRIFT",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "mode 'generated': the availability in assets/asset-roles.json must equal the pin in code for every role (the registry alone cannot loosen a role)."
+    },
+    {
+      "id": "GENERATED_MODE_PATTERNS_MISSING",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "mode 'generated': every sourceBrand.patterns category must hold at least one compiled pattern; an empty registry fails closed instead of passing everything."
+    },
+    {
+      "id": "GENERATED_MODE_BRAND",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "mode 'generated': no string may name the source brand (Refire, REFIRE, Refire Group, refire.com, PRISMA, spaced or obfuscated spellings). Patterns: assets/asset-roles.json sourceBrand.patterns.brand."
+    },
+    {
+      "id": "GENERATED_MODE_CTA",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "mode 'generated': no source call-to-action text ('view our brochure', 'Visit Us', 'Get Refire'). Patterns: sourceBrand.patterns.cta."
+    },
+    {
+      "id": "GENERATED_MODE_COPY",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "mode 'generated': no source marketing copy (company descriptor, founding story, expansion pitch, hero tagline, key statistics, event programme, booth ids, cookie and form microcopy). Patterns: sourceBrand.patterns.copy."
+    },
+    {
+      "id": "GENERATED_MODE_URL",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "mode 'generated': no source domain, mailbox, placeholder mailto or phone number. Patterns: sourceBrand.patterns.url."
+    },
+    {
+      "id": "GENERATED_MODE_ASSET",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "mode 'generated': no protected asset file or id (logo, product photos, hero film and poster, brochure, favicons, typeface, /int/ asset paths). Patterns: sourceBrand.patterns.asset."
+    },
+    {
+      "id": "GENERATED_MODE_PERSON",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "mode 'generated': no real third-party identity named in the source (partner organisations, the trade fair and its city). The source names no individual. Patterns: sourceBrand.patterns.people."
+    },
+    {
+      "id": "TOKEN_RAW_COLOR",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "No raw colour (hex, rgb/hsl/oklch/oklab/color-mix, CSS colour names in a declaration) in any PageSpec string; colour is owned by tokens/llm/token-catalog.json roles through the section contracts."
+    },
+    {
+      "id": "TOKEN_RAW_LENGTH",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "No raw length (px, rem, em, vw, vh) in any PageSpec string; spacing and sizing are owned by layout.* and component.* tokens through the section contracts."
+    },
+    {
+      "id": "TOKEN_STYLE_DECLARATION",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "No CSS declaration (font-family, font-size, padding, colour ...) in any PageSpec string: fonts and type come only from the approved type.* roles and font.family.brand through the contracts."
+    },
+    {
+      "id": "TOKEN_UNKNOWN",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "A '{token.id}' reference in a PageSpec string must name a token of tokens/llm/token-catalog.json."
+    },
+    {
+      "id": "TOKEN_NO_OVERRIDE_SLOT",
+      "severity": "error",
+      "enforcedBy": "semantic",
+      "description": "A PageSpec has no token or style slot (tokens/llm/token-policy.json 'overrides'): even a catalog token written as a '{token.id}' reference in a string is rejected."
     },
     {
       "id": "META_DESCRIPTION_MIRRORS_ABOUT",
